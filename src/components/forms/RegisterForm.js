@@ -105,12 +105,12 @@ function RegisterForm(props) {
       const payload = {
         ...values,
         phoneNumber: `${countryCode}${
-          values.phoneNumber.charAt(0) === '0' ? values.phoneNumber.substring(1) : values.phoneNumber
+          values?.phoneNumber.charAt(0) === '0' ? values?.phoneNumber.substring(1) : values?.phoneNumber
         }`,
         location: {
-          state: values.state,
-          city: values.city,
-          address: values.address,
+          state: values?.state,
+          city: values?.city,
+          address: values?.address,
         },
       };
       const response = APIService.post('/auth/create', payload);
@@ -122,16 +122,16 @@ function RegisterForm(props) {
           // send to verify otp
           navigate('/verify-otp', {
             state: {
-              emailAddress: values.emailAddress,
+              emailAddress: values?.emailAddress,
               accessToken: res?.data?.accessToken,
               refreshToken: res?.data?.refreshToken,
             },
             replace: true,
           });
-          return `${res?.data?.message}! We sent an OTP to your email address (${values.emailAddress}). open your mail and enter the OTP sent to your mail.`;
+          return `${res?.data?.message}! We sent an OTP to your email address (${values?.emailAddress}). open your mail and enter the OTP sent to your mail.`;
         },
         error: (err) => {
-          // console.log(err);
+          console.log("ERROR HERE >>> ", `${err}`);
           setLoading(false);
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },

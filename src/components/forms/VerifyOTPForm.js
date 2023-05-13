@@ -85,6 +85,7 @@ function VerifyOTPForm(props) {
             }). open your mail and enter the OTP sent to your mail.`}
           </Typography>
         </Box>
+
         <OtpInput
           value={values.otp}
           onChange={(value) => {
@@ -95,11 +96,9 @@ function VerifyOTPForm(props) {
               return handleSubmit();
             }
           }}
-          isInputNum
+          inputType="number"
           shouldAutoFocus
           numInputs={OTP_LENGTH}
-          isDisabled={loading}
-          hasErrored={Boolean(touched.otp && errors.otp)}
           inputStyle={{
             width: '100%',
             height: 50,
@@ -108,9 +107,10 @@ function VerifyOTPForm(props) {
             borderRadius: 8,
             fontSize: 18,
           }}
-          errorStyle={{
-            borderColor: 'tomato',
-          }}
+          renderSeparator={<span>-</span>}
+          renderInput={(props) => (
+            <input disabled={loading} placeholder={`${Boolean(touched.otp && errors.otp)}` ? `Error` : ''} {...props} />
+          )}
         />
       </Form>
     </FormikProvider>
