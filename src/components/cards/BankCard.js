@@ -1,7 +1,7 @@
-import PropType from 'prop-types';
-import { capitalCase } from 'change-case';
+// import PropType from 'prop-types';
+// import { capitalCase } from 'change-case';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+// import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
