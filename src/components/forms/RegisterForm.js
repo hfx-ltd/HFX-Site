@@ -131,7 +131,7 @@ function RegisterForm(props) {
           return `${res?.data?.message}! We sent an OTP to your email address (${values.emailAddress}). open your mail and enter the OTP sent to your mail.`;
         },
         error: (err) => {
-          console.log(err);
+          // console.log(err);
           setLoading(false);
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },
