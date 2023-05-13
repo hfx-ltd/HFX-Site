@@ -1,0 +1,9 @@
+
+/*add self host font */
+@font-face {
+  font-family: 'Recoleta';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../src/fonts/RecoletaAlt-Bold.woff2') format('woff2');
+}
