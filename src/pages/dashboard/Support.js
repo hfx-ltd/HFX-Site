@@ -71,14 +71,21 @@ function Support(props) {
         <ColoredTypography variant="h4" sx={{ mb: 5 }}>
           Support
         </ColoredTypography>
-        <StyledGrid container spacing={2}>
-          <Grid item sm={4} xs={12}>
+        <StyledGrid
+          container
+          spacing={matches ? 2 : 0}
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          alignItems={!matches && 'center'}
+        >
+          <Grid item sm={4} xs={12} padding={2} width={"100%"} >
             <Typography variant="h4">FastQuid Support</Typography>
             <Typography variant="body2" color="text.secondary">
               Talk to us about your complaint
             </Typography>
           </Grid>
-          <Grid item sm={8} xs={12}>
+          <Grid item sm={8} xs={12} padding={2}>
             <SupportForm matches={matches} setTicket={setTicket} openResponseModal={setOpen} />
           </Grid>
         </StyledGrid>

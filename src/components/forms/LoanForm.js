@@ -1,17 +1,17 @@
 import PropType from 'prop-types';
 import * as Yup from 'yup';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { sentenceCase } from 'change-case';
+// import { sentenceCase } from 'change-case';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material
 import LoadingButton from '@mui/lab/LoadingButton';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme, alpha} from '@mui/material/styles';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
@@ -38,8 +38,8 @@ import Iconify from '../Iconify';
 
 import { useSWRFetch } from '../../hooks';
 import { updateProfile } from '../../store/reducer/auth';
-import CustomModal from '../modal/CustomModal';
-import VerifyOTPForm from './VerifyOTPForm';
+// import CustomModal from '../modal/CustomModal';
+// import VerifyOTPForm from './VerifyOTPForm';
 import formatCurrency from '../../utils/formatCurrency';
 import LoadingBackdrop from '../loading/Backdrop';
 import NumberFormatCustom from './inputs/NumberFormatCustom';
@@ -49,6 +49,8 @@ import Spacer from '../spacer';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const companyMailRegExp = /^(?!.*@(?:gmail|yahoo|hotmail)\.com).*$/;
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   marginBottom: 10,
@@ -61,10 +63,10 @@ const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   height: 22,
   alignItems: 'center',
   ...(ownerState.active && {
-    color: '#784af4',
+    color: '#ef2c5a',
   }),
   '& .QontoStepIcon-completedIcon': {
-    color: '#784af4',
+    color: '#ef2c5a',
     zIndex: 1,
     fontSize: 18,
   },
@@ -84,12 +86,12 @@ const QontoConnector = styled(StepConnector)(({ theme }) => ({
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4',
+      borderColor: '#ef2c5a',
     },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#784af4',
+      borderColor: '#ef2c5a',
     },
   },
   [`& .${stepConnectorClasses.line}`]: {
@@ -111,10 +113,6 @@ function QontoStepIcon(props) {
 
 const loanType = [
   {
-    label: 'Personal Loan',
-    value: 'personal loan',
-  },
-  {
     label: 'Pay Day Loan',
     value: 'pay day loan',
   },
@@ -124,14 +122,6 @@ const duration = [
   {
     label: '1 Month',
     value: '1 month',
-  },
-  {
-    label: '2 Month',
-    value: '2 month',
-  },
-  {
-    label: '3 Month',
-    value: '3 month',
   },
 ];
 
@@ -217,24 +207,24 @@ const reason = [
 //   },
 // ];
 
-const marital = [
-  {
-    label: 'Single',
-    value: 'single',
-  },
-  {
-    label: 'Married',
-    value: 'married',
-  },
-  {
-    label: 'Divorced',
-    value: 'divorced',
-  },
-  {
-    label: 'Widowed',
-    value: 'widowed',
-  },
-];
+// const marital = [
+//   {
+//     label: 'Single',
+//     value: 'single',
+//   },
+//   {
+//     label: 'Married',
+//     value: 'married',
+//   },
+//   {
+//     label: 'Divorced',
+//     value: 'divorced',
+//   },
+//   {
+//     label: 'Widowed',
+//     value: 'widowed',
+//   },
+// ];
 
 const employments = [
   {
@@ -304,8 +294,8 @@ const kids = [
     value: '4',
   },
   {
-    label: 'More Then 5',
-    value: 'more then 5',
+    label: 'More than 5',
+    value: 'more than 5',
   },
 ];
 
@@ -333,11 +323,22 @@ function valuetext(value) {
 }
 
 const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }) => {
+
+  const theme = useTheme();
+  const { themeMode } = useSelector((state) => state.lifeCircle);
+
+  const [lAmount, setLAmount] = useState(loanOffer?.amount);
+  const [interestAmount, setInterestAmount] = useState(loanOffer?.interestAmount);
+  const [repayAmount, setRepayAmount] = useState(loanOffer?.amount + percentage(loanOffer?.interest, loanAmount));
+
   const handleChange = (_, newValue) => {
     setLoanAmount(newValue);
+    setLAmount(newValue);
     const interest = loanOffer?.interest;
-    const interestAmount = percentage(interest, loanAmount);
-    const totalAmountDue = loanAmount + interestAmount;
+    const interestAmount = percentage(interest, newValue);
+    setInterestAmount(interestAmount);
+    const totalAmountDue = newValue + interestAmount;
+    setRepayAmount(totalAmountDue)
     setLoanOffer((prevValues) => ({
       ...prevValues,
       totalAmountDue,
@@ -351,7 +352,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       <Box>
         <Typography variant="subtitle2">Loan Offer Amount</Typography>
         <Typography variant="h2" color="primary">
-          {formatCurrency(loanAmount)}
+          {formatCurrency(lAmount)}
         </Typography>
         <Slider
           aria-label="Amount"
@@ -368,7 +369,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
         <Paper
           elevation={0}
           sx={{
-            bgcolor: 'primary.lighter',
+            bgcolor: themeMode === 'dark' ? alpha(theme.palette.background.default, 1.0) : 'primary.lighter',
             padding: 1,
             marginBottom: 2,
           }}
@@ -384,10 +385,10 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       </Box>
       <Paper elevation={3} sx={{ padding: 2 }}>
         <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
-        <ItemList keyName="Loan Amount" value={formatCurrency(loanOffer?.amount || 0)} />
-        <ItemList keyName="Repayment Amount" value={formatCurrency(loanOffer?.totalAmountDue || 0)} />
+        <ItemList keyName="Loan Amount" value={formatCurrency(lAmount || 0)} />
+        <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
         <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
-        <ItemList keyName="Interest Amount" value={formatCurrency(loanOffer?.interestAmount)} />
+        <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
       </Paper>
       <Spacer size={3} />
     </Stack>
@@ -449,11 +450,71 @@ const BankComponent = ({ touched, errors, getFieldProps, banks, values, setField
   </Stack>
 );
 
-const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }) => {
+// const sendOtp = async (toast, field, value, setLoading) => {
+
+// };
+
+function handleClick(toast, setLoading, companyEmail, email, setSent) {
+  // Code to be executed when the element is clicked
+  // alert("JUST CLIECKED MEE")
+  setLoading(true);
+  const response = APIService.post('/auth/send-otp', { companyEmailAddress: companyEmail, emailAddress: email });
+
+  toast.promise(response, {
+    loading: 'Loading',
+    success: () => {
+      setLoading(false);
+      setSent(true);
+      return `Enter the OTP code we just sent to your company email address (${companyEmail}).`;
+    },
+    error: (err) => {
+      setLoading(false);
+      return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
+    },
+  });
+}
+
+function verifyOTP(toast, setLoading, email, code, setFieldValue, setVerified, setIsCompanyEmailVerified) {
+  setLoading(true);
+  const response = APIService.post('/auth/verify-otp', { emailAddress: email, otp: code });
+
+  toast.promise(response, {
+    loading: 'Loading',
+    success: () => {
+      setLoading(false);
+      setVerified(true);
+      setIsCompanyEmailVerified(true);
+      setFieldValue('isCompanyEmailVerified', true);
+      return `Company email address verified!`;
+    },
+    error: (err) => {
+      setLoading(false);
+      return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
+    },
+  });
+}
+
+const WorkComponent = ({
+  touched,
+  errors,
+  getFieldProps,
+  values,
+  setFieldValue,
+  setLoading,
+  toast,
+  loading,
+  profile,
+  setIsCompanyEmailVerified,
+}) => {
   const date = new Date();
   const month = 0;
   const d = new Date(date.getFullYear(), month + 1, 0);
   const maxDate = new Date().setDate(d.getDate());
+
+  const [sent, setSent] = useState(false);
+  const [otpCode, setOtpCode] = useState();
+  const [enableVerify, setEnableVerify] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   return (
     <Stack spacing={2}>
@@ -484,7 +545,7 @@ const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }
             error={Boolean(touched.companyName && errors.companyName)}
             helperText={touched.companyName && errors.companyName}
           />
-          <StyledTextField
+          {/* <StyledTextField
             fullWidth
             autoComplete="phone"
             type="text"
@@ -492,27 +553,83 @@ const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }
             {...getFieldProps('companyPhoneNumber')}
             error={Boolean(touched.companyPhoneNumber && errors.companyPhoneNumber)}
             helperText={touched.companyPhoneNumber && errors.companyPhoneNumber}
-          />
+          /> */}
           <StyledTextField
             fullWidth
             autoComplete="email-address"
             type="email"
-            label="Company Email Address"
+            label="Your Work Email"
             {...getFieldProps('companyEmailAddress')}
             error={Boolean(touched.companyEmailAddress && errors.companyEmailAddress)}
             helperText={touched.companyEmailAddress && errors.companyEmailAddress}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Iconify
-                    icon={values.isCompanyEmailVerified ? 'eva:checkmark-circle-outline' : 'eva:close-circle-outline'}
-                    sx={{ color: values.isCompanyEmailVerified ? '#19cb73' : '#e53f3c' }}
-                  />
+                  {!values.companyEmailAddress || errors.companyEmailAddress ? (
+                    <Iconify
+                      icon={values.isCompanyEmailVerified ? 'eva:checkmark-circle-outline' : 'eva:close-circle-outline'}
+                      sx={{ color: values.isCompanyEmailVerified ? '#19cb73' : '#e53f3c' }}
+                    />
+                  ) : (
+                    <>
+                      {values.isCompanyEmailVerified || verified ? (
+                        <Iconify icon={'eva:checkmark-circle-outline'} sx={{ color: '#19cb73' }} />
+                      ) : (
+                        <Button
+                          variant="contained"
+                          disabled={loading || values.isCompanyEmailVerified || verified}
+                          onClick={() =>
+                            handleClick(toast, setLoading, values.companyEmailAddress, profile.emailAddress, setSent)
+                          }
+                        >
+                          {sent ? 'Resend OTP' : 'Send OTP'}
+                        </Button>
+                      )}
+                    </>
+                  )}
                 </InputAdornment>
               ),
+              maxLength: 4,
             }}
             disabled={values.isCompanyEmailVerified}
           />
+          {!verified && sent && (
+            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+              <StyledTextField
+                type="number"
+                label="Enter OTP Code"
+                // {...getFieldProps('companyEmailCode')}
+                onChange={(e) => {
+                  setOtpCode(e.target.value);
+                  if (e.target.value?.length > 3) {
+                    setEnableVerify(true);
+                  } else {
+                    setEnableVerify(false);
+                  }
+                }}
+                error={Boolean(touched.companyLocation && errors.companyLocation)}
+                helperText={touched.companyLocation && errors.companyLocation}
+              />{' '}
+              <Button
+                variant="contained"
+                disabled={!enableVerify || values.isCompanyEmailVerified}
+                onClick={() =>
+                  verifyOTP(
+                    toast,
+                    setLoading,
+                    profile.emailAddress,
+                    otpCode,
+                    setFieldValue,
+                    setVerified,
+                    setIsCompanyEmailVerified
+                  )
+                }
+              >
+                {`${verified ? 'Verified' : 'Verify'}`}
+              </Button>
+            </Box>
+          )}
+
           <StyledTextField
             fullWidth
             autoComplete="address"
@@ -524,7 +641,18 @@ const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }
             error={Boolean(touched.companyLocation && errors.companyLocation)}
             helperText={touched.companyLocation && errors.companyLocation}
           />
-          <FormControl fullWidth>
+
+          <StyledTextField
+            fullWidth
+            id="jobTitle"
+            type="text"
+            label="Job Title"
+            {...getFieldProps('jobTitle')}
+            error={Boolean(touched.jobTitle && errors.jobTitle)}
+            helperText={touched.jobTitle && errors.jobTitle}
+          />
+
+          {/* <FormControl fullWidth>
             <InputLabel htmlFor="jobTitle" sx={{ bgcolor: 'background.paper' }}>
               <em>Job Title</em>
             </InputLabel>
@@ -538,7 +666,8 @@ const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }
                 </option>
               ))}
             </NativeSelect>
-          </FormControl>
+          </FormControl> */}
+
           <StyledTextField
             fullWidth
             label="How much is your monthly income?"
@@ -582,57 +711,57 @@ const WorkComponent = ({ touched, errors, getFieldProps, values, setFieldValue }
   );
 };
 
-const LifeComponent = ({ touched, errors, getFieldProps }) => (
-  <Stack spacing={3}>
-    {/* <FormControl fullWidth>
-      <InputLabel htmlFor="education" sx={{ bgcolor: 'background.paper' }}>
-        <em>What's your education level</em>
-      </InputLabel>
-      <NativeSelect
-        input={<OutlinedInput variant="outlined" {...getFieldProps('education')} id="education" />}
-        id="education"
-      >
-        {educations.map((item) => (
-          <option key={item.value} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </NativeSelect>
-    </FormControl> */}
-    <FormControl fullWidth>
-      <InputLabel htmlFor="maritalStatus" sx={{ bgcolor: 'background.paper' }}>
-        <em>What's your marital status</em>
-      </InputLabel>
-      <NativeSelect
-        input={<OutlinedInput variant="outlined" {...getFieldProps('maritalStatus')} id="maritalStatus" />}
-        id="maritalStatus"
-      >
-        {marital.map((item) => (
-          <option key={item.value} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </NativeSelect>
-    </FormControl>
+// const LifeComponent = ({ touched, errors, getFieldProps }) => (
+//   <Stack spacing={3}>
+//     {/* <FormControl fullWidth>
+//       <InputLabel htmlFor="education" sx={{ bgcolor: 'background.paper' }}>
+//         <em>What's your education level</em>
+//       </InputLabel>
+//       <NativeSelect
+//         input={<OutlinedInput variant="outlined" {...getFieldProps('education')} id="education" />}
+//         id="education"
+//       >
+//         {educations.map((item) => (
+//           <option key={item.value} value={item.value}>
+//             {item.label}
+//           </option>
+//         ))}
+//       </NativeSelect>
+//     </FormControl> */}
+//     {/* <FormControl fullWidth>
+//       <InputLabel htmlFor="maritalStatus" sx={{ bgcolor: 'background.paper' }}>
+//         <em>What's your marital status</em>
+//       </InputLabel>
+//       <NativeSelect
+//         input={<OutlinedInput variant="outlined" {...getFieldProps('maritalStatus')} id="maritalStatus" />}
+//         id="maritalStatus"
+//       >
+//         {marital.map((item) => (
+//           <option key={item.value} value={item.value}>
+//             {item.label}
+//           </option>
+//         ))}
+//       </NativeSelect>
+//     </FormControl> */}
 
-    <FormControl fullWidth>
-      <InputLabel htmlFor="children" sx={{ bgcolor: 'background.paper' }}>
-        <em>How many children do you have?</em>
-      </InputLabel>
-      <NativeSelect
-        input={<OutlinedInput variant="outlined" {...getFieldProps('children')} id="children" />}
-        id="children"
-        sx={{ marginBottom: 2 }}
-      >
-        {kids.map((item) => (
-          <option key={item.value} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </NativeSelect>
-    </FormControl>
-  </Stack>
-);
+//     <FormControl fullWidth>
+//       <InputLabel htmlFor="children" sx={{ bgcolor: 'background.paper' }}>
+//         <em>How many children do you have?</em>
+//       </InputLabel>
+//       <NativeSelect
+//         input={<OutlinedInput variant="outlined" {...getFieldProps('children')} id="children" />}
+//         id="children"
+//         sx={{ marginBottom: 2 }}
+//       >
+//         {kids.map((item) => (
+//           <option key={item.value} value={item.value}>
+//             {item.label}
+//           </option>
+//         ))}
+//       </NativeSelect>
+//     </FormControl>
+//   </Stack>
+// );
 
 const LoanComponent = ({ touched, errors, getFieldProps }) => (
   <Box>
@@ -714,21 +843,42 @@ const stepComponents = (
   setLoanOffer,
   loanAmount,
   setLoanAmount,
+  setIsBankVerified,
+  setIsCompanyEmailVerified,
   loading,
-  setLoading
+  setLoading,
+  toast,
+  profile
 ) => {
   switch (activeStep) {
     case 0:
       return <LoanComponent {...{ touched, errors, getFieldProps }} />;
     case 1:
-      return <LifeComponent {...{ touched, errors, getFieldProps }} />;
-    case 2:
-      return <WorkComponent {...{ touched, errors, getFieldProps, values, setFieldValue }} />;
-    case 3:
-      return <BankComponent {...{ touched, errors, getFieldProps, banks, values, setFieldValue, setBankVerified }} />;
-    case 4:
       return (
-        <ReviewComponent {...{ loanOffer, setLoanOffer, loanAmount, setLoanAmount, values, loading, setLoading }} />
+        <WorkComponent
+          {...{
+            touched,
+            errors,
+            getFieldProps,
+            values,
+            setFieldValue,
+            setLoading,
+            toast,
+            loading,
+            profile,
+            setIsCompanyEmailVerified,
+          }}
+        />
+      );
+    case 2:
+      return (
+        <BankComponent
+          {...{ touched, errors, getFieldProps, banks, values, setFieldValue, setBankVerified, setIsBankVerified }}
+        />
+      );
+    case 3:
+      return (
+        <ReviewComponent {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }} />
       );
     default:
       return <div />;
@@ -743,27 +893,23 @@ const loanSchema = Yup.object().shape({
   reason: Yup.string().required('Date of Birth is required'),
 });
 
-const lifeSchema = Yup.object().shape({
-  // education: Yup.string().required('Education required'),
-  maritalStatus: Yup.string().required('Marital Status required'),
-  children: Yup.string().required('Children is required'),
-});
+// const lifeSchema = Yup.object().shape({
+//   // education: Yup.string().required('Education required'),
+//   maritalStatus: Yup.string().required('Marital Status required'),
+//   children: Yup.string().required('Children is required'),
+// });
 
 const workSchema = Yup.object().shape({
   employmentStatus: Yup.string().required('Employment Status is required'),
   companyName: Yup.string().required('Company Name is required'),
   companyLocation: Yup.string().required('Company Location is required'),
-  companyPhoneNumber: Yup.string()
-    .matches(phoneRegExp, 'Enter a valid phone number')
-    .min(11, 'Company Phone Number must be 11 digits')
-    .max(11, 'Company Phone Number  must not be more than 11 digits')
-    .required('Company PhoneNumber is required'),
   companyEmailAddress: Yup.string()
-    .email('Company Email must be a valid email address')
-    .required('Company EmailAddress is required'),
-  jobTitle: Yup.string().required('Job Title is required'),
-  monthlyIncome: Yup.string().required('Monthly Income is required'),
-  payDay: Yup.date().required('Pay Day is required'),
+    .email('Company email must be a valid email address')
+    .matches(companyMailRegExp, 'Must be a valid email with company extension')
+    .required('Company email address is required'),
+  jobTitle: Yup.string().required('Job title is required'),
+  monthlyIncome: Yup.string().required('Monthly income is required'),
+  payDay: Yup.date().required('Pay day is required'),
 });
 
 const bankSchema = Yup.object().shape({
@@ -777,6 +923,7 @@ const bankSchema = Yup.object().shape({
     .required('accountNumber is required'),
   bankName: Yup.string(),
   bankCode: Yup.string().required('bankCode is required'),
+  // isBankVerified: Yup.boolean().required()
 });
 
 function LoanForm(props) {
@@ -784,17 +931,18 @@ function LoanForm(props) {
   const location = useLocation();
   const dispatch = useDispatch();
   const [loanAmount, setLoanAmount] = useState(0);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = React.useState(0);
   const [bankVerified, setBankVerified] = useState(!!profile?.bank?.accountName);
   //   profile?.company?.isCompanyEmailVerified
-  const [openOtpModal, setOpenOtpModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalFieldName, setModalFieldName] = useState('');
-  const [modalFieldValue, setModalFieldValue] = useState('');
+  // const [openOtpModal, setOpenOtpModal] = useState(false);
+  // const [modalTitle, setModalTitle] = useState('');
+  // const [modalFieldName, setModalFieldName] = useState('');
+  // const [modalFieldValue, setModalFieldValue] = useState('');
+  const [isBankVerified, setIsBankVerified] = useState(false);
   const [isCompanyEmailVerified, setIsCompanyEmailVerified] = useState(false);
   const [banks, setBanks] = useState([]);
   const { data: bankList } = useSWRFetch('/bank/list');
-  const steps = ['Loan', 'Life/School', 'Work', 'Bank', 'Review'];
+  const steps = ['Loan', 'Work', 'Bank', 'Review'];
   const maxSteps = steps.length;
   const date = new Date();
   date.setMonth(date.getMonth());
@@ -804,8 +952,6 @@ function LoanForm(props) {
   if (activeStep === 0) {
     formSchema = loanSchema;
   } else if (activeStep === 1) {
-    formSchema = lifeSchema;
-  } else if (activeStep === 2) {
     formSchema = workSchema;
   } else {
     formSchema = bankSchema;
@@ -821,7 +967,7 @@ function LoanForm(props) {
   const formik = useFormik({
     initialValues: {
       amount: '',
-      type: 'personal loan',
+      type: 'pay day loan',
       duration: '1 month',
       reason: 'Debt consolidation',
       maritalStatus: profile?.maritalStatus || 'single',
@@ -836,32 +982,59 @@ function LoanForm(props) {
       companyLocation: profile?.work?.companyLocation || '',
       companyPhoneNumber: profile?.work?.companyPhoneNumber || '',
       companyEmailAddress: profile?.work?.companyEmailAddress || '',
-      isCompanyEmailVerified: profile?.work?.isCompanyEmailVerified || isCompanyEmailVerified,
+      isCompanyEmailVerified: isCompanyEmailVerified || false,
       jobTitle: profile?.work?.jobTitle || 'assistant',
       monthlyIncome: profile?.work?.monthlyIncome || '',
-      payDay: date.setDate(profile?.work?.payDay || date.getDate()),
+      payDay: date.setDate(profile?.work?.payDay || date.setDate(date.getDate)),
+      isBankVerified: isBankVerified ?? false,
     },
     validationSchema: formSchema,
-    onSubmit: async () => {
+    onSubmit: () => {
+      // console.log('ACTIVE STEP V >>> ', bankVerified);
+      // console.log('ACTIVE STEP h >>> ',  activeStep);
+      // console.log('ACTIVE STEP h >>> ',  values?.isCompanyEmailVerified);
       if (isValid) {
-        if (values.type === 'personal loan' && activeStep === 1) {
-          // Jump to bank
-          setActiveStep((prevActiveStep) => prevActiveStep + 2);
-        } else if (activeStep === 2 && !values?.isCompanyEmailVerified) {
-          setModalFieldName('companyEmailAddress');
-          setModalFieldValue(values.companyEmailAddress);
-          sendOtp('Company Email Address', 'companyEmailAddress', values.companyEmailAddress);
-        } else if (activeStep === 3 && !bankVerified) {
+        if (activeStep === 1) {
+          console.log('ACTIVE KOPUS');
+          setActiveStep(activeStep + 1);
+          // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        } else if ((activeStep === 2 && !isBankVerified) || (activeStep === 1 && !isBankVerified)) {
           resolveBank();
         } else {
-          if (activeStep === 3) {
+          if (activeStep === 2) {
             return handleLoanOffer();
           }
-          if (activeStep >= 4) {
+          if (activeStep >= 3) {
             return submitLoanApplication();
           }
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setActiveStep(activeStep + 1);
         }
+        // else if (activeStep === 2 && values?.isCompanyEmailVerified) {
+        //   console.log('ACTIVE KOPUSA >>');
+        //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        // } else if (activeStep === 3 && !bankVerified) {
+        //   resolveBank();
+        // } else {
+        //   if (activeStep === 3) {
+        //     console.log('Imagbolunshus', 'okpekete');
+        //     return handleLoanOffer();
+        //   }
+        //   if (activeStep >= 3) {
+        //     return submitLoanApplication();
+        //   }
+        //   // if (activeStep === 0) {
+        //   //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        //   // }
+        //   if (activeStep === 0 && values?.isCompanyEmailVerified) {
+        //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        //   }
+
+        //
+        // setActiveStep((prevActiveStep) => prevActiveStep += 1);
+        // }
+        // console.log("ACTIVE STEP j >>> ", activeStep);
+      } else {
+        console.log('ACTIVHDF >>> ', activeStep);
       }
     },
   });
@@ -879,6 +1052,7 @@ function LoanForm(props) {
         const bankName = banks?.filter((bank) => bank.value === values.bankCode)[0];
         setFieldValue('accountName', res?.data?.data?.account_name);
         setFieldValue('bankName', bankName?.label);
+        setIsBankVerified(true);
         setBankVerified(true);
         handleLoanOffer();
         setLoading(false);
@@ -891,31 +1065,31 @@ function LoanForm(props) {
     });
   };
 
-  const sendOtp = async (title, field, value) => {
-    setLoading(true);
-    const response = APIService.post('/auth/send-otp', { [field]: value, emailAddress: profile?.emailAddress });
+  // const sendOtp = async (title, field, value) => {
+  //   setLoading(true);
+  //   const response = APIService.post('/auth/send-otp', { [field]: value, emailAddress: profile?.emailAddress });
 
-    toast.promise(response, {
-      loading: 'Loading',
-      success: () => {
-        setLoading(false);
-        setModalTitle(`Verify Your ${title}`);
-        setOpenOtpModal(true);
-        return `We sent an OTP to your email address (${value}). open your mail and enter the OTP sent to your mail.`;
-      },
-      error: (err) => {
-        setLoading(false);
-        return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
-      },
-    });
-  };
+  //   toast.promise(response, {
+  //     loading: 'Loading',
+  //     success: () => {
+  //       setLoading(false);
+  //       setModalTitle(`Verify Your ${title}`);
+  //       setOpenOtpModal(true);
+  //       return `We sent an OTP to your email address (${value}). open your mail and enter the OTP sent to your mail.`;
+  //     },
+  //     error: (err) => {
+  //       setLoading(false);
+  //       return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
+  //     },
+  //   });
+  // };
 
-  const handleOtpCallback = (fieldName) => {
-    setIsCompanyEmailVerified(true);
-    setFieldValue('isCompanyEmailVerified', true);
-    setOpenOtpModal(false);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  // const handleOtpCallback = (fieldName) => {
+  //   setIsCompanyEmailVerified(true);
+  //   setFieldValue('isCompanyEmailVerified', true);
+  //   setOpenOtpModal(false);
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  // };
 
   const handleLoanOffer = () => {
     // check user loan level
@@ -941,9 +1115,9 @@ function LoanForm(props) {
       loading: 'Checking Your Eligibility...',
       success: (res) => {
         // console.log('response', res.data);
-        setLoanAmount(res.data.amount);
+        setLoanAmount(res.data?.amount);
         setLoanOffer(res.data);
-        setActiveStep(4);
+        setActiveStep(3);
         setLoading(false);
         return `You are Eligible to take loan!`;
       },
@@ -1002,15 +1176,16 @@ function LoanForm(props) {
 
   const handleBack = () => {
     if (values.type === 'personal loan' && activeStep === 3) {
-      setActiveStep((prevActiveStep) => prevActiveStep - 2);
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
     } else {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     }
+    // console.log('ACTIVE STEP >>> ', activeStep);
   };
 
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      <CustomModal open={openOtpModal} setOpen={setOpenOtpModal} title={modalTitle} modalSize="xs">
+      {/* <CustomModal open={openOtpModal} setOpen={setOpenOtpModal} title={modalTitle} modalSize="xs">
         <VerifyOTPForm
           location={location}
           toast={toast}
@@ -1019,7 +1194,7 @@ function LoanForm(props) {
           fieldValue={modalFieldValue}
           callback={handleOtpCallback}
         />
-      </CustomModal>
+      </CustomModal> */}
       <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
         {steps.map((label) => (
           <Step key={label}>
@@ -1042,11 +1217,16 @@ function LoanForm(props) {
             setLoanOffer,
             loanAmount,
             setLoanAmount,
+            setIsBankVerified,
+            setIsCompanyEmailVerified,
             loading,
-            setLoading
+            setLoading,
+            toast,
+            profile
           )}
+
           <MobileStepper
-            variant="text"
+            variant="dots"
             steps={maxSteps}
             position="static"
             activeStep={activeStep}

@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
+import { useDispatch } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 // material
 import Stack from '@mui/material/Stack';
@@ -10,6 +11,8 @@ import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 // Third party
 import toast, { Toaster } from 'react-hot-toast';
+// import { setAuth, setProfile, updateProfile } from '../../store/reducer/auth';
+import { useProfile } from '../../hooks';
 // Services
 import APIService from '../../service';
 // component
@@ -21,6 +24,9 @@ export default function LoginForm(props) {
   const { mutate } = props;
   const [loading, setLoading] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  // const dispatch = useDispatch();
+
+  const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile();
   // const navigate = useNavigate();
 
   const LoginSchema = Yup.object().shape({
@@ -44,7 +50,18 @@ export default function LoginForm(props) {
           setLoading(false);
           localStorage.setItem('accessToken', res?.data?.accessToken);
           localStorage.setItem('refreshToken', res?.data?.refreshToken);
+
           mutate();
+          console.log('PROFILE DATA >> ', data);
+          setTimeout(() => {
+            mutate();
+            console.log('PROFILE DATA >> ', data);
+          }, 5000);
+          //
+          // // console.log("PROFILE MUTATE", `${mutate().the}`);
+          // mutate().then((val) => {
+          //   console.log("PROFILE MUTATE", `${{...val}}`);
+          // });
           // navigate('/dashboard/overview', { replace: true });
           return 'Login successful!';
         },

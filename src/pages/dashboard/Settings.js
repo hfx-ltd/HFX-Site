@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/material/styles';
@@ -8,11 +6,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Container from '@mui/material/Container';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import { setThemeMode, toggleReceiveNotification } from '../../store/reducer/lifeCircle';
 import Page from '../../components/Page';
 import Spacer from '../../components/spacer';
@@ -31,7 +26,7 @@ function Settings() {
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const { themeMode, notifyEmail } = useSelector((state) => state.lifeCircle);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleChange = (evt) => {
     const value = evt.target.checked ? 'dark' : 'light';
@@ -49,14 +44,21 @@ function Settings() {
         <ColoredTypography variant="h4" sx={{ mb: 5 }}>
           Settings
         </ColoredTypography>
-        <StyledGrid container spacing={2} alignItems="center">
-          <Grid item sm={4} xs={12}>
+        <StyledGrid
+          container
+          spacing={matches ? 2 : 0}
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          alignItems={!matches && 'center'}
+        >
+          <Grid item sm={4} xs={12} padding={2} width={'100%'}>
             <Typography variant="h4">Theme</Typography>
             <Typography variant="body2" color="text.secondary">
               Change your theme to dark or light
             </Typography>
           </Grid>
-          <Grid item sm={8} xs={12}>
+          <Grid item sm={8} xs={12} paddingX={2} width={'100%'}>
             <FormControlLabel
               control={
                 <Switch
@@ -70,14 +72,21 @@ function Settings() {
           </Grid>
         </StyledGrid>
         <Spacer size={3} />
-        <StyledGrid container spacing={2} alignItems="center">
-          <Grid item sm={4} xs={12}>
+        <StyledGrid
+          container
+          spacing={matches ? 2 : 0}
+          display={'flex'}
+          flexDirection={'row'}
+          justifyContent={'space-between'}
+          alignItems={!matches && 'center'}
+        >
+          <Grid item sm={4} xs={12} padding={2} width={'100%'}>
             <Typography variant="h4">Notifications</Typography>
             <Typography variant="body2" color="text.secondary">
               We'll always let you know about important changes, but you pick what else you want to hear about.
             </Typography>
           </Grid>
-          <Grid item sm={8} xs={12}>
+          <Grid item sm={8} xs={12} paddingX={2} width={'100%'}>
             <FormControlLabel
               control={
                 <Switch

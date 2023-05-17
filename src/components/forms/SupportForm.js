@@ -67,9 +67,10 @@ function SupportForm(props) {
         success: (res) => {
           setLoading(false);
           setFieldValue('message', '.');
-          setTicket(res.data);
+          console.log("SUPPORT DATA >> ", res.data);
+          setTicket(res.data.data);
           openResponseModal(true);
-          return 'Your compliant has been receive successfully!';
+          return 'Your compliant has been received successfully!';
         },
         error: (err) => {
           setLoading(false);
@@ -86,11 +87,11 @@ function SupportForm(props) {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit} style={{ width: '100%' }}>
         <Stack spacing={2}>
           <FormControl fullWidth>
-            <InputLabel htmlFor="subject">
-              <em>Select your subject</em>
-            </InputLabel>
+            <InputLabel htmlFor="subject" shrink margin='dense' sx={{paddingRight: 24}} >Select your subject</InputLabel>
             <NativeSelect
-              input={<OutlinedInput variant="outlined" {...getFieldProps('subject')} id="subject" />}
+              // variant="outlined"
+              // placeholder="Select your subject"
+              input={<OutlinedInput label="Select your subject" variant="outlined" {...getFieldProps('subject')} id="subject" />}
               id="subject"
             >
               {subjects.map((subject) => (
@@ -106,8 +107,8 @@ function SupportForm(props) {
             multiline
             rows={4}
             {...getFieldProps('message')}
-            error={Boolean(touched.message && errors.message)}
-            helperText={touched.message && errors.message}
+            // error={Boolean(touched.message && errors.message)}
+            // helperText={touched.message && errors.message}
           />
         </Stack>
         <LoadingButton

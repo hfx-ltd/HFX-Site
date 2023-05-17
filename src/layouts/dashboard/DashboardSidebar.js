@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 // material
-import { styled } from '@mui/material/styles';
+import { alpha, styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 // mock
 // hooks
+// import { Theme } from '@mui/material';
 import { useResponsive } from '../../hooks';
 // components
 import Logo from '../../components/Logo';
@@ -25,6 +26,7 @@ import { logOut } from '../../store/reducer/auth';
 const DRAWER_WIDTH = 280;
 
 const RootStyle = styled('div')(({ theme }) => ({
+  backgroundColor: alpha(theme.palette.background.default, 0.72),
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
     width: DRAWER_WIDTH,
@@ -42,6 +44,8 @@ DashboardSidebar.propTypes = {
 export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+  const themer = useTheme();
+  const { themeMode } = useSelector((state) => state.lifeCircle);
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -88,7 +92,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
           open={isOpenSidebar}
           onClose={onCloseSidebar}
           PaperProps={{
-            sx: { width: DRAWER_WIDTH, backgroundColor: 'primary.darker' },
+            sx: { width: DRAWER_WIDTH, backgroundColor: themeMode === 'dark' ? alpha(themer.palette.background.default, 1.0) : 'primary.darker' },
           }}
         >
           {renderContent}
@@ -102,7 +106,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              backgroundColor: 'primary.darker',
+              backgroundColor: themeMode === 'dark' ? alpha(themer.palette.background.default, 1.0) : 'primary.darker',
               borderRightStyle: 'dashed',
             },
           }}
