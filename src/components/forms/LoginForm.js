@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useDispatch } from 'react-redux';
 // import { useNavigate } from 'react-router-dom';
 // material
 import Stack from '@mui/material/Stack';
@@ -26,7 +25,7 @@ export default function LoginForm(props) {
   const [showPassword, setShowPassword] = useState(false);
   // const dispatch = useDispatch();
 
-  const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile();
+  const { data, loading: dataLoading, mutate: profileMutate } = useProfile();
   // const navigate = useNavigate();
 
   const LoginSchema = Yup.object().shape({
@@ -48,14 +47,20 @@ export default function LoginForm(props) {
         loading: 'Loading',
         success: (res) => {
           setLoading(false);
+
+          if (data?.accountStatus === 'frozen') {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            return 'Sorry. your account is frozen';
+          }
+
           localStorage.setItem('accessToken', res?.data?.accessToken);
           localStorage.setItem('refreshToken', res?.data?.refreshToken);
-
           mutate();
           console.log('PROFILE DATA >> ', data);
           setTimeout(() => {
             mutate();
-            console.log('PROFILE DATA >> ', data);
+            // console.log('PROFILE DATA >> ', data);
           }, 5000);
           //
           // // console.log("PROFILE MUTATE", `${mutate().the}`);

@@ -1,7 +1,7 @@
 import PropType from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { formatDistance, subDays } from 'date-fns';
+import { formatDistance } from 'date-fns';
 // third-party
 import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbarColumnsButton } from '@mui/x-data-grid';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -86,7 +86,7 @@ function TransactionList(props) {
           <StyledAvatar sx={{ bgcolor: colorVariant(params?.value) }}>
             <Iconify icon={iconVariant(params?.value)} />
           </StyledAvatar>
-          <StyledTypography variant="body1">{params?.row?.message}</StyledTypography>
+          <StyledTypography variant="body1">{params?.row?.status}</StyledTypography>
         </Stack>
       ),
     },
@@ -96,7 +96,7 @@ function TransactionList(props) {
       align: full ? 'left' : 'center',
       flex: 1,
       renderCell: (params) => (
-        <StyledTypography variant="body1">{formatCurrency(params?.value / 100)}</StyledTypography>
+        <StyledTypography variant="body1">{formatCurrency(params?.value)}</StyledTypography>
       ),
     },
     {
@@ -112,7 +112,7 @@ function TransactionList(props) {
       flex: 1,
       renderCell: (params) => (
         <StyledTypography variant="body1">
-          {formatDistance(subDays(new Date(), 3), new Date(params?.value), { addSuffix: true })}
+          {formatDistance((new Date(params?.value)), Date.now(), { addSuffix: true}).replace("Minute", "Min")}
         </StyledTypography>
       ),
     },

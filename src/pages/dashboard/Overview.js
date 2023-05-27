@@ -4,13 +4,14 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled, useTheme } from '@mui/material/styles';
 import { sentenceCase } from 'change-case';
 import Container from '@mui/material/Container';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 // components
+import useSWR from 'swr';
 import LoanCard from '../../components/cards/LoanCard';
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
+// import Iconify from '../../components/Iconify';
 import Advert from '../../components/advert';
 import TransactionList from '../../components/list/TransactionList';
 import Spacer from '../../components/spacer';
@@ -25,10 +26,12 @@ function Overview(props) {
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const [transactions, setTransactions] = useState([]);
 
-  const { data } = useSWRFetch('transaction/single');
+  // const { data } = useSWRFetch('transaction/single');
+  const { data, mutate, error } = useSWRFetch('/transaction/single');
 
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
+      console.log("DATARINA >>>", data);
       setTransactions(data);
     }
   }, [data]);
@@ -37,7 +40,7 @@ function Overview(props) {
 
   return (
     <Page title="Overview">
-      <Container maxWidth="xl">
+      <Container maxWidth="xl"> 
         <ColoredTypography variant="h3" sx={{ mb: 5 }}>
           Hello {sentenceCase(profile?.firstName)},
         </ColoredTypography>

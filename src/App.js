@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // routes
+import { toast } from 'react-hot-toast';
 import Router from './routes';
 // theme
 import ThemeProvider from './theme';
 // components
 import ScrollToTop from './components/ScrollToTop';
 import { useProfile } from './hooks';
-import { setAuth, setProfile, updateProfile } from './store/reducer/auth';
+import { setAuth, setProfile, updateProfile, logOut } from './store/reducer/auth';
 import socket from './utils/socket';
 import { setLoading } from './store/reducer/lifeCircle';
 
@@ -25,13 +26,27 @@ function App() {
     return () => socket.disconnect();
   }, []);
 
+  // useEffect(() => {
+  //   effect
+  // }, [data])
+
   useEffect(() => {
     dispatch(setLoading(dataLoading));
 
     if (data) {
-      dispatch(setLoading(false));
-      dispatch(setProfile(data));
-      dispatch(setAuth(true));
+      // handle account status here
+
+      if (data?.accountStatus === 'frozen') {
+        console.log('ACCOUNT FROZEN ', data?.accountStatus);
+        toast.error('Your account is currently frozen!');
+        dispatch(logOut);
+        dispatch(setAuth(false));
+        dispatch(setProfile(null));
+      } else {
+        dispatch(setLoading(false));
+        dispatch(setProfile(data));
+        dispatch(setAuth(true));
+      }
 
       socket.on(`${data?.id}-user-updated`, (payload) => {
         dispatch(setProfile(payload));
@@ -51,7 +66,7 @@ function App() {
       dispatch(setProfile(null));
     }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading]);
+  }, [data, loggedOut, dataLoading, dispatch]);
 
   return (
     <ThemeProvider>

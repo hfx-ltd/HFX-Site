@@ -11,7 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material
 import LoadingButton from '@mui/lab/LoadingButton';
-import { styled, useTheme, alpha} from '@mui/material/styles';
+import { styled, useTheme, alpha } from '@mui/material/styles';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
@@ -50,7 +50,7 @@ import Spacer from '../spacer';
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-const companyMailRegExp = /^(?!.*@(?:gmail|rocketmail|hotmail)\.com).*$/;
+const companyMailRegExp = /^(?!.*@(?:gmail|rocketmail|hotmail|outlook|yahoo)\.com).*$/;
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   marginBottom: 10,
@@ -125,26 +125,65 @@ const duration = [
   },
 ];
 
+// const reasonOld = [
+//   {
+//     label: 'Debt consolidation',
+//     value: 'Debt consolidation',
+//   },
+//   {
+//     label: 'Credit card refinancing',
+//     value: 'Credit card refinancing',
+//   },
+//   {
+//     label: 'Major purchase',
+//     value: 'Major purchase',
+//   },
+//   {
+//     label: 'Home improvement',
+//     value: 'Home improvement',
+//   },
+//   {
+//     label: 'Moving/ relocation',
+//     value: 'Moving/ relocation',
+//   },
+//   {
+//     label: 'Medical expenses',
+//     value: 'Medical expenses',
+//   },
+//   {
+//     label: 'Car financing',
+//     value: 'Car financing',
+//   },
+//   {
+//     label: 'Business',
+//     value: 'Business',
+//   },
+//   {
+//     label: 'Special occasion',
+//     value: 'Special occasion',
+//   },
+//   {
+//     label: 'Vacation',
+//     value: 'Vacation',
+//   },
+//   {
+//     label: 'Taxes',
+//     value: 'Taxes',
+//   },
+//   {
+//     label: 'Other',
+//     value: 'Other',
+//   },
+// ];
+
 const reason = [
   {
-    label: 'Debt consolidation',
-    value: 'Debt consolidation',
-  },
-  {
-    label: 'Credit card refinancing',
-    value: 'Credit card refinancing',
+    label: 'Cash Advance',
+    value: 'Cash advance',
   },
   {
     label: 'Major purchase',
     value: 'Major purchase',
-  },
-  {
-    label: 'Home improvement',
-    value: 'Home improvement',
-  },
-  {
-    label: 'Moving/ relocation',
-    value: 'Moving/ relocation',
   },
   {
     label: 'Medical expenses',
@@ -155,21 +194,10 @@ const reason = [
     value: 'Car financing',
   },
   {
-    label: 'Business',
-    value: 'Business',
+    label: 'Live until next paycheck',
+    value: 'Live until next paycheck',
   },
-  {
-    label: 'Special occasion',
-    value: 'Special occasion',
-  },
-  {
-    label: 'Vacation',
-    value: 'Vacation',
-  },
-  {
-    label: 'Taxes',
-    value: 'Taxes',
-  },
+
   {
     label: 'Other',
     value: 'Other',
@@ -249,28 +277,28 @@ const employments = [
   },
 ];
 
-const jobTitles = [
-  {
-    label: 'Assistant',
-    value: 'assistant',
-  },
-  {
-    label: 'Common Staff',
-    value: 'common staff',
-  },
-  {
-    label: 'Team Leader',
-    value: 'team leader',
-  },
-  {
-    label: 'Branch Manager',
-    value: 'branch manager',
-  },
-  {
-    label: 'Others',
-    value: 'others',
-  },
-];
+// const jobTitles = [
+//   {
+//     label: 'Assistant',
+//     value: 'assistant',
+//   },
+//   {
+//     label: 'Common Staff',
+//     value: 'common staff',
+//   },
+//   {
+//     label: 'Team Leader',
+//     value: 'team leader',
+//   },
+//   {
+//     label: 'Branch Manager',
+//     value: 'branch manager',
+//   },
+//   {
+//     label: 'Others',
+//     value: 'others',
+//   },
+// ];
 
 const kids = [
   {
@@ -323,7 +351,6 @@ function valuetext(value) {
 }
 
 const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }) => {
-
   const theme = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCircle);
 
@@ -338,7 +365,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
     const interestAmount = percentage(interest, newValue);
     setInterestAmount(interestAmount);
     const totalAmountDue = newValue + interestAmount;
-    setRepayAmount(totalAmountDue)
+    setRepayAmount(totalAmountDue);
     setLoanOffer((prevValues) => ({
       ...prevValues,
       totalAmountDue,
@@ -1231,16 +1258,35 @@ function LoanForm(props) {
             position="static"
             activeStep={activeStep}
             nextButton={
-              <LoadingButton
-                size="medium"
-                variant="contained"
-                type="submit"
-                disabled={loading}
-                endIcon={<Iconify icon="eva:chevron-right-outline" />}
-                loading={loading}
-              >
-                {activeStep === maxSteps - 1 ? 'Take Loan Offer' : 'Next'}
-              </LoadingButton>
+              <Box>
+                {activeStep === maxSteps - 1 && (
+                  <LoadingButton
+                    size="medium"
+                    variant="contained"
+                    sx={{ mr: 1 }}
+                    disabled={loading}
+                    endIcon={<Iconify icon="eva:close-fill" />}
+                    loading={loading}
+                    onClick={() => {
+                      setLoading(false);
+                      setDone(false);
+                      setOpenLoanForm(false);
+                    }}
+                  >
+                    {'Reject Offer'}
+                  </LoadingButton>
+                )}
+                <LoadingButton
+                  size="medium"
+                  variant="contained"
+                  type="submit"
+                  disabled={loading}
+                  endIcon={<Iconify icon="eva:chevron-right-outline" />}
+                  loading={loading}
+                >
+                  {activeStep === maxSteps - 1 ? 'Accept Offer' : 'Next'}
+                </LoadingButton>
+              </Box>
             }
             backButton={
               <Button
