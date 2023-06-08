@@ -8,7 +8,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { setThemeMode, toggleReceiveNotification } from '../../store/reducer/lifeCircle';
+import { setThemeMode, toggleReceiveNotification } from '../../store/reducer/lifeCycle';
 import Page from '../../components/Page';
 import Spacer from '../../components/spacer';
 
@@ -24,7 +24,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function Settings() {
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const { themeMode, notifyEmail } = useSelector((state) => state.lifeCircle);
+  const { themeMode, notifyEmail } = useSelector((state) => state.lifeCycle);
   const dispatch = useDispatch();
   // const navigate = useNavigate();
 

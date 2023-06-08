@@ -45,7 +45,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
   const { pathname } = useLocation();
   const dispatch = useDispatch();
   const themer = useTheme();
-  const { themeMode } = useSelector((state) => state.lifeCircle);
+  const { themeMode } = useSelector((state) => state.lifeCycle);
 
   const isDesktop = useResponsive('up', 'lg');
 

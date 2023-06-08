@@ -98,9 +98,10 @@ const LoanCard = (props) => {
     phone: profile?.phoneNumber?.replace('+234', '0'),
     // eslint-disable-next-line radix
     amount: parseInt(payableAmount) * 100,
-    publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+    publicKey: "pk_test_743c8bec42d91f3ce953317ff81b65fb1fe1a752", 
     channels: ['card'],
   };
+
 
   const initializePayment = usePaystackPayment(config);
 

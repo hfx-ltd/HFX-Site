@@ -17,7 +17,7 @@ ThemeProvider.propTypes = {
 };
 
 export default function ThemeProvider({ children }) {
-  const { themeMode } = useSelector((state) => state.lifeCircle);
+  const { themeMode } = useSelector((state) => state.lifeCycle);
 
   const shadowColor = themeMode === 'dark' ? '#000' : '#335';
 

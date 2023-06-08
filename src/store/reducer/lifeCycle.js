@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export const counterSlice = createSlice({
-  name: 'lifeCircle',
+  name: 'lifeCycle',
   initialState,
   reducers: {
     setLoading: (state, action) => {

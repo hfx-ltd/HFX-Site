@@ -10,12 +10,15 @@ import ScrollToTop from './components/ScrollToTop';
 import { useProfile } from './hooks';
 import { setAuth, setProfile, updateProfile, logOut } from './store/reducer/auth';
 import socket from './utils/socket';
-import { setLoading } from './store/reducer/lifeCircle';
+import { setLoading } from './store/reducer/lifeCycle';
+import useCompany from './hooks/useCompany';
+import { setCompanies } from './store/reducer/company';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.lifeCircle);
+  const { loading } = useSelector((state) => state.lifeCycle);
   const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile();
+  const { data: companyData } = useCompany();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,12 +64,17 @@ function App() {
         );
       });
     }
+
+    if (companyData) {
+      dispatch(setCompanies(companyData?.docs));
+    }
+
     if (loggedOut) {
       dispatch(setAuth(false));
       dispatch(setProfile(null));
     }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading, dispatch]);
+  }, [data, loggedOut, dataLoading, dispatch, companyData]);
 
   return (
     <ThemeProvider>

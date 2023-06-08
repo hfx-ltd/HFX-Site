@@ -30,6 +30,7 @@ import Box from '@mui/material/Box';
 import Check from '@mui/icons-material/Check';
 import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
+import Autocomplete from '@mui/material/Autocomplete';
 // Third party
 // Services
 import APIService from '../../service';
@@ -53,6 +54,11 @@ const phoneRegExp =
 const companyMailRegExp = /^(?!.*@(?:gmail|rocketmail|hotmail|outlook|yahoo)\.com).*$/;
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: 10,
+  marginTop: 10,
+}));
+
+const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
   marginBottom: 10,
   marginTop: 10,
 }));
@@ -277,6 +283,12 @@ const employments = [
   },
 ];
 
+// const companies = [
+//   { label: 'Zema Group', domain: 'mtcz.us' },
+//   { label: 'Proxify Inc', domain: 'proxify.com' },
+//   { label: 'Deluta Group', domain: 'dels.io' },
+// ];
+
 // const jobTitles = [
 //   {
 //     label: 'Assistant',
@@ -352,7 +364,7 @@ function valuetext(value) {
 
 const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }) => {
   const theme = useTheme();
-  const { themeMode } = useSelector((state) => state.lifeCircle);
+  const { themeMode } = useSelector((state) => state.lifeCycle);
 
   const [lAmount, setLAmount] = useState(loanOffer?.amount);
   const [interestAmount, setInterestAmount] = useState(loanOffer?.interestAmount);
@@ -481,24 +493,50 @@ const BankComponent = ({ touched, errors, getFieldProps, banks, values, setField
 
 // };
 
-function handleClick(toast, setLoading, companyEmail, email, setSent) {
+function handleClick(
+  toast,
+  setLoading,
+  companyEmail,
+  email,
+  setSent,
+  values,
+  setCompError,
+  setCompErrorText,
+  companies
+) {
   // Code to be executed when the element is clicked
-  // alert("JUST CLIECKED MEE")
-  setLoading(true);
-  const response = APIService.post('/auth/send-otp', { companyEmailAddress: companyEmail, emailAddress: email });
+  console.log('VALU', values.companyName);
+  const domain = companies.filter((elem) => elem?.label === values.companyName);
+  const companyDomain = companyEmail.toString().split('@')[1];
 
-  toast.promise(response, {
-    loading: 'Loading',
-    success: () => {
-      setLoading(false);
-      setSent(true);
-      return `Enter the OTP code we just sent to your company email address (${companyEmail}).`;
-    },
-    error: (err) => {
-      setLoading(false);
-      return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
-    },
-  });
+  console.log('DOMAIN', domain[0]?.domain);
+
+  // Check if company domain matches
+  if (companyDomain === domain[0]?.domain) {
+    console.log('EQUAL ');
+    setCompError(false);
+    setCompErrorText('');
+
+    setLoading(true);
+    const response = APIService.post('/auth/send-otp', { companyEmailAddress: companyEmail, emailAddress: email });
+
+    toast.promise(response, {
+      loading: 'Loading',
+      success: () => {
+        setLoading(false);
+        setSent(true);
+        return `Enter the OTP code we just sent to your company email address (${companyEmail}).`;
+      },
+      error: (err) => {
+        setLoading(false);
+        return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
+      },
+    });
+  } else {
+    console.log('Not eQUAL ');
+    setCompError(true);
+    setCompErrorText(`Wrong domain! Work email should include ${domain[0]?.domain}`);
+  }
 }
 
 function verifyOTP(toast, setLoading, email, code, setFieldValue, setVerified, setIsCompanyEmailVerified) {
@@ -516,6 +554,8 @@ function verifyOTP(toast, setLoading, email, code, setFieldValue, setVerified, s
     },
     error: (err) => {
       setLoading(false);
+      setIsCompanyEmailVerified(false);
+      setFieldValue('isCompanyEmailVerified', false);
       return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
     },
   });
@@ -542,6 +582,15 @@ const WorkComponent = ({
   const [otpCode, setOtpCode] = useState();
   const [enableVerify, setEnableVerify] = useState(false);
   const [verified, setVerified] = useState(false);
+  const [compError, setCompError] = useState(false);
+  const [compErrorText, setCompErrorText] = useState('');
+  const [isDatePicked, setDatePicked] = useState(false);
+
+  const { companies } = useSelector((state) => state.company);
+
+  useEffect(() => {
+    setFieldValue('payDay', values.payDay);
+  }, []);
 
   return (
     <Stack spacing={2}>
@@ -565,13 +614,43 @@ const WorkComponent = ({
       values?.employmentStatus !== 'unemployed' &&
       values?.employmentStatus !== 'others' ? (
         <div>
-          <StyledTextField
-            fullWidth
-            label="Company Name"
-            {...getFieldProps('companyName')}
-            error={Boolean(touched.companyName && errors.companyName)}
-            helperText={touched.companyName && errors.companyName}
-          />
+          {!verified && companies && (
+            <Autocomplete
+              fullWidth
+              disablePortal
+              id="combo-box-demo"
+              options={companies}
+              onInputChange={(val) => {
+                if (val?.target?.innerText !== '') {
+                  setFieldValue('companyName', val?.target?.innerText);
+                }
+                console.log('INPUT CHANGES ', val?.target?.innerText);
+              }}
+              sx={{ marginBottom: 1 }}
+              renderInput={(params) => (
+                <StyledTextField
+                  fullWidth
+                  label="Company Name"
+                  {...params}
+                  {...getFieldProps('companyName')}
+                  error={Boolean(touched.companyName && errors.companyName)}
+                  helperText={touched.companyName && errors.companyName}
+                />
+              )}
+            />
+          )}
+
+          {verified && (
+            <StyledTextField
+              fullWidth
+              disabled
+              label="Company Name"
+              {...getFieldProps('companyName')}
+              error={Boolean(touched.companyName && errors.companyName)}
+              helperText={touched.companyName && errors.companyName}
+            />
+          )}
+
           {/* <StyledTextField
             fullWidth
             autoComplete="phone"
@@ -587,8 +666,8 @@ const WorkComponent = ({
             type="email"
             label="Your Work Email"
             {...getFieldProps('companyEmailAddress')}
-            error={Boolean(touched.companyEmailAddress && errors.companyEmailAddress)}
-            helperText={touched.companyEmailAddress && errors.companyEmailAddress}
+            error={Boolean((touched.companyEmailAddress && errors.companyEmailAddress) || compError)}
+            helperText={(touched.companyEmailAddress && errors.companyEmailAddress) || compErrorText}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -606,7 +685,17 @@ const WorkComponent = ({
                           variant="contained"
                           disabled={loading || values.isCompanyEmailVerified || verified}
                           onClick={() =>
-                            handleClick(toast, setLoading, values.companyEmailAddress, profile.emailAddress, setSent)
+                            handleClick(
+                              toast,
+                              setLoading,
+                              values.companyEmailAddress,
+                              profile.emailAddress,
+                              setSent,
+                              values,
+                              setCompError,
+                              setCompErrorText,
+                              companies
+                            )
                           }
                         >
                           {sent ? 'Resend OTP' : 'Send OTP'}
@@ -697,6 +786,7 @@ const WorkComponent = ({
 
           <StyledTextField
             fullWidth
+            sx={{ mb: 2 }}
             label="How much is your monthly income?"
             placeholder="₦20,000"
             {...getFieldProps('monthlyIncome')}
@@ -706,8 +796,10 @@ const WorkComponent = ({
               inputComponent: NumberFormatCustom,
             }}
           />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <br />
+          <LocalizationProvider dateAdapter={AdapterDateFns}  >
             <MobileDatePicker
+            
               label="What's your Payday"
               inputFormat="MM/dd/yyyy"
               value={values.payDay}
@@ -715,9 +807,11 @@ const WorkComponent = ({
               minDate={date}
               maxDate={maxDate}
               onChange={(value) => {
+                console.log('CHECK VALUE', value);
                 setFieldValue('payDay', value);
+                setDatePicked(true);
               }}
-              renderInput={(params) => <TextField fullWidth disabled {...params} />}
+              renderInput={(params) => <TextField fullWidth disabled {...params} error={!isDatePicked} />}
               sx={{
                 '& .MuiPickersToolbar-penIconButton': { display: 'none' },
               }}
@@ -1017,15 +1111,21 @@ function LoanForm(props) {
     },
     validationSchema: formSchema,
     onSubmit: () => {
-      // console.log('ACTIVE STEP V >>> ', bankVerified);
+      // console.log('ACTIVE STEP V >>> ');
       // console.log('ACTIVE STEP h >>> ',  activeStep);
       // console.log('ACTIVE STEP h >>> ',  values?.isCompanyEmailVerified);
       if (isValid) {
         if (activeStep === 1) {
           console.log('ACTIVE KOPUS');
-          setActiveStep(activeStep + 1);
+          if (values.isCompanyEmailVerified) {
+            setActiveStep(activeStep + 1);
+          } else {
+            toast.error(' Work email not verified! ');
+            // alert('COMPANY EMAIL NOT VERIFIED ');
+          }
           // setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else if ((activeStep === 2 && !isBankVerified) || (activeStep === 1 && !isBankVerified)) {
+          // alert('BBB');
           resolveBank();
         } else {
           if (activeStep === 2) {
@@ -1034,6 +1134,7 @@ function LoanForm(props) {
           if (activeStep >= 3) {
             return submitLoanApplication();
           }
+          // alert('GDF');
           setActiveStep(activeStep + 1);
         }
         // else if (activeStep === 2 && values?.isCompanyEmailVerified) {
@@ -1160,7 +1261,10 @@ function LoanForm(props) {
 
     const payDay = new Date(values.payDay).getDate();
 
-    const loanRequest = APIService.post('/loan/request', { ...values, payDay });
+    const loanRequest = APIService.post('/loan/request', {
+      ...values,
+      payDay,
+    });
 
     toast.promise(loanRequest, {
       loading: 'Loading',
@@ -1176,7 +1280,12 @@ function LoanForm(props) {
   };
 
   const createLoan = () => {
-    const response = APIService.post('/loan/create', { ...loanOffer, amount: loanAmount });
+    const response = APIService.post('/loan/create', {
+      ...loanOffer,
+      amount: loanAmount,
+      salary: values.monthlyIncome,
+      company: values.companyName,
+    });
     toast.promise(response, {
       loading: 'Loading',
       success: (res) => {
