@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 // sections
+import { Grid } from '@mui/material';
 import { LoginForm } from '../../components/forms';
 
 // ----------------------------------------------------------------------
