@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 // ----------------------------------------------------------------------
 
 const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
-  <>
+  <Box  >
     <Helmet>
       <title>{`${title} | Fastquid`}</title>
       {meta}
@@ -16,7 +16,7 @@ const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => (
     <Box ref={ref} {...other}>
       {children}
     </Box>
-  </>
+  </Box>
 ));
 
 Page.propTypes = {

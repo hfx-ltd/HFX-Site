@@ -20,7 +20,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'column',
   padding: theme.spacing(5),
-  background: theme.palette.background.paper,
+  background: '#fff', 
   borderRadius: 16,
   [theme.breakpoints.down('sm')]: {
     padding: theme.spacing(2),
@@ -39,17 +39,17 @@ export default function Login(props) {
       <ContentStyle>
         <ColoredTypography variant="h3">Sign into your account!</ColoredTypography>
 
-        <Typography sx={{ color: 'text.secondary', mb: 5 }}>Securely login to your FastQuid.</Typography>
+        <Typography sx={{ color: 'black', mb: 5 }}>Securely login to your FastQuid.</Typography>
         <LoginForm mutate={props.profileMutate} />
       </ContentStyle>
 
       <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ my: 2 }}>
-        <Box sx={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+        <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
           Don't have an account?
           <Link
             component={RouterLink}
             variant="subtitle2"
-            color="white"
+            color="black"
             to="/signup"
             underline="hover"
             sx={{ marginLeft: 1 }}
@@ -57,7 +57,7 @@ export default function Login(props) {
             SignUp
           </Link>
         </Box>
-        <Link component={RouterLink} variant="subtitle2" color="white" to="/forgotten-password" underline="hover">
+        <Link component={RouterLink} variant="subtitle2" color="black" to="/forgotten-password" underline="hover">
           Forgot password?
         </Link>
       </Stack>

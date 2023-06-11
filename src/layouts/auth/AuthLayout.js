@@ -29,15 +29,17 @@ export default function AuthLayout({ loading }) {
   let styles;
 
   const defaultStyles = {
-    height: '100%',
-    backgroundColor: palette.primary.darker,
+    height: '102vh',
+    paddingTop: 0,
+    paddingBottom: 0,
+    backgroundColor: "white",
   };
 
   const signupStyles = {
     height: 'auto',
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: palette.primary.darker,
+    backgroundColor: "white",
   };
 
   const notFoundStyles = {
@@ -66,14 +68,15 @@ export default function AuthLayout({ loading }) {
             xs={12}
             sm={5}
             md={6}
-            sx={{ backgroundImage: `url(${process.env.PUBLIC_URL}/static/images/contact.jpeg )` }}
+            sx={{ backgroundImage: `url(${process.env.PUBLIC_URL}/static/images/bg.png )` }}
+            style={{backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'}}
           />
           <Grid item xs={12} sm={7} md={6} height={'100%'}>
             <RootStyle>
               <Container maxWidth="sm">
                 <Logo
                   title="FastQuid"
-                  titleColor={location?.pathname !== '/404' ? 'white' : 'black'}
+                  titleColor={location?.pathname !== '/404' ? 'white' : 'white'}
                   sx={{ justifyContent: 'center', marginBottom: 2 }}
                 />
                 <Outlet />
