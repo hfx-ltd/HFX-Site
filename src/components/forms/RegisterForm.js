@@ -184,24 +184,26 @@ function RegisterForm(props) {
               helperText={touched.lastName && errors.lastName}
             />
           </Stack>
-          <TextField
-            fullWidth
-            autoComplete="email-address"
-            type="email"
-            label="Email address"
-            {...getFieldProps('emailAddress')}
-            error={Boolean(touched.emailAddress && errors.emailAddress)}
-            helperText={touched.emailAddress && errors.emailAddress}
-          />
-          <TextField
-            fullWidth
-            autoComplete="phone"
-            type="text"
-            label="Phone Number"
-            {...getFieldProps('phoneNumber')}
-            error={Boolean(touched.phoneNumber && errors.phoneNumber)}
-            helperText={touched.phoneNumber && errors.phoneNumber}
-          />
+          <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" spacing={2}>
+            <TextField
+              fullWidth
+              autoComplete="email-address"
+              type="email"
+              label="Email address"
+              {...getFieldProps('emailAddress')}
+              error={Boolean(touched.emailAddress && errors.emailAddress)}
+              helperText={touched.emailAddress && errors.emailAddress}
+            />
+            <TextField
+              fullWidth
+              autoComplete="phone"
+              type="text"
+              label="Phone Number"
+              {...getFieldProps('phoneNumber')}
+              error={Boolean(touched.phoneNumber && errors.phoneNumber)}
+              helperText={touched.phoneNumber && errors.phoneNumber}
+            />
+          </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" spacing={2}>
             <FormControl fullWidth>
               <InputLabel htmlFor="gender" sx={{ bgcolor: 'background.paper' }}>
@@ -233,18 +235,19 @@ function RegisterForm(props) {
                 ))}
               </NativeSelect>
             </FormControl>
+          
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <MobileDatePicker
+                label="Date of Birth"
+                inputFormat="MM/dd/yyyy"
+                value={values.dob}
+                onChange={(value) => {
+                  setFieldValue('dob', value);
+                }}
+                renderInput={(params) => <TextField fullWidth {...params} />}
+              />
+            </LocalizationProvider>
           </Stack>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker
-              label="Date of Birth"
-              inputFormat="MM/dd/yyyy"
-              value={values.dob}
-              onChange={(value) => {
-                setFieldValue('dob', value);
-              }}
-              renderInput={(params) => <TextField fullWidth {...params} />}
-            />
-          </LocalizationProvider>
           <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" spacing={2}>
             <FormControl fullWidth>
               <InputLabel htmlFor="state" sx={{ bgcolor: 'background.paper' }}>

@@ -69,7 +69,7 @@ export default function AuthLayout({ loading }) {
             sm={5}
             md={6}
             sx={{ backgroundImage: `url(${process.env.PUBLIC_URL}/static/images/bg.png )` }}
-            style={{backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center'}}
+            style={{backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '102vh'}}
           />
           <Grid item xs={12} sm={7} md={6} height={'100%'}>
             <RootStyle>
@@ -77,7 +77,7 @@ export default function AuthLayout({ loading }) {
                 <Logo
                   title="FastQuid"
                   titleColor={location?.pathname !== '/404' ? 'white' : 'white'}
-                  sx={{ justifyContent: 'center', marginBottom: 2 }}
+                  sx={{ justifyContent: 'center', marginBottom: 0, marginTop: 3 }}
                 />
                 <Outlet />
               </Container>

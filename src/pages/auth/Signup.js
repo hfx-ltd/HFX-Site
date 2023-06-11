@@ -38,13 +38,13 @@ const Signup = (props) => (
       <RegisterForm mutate={props.profileMutate} />
     </ContentStyle>
 
-    <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ my: 2 }}>
-      <Box sx={{ color: 'rgba(255, 255, 255, 0.85)' }}>
+    <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 5 }}>
+      <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
         Already have an account?
         <Link
           component={RouterLink}
           variant="subtitle2"
-          color="white"
+          color="black"
           to="/login"
           underline="hover"
           sx={{ marginLeft: 1 }}
