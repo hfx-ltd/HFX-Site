@@ -4,7 +4,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 
 // components
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, useMediaQuery } from '@mui/material';
 import Logo from '../../components/Logo';
 import Page from '../../components/Page';
 import Preloader from '../../components/loading/Preloader';
@@ -25,6 +25,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function AuthLayout({ loading }) {
   const { palette } = useTheme();
   const location = useLocation();
+  const theme = useTheme();
+  const media = useMediaQuery(theme.breakpoints.down('sm'));
 
   let styles;
 
@@ -32,14 +34,14 @@ export default function AuthLayout({ loading }) {
     height: '102vh',
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   };
 
   const signupStyles = {
     height: 'auto',
     paddingTop: 0,
     paddingBottom: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   };
 
   const notFoundStyles = {
@@ -64,12 +66,18 @@ export default function AuthLayout({ loading }) {
       <Box width={'100%'} height={'100%'}>
         <Grid container spacing={2} width={'100%'} height={'100%'}>
           <Grid
+            hidden={media}
             item
             xs={12}
             sm={5}
             md={6}
             sx={{ backgroundImage: `url(${process.env.PUBLIC_URL}/static/images/bg.png )` }}
-            style={{backgroundSize: 'cover', backgroundRepeat: 'no-repeat', backgroundPosition: 'center', height: '102vh'}}
+            style={{
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              height: '102vh',
+            }}
           />
           <Grid item xs={12} sm={7} md={6} height={'100%'}>
             <RootStyle>
