@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DebitCard from '../cards/DebitCard';
 import EmptyCard from '../cards/EmptyCard';
 import CustomModal from '../modal/CustomModal';
@@ -26,8 +26,8 @@ function DebitCardForm(props) {
     lastname: profile?.lastName,
     phone: profile?.phoneNumber?.replace('+234', '0'),
     // eslint-disable-next-line radix
-    amount: parseInt(process.env.REACT_APP_LINK_DEBITCARD_CHARGE) * 100,
-    publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+    amount: 10 * 100,
+    publicKey:'pk_test_743c8bec42d91f3ce953317ff81b65fb1fe1a752',
     channels: ['card'],
   };
 
@@ -67,16 +67,20 @@ function DebitCardForm(props) {
     setLoading(false);
   };
 
+  useEffect(() => {
+
+  })
+
   return (
     <>
       {loading && <LoadingBackdrop open={loading} setOpen={setLoading} />}
       <CustomModal open={openModal} setOpen={setOpenModal} title="Link Your DebitCard" modalSize="xs">
         <Box>
           <Typography variant="subtitle1" color="text.secondary">
-            This will enable auto debit when you loan is due.
+            You must add a debit card to proceed with the loan.
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-            You will be charged {formatCurrency(process.env.REACT_APP_LINK_DEBITCARD_CHARGE)} to link your card.
+            You will be charged {formatCurrency(10)} to link your card.
           </Typography>
           <Button
             variant="outlined"

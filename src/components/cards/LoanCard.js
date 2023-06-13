@@ -98,10 +98,9 @@ const LoanCard = (props) => {
     phone: profile?.phoneNumber?.replace('+234', '0'),
     // eslint-disable-next-line radix
     amount: parseInt(payableAmount) * 100,
-    publicKey: "pk_test_743c8bec42d91f3ce953317ff81b65fb1fe1a752", 
+    publicKey: 'pk_test_743c8bec42d91f3ce953317ff81b65fb1fe1a752',
     channels: ['card'],
   };
-
 
   const initializePayment = usePaystackPayment(config);
 
@@ -120,6 +119,10 @@ const LoanCard = (props) => {
   useEffect(() => {
     if (done && !profile?.debitCard) {
       // open paystack modal
+      setOpenDebitCardModal(true);
+    }
+
+    if (profile?.loan && !profile.debitCard) {
       setOpenDebitCardModal(true);
     }
   }, [done]);
@@ -218,6 +221,15 @@ const LoanCard = (props) => {
               <Button onClick={handleRepay} variant="contained" size="large" fullWidth={!matches}>
                 Repay Loan
               </Button>
+            ) : profile?.loan?.status === 'denied' ? (
+              <Box display={'flex'} flexDirection="row" justifyContent={'space-between'} alignItems={'center'}>
+                <Alert severity={statusVariant(profile?.loan?.status)}>
+                  {profile?.loan?.status === 'pending' ? 'In Review' : profile?.loan?.status}
+                </Alert>
+                <Button sx={{ ml: 2 }} onClick={handleApply} variant="contained" size="large" fullWidth={!matches}>
+                  Reapply
+                </Button>
+              </Box>
             ) : (
               <Alert severity={statusVariant(profile?.loan?.status)}>
                 {profile?.loan?.status === 'pending' ? 'In Review' : profile?.loan?.status}

@@ -1,5 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
+import CompleteSignup from '../pages/auth/completeSignup';
 import DashboardLayout from '../layouts/dashboard';
 import AuthLayout from '../layouts/auth/AuthLayout';
 // //
@@ -44,6 +45,7 @@ export default function Router({ isAuth, loading, profile, profileMutate }) {
         { path: 'reset-password', element: <ResetPassword /> },
         { path: 'verify-otp', element: <VerifyOtp /> },
         { path: '404', element: <NotFound /> },
+        { path: 'complete_signup', element: <CompleteSignup /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],
     },

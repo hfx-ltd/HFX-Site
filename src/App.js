@@ -13,11 +13,14 @@ import socket from './utils/socket';
 import { setLoading } from './store/reducer/lifeCycle';
 import useCompany from './hooks/useCompany';
 import { setCompanies } from './store/reducer/company';
+import useSettings from './hooks/useSettings';
+import { setSettings } from './store/reducer/settings';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.lifeCycle);
   const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile();
+  const { data: settingsData } = useSettings();
   const { data: companyData } = useCompany();
   const dispatch = useDispatch();
 
@@ -69,12 +72,16 @@ function App() {
       dispatch(setCompanies(companyData?.docs));
     }
 
+    if (settingsData) {
+      dispatch(setSettings(settingsData?.docs[0]));
+    }
+
     if (loggedOut) {
       dispatch(setAuth(false));
       dispatch(setProfile(null));
     }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading, dispatch, companyData]);
+  }, [data, loggedOut, dataLoading, dispatch, companyData, settingsData]);
 
   return (
     <ThemeProvider>

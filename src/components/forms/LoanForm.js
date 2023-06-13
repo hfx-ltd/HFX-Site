@@ -1,8 +1,9 @@
+/* eslint-disable no-nested-ternary */
 import PropType from 'prop-types';
 import * as Yup from 'yup';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { sentenceCase } from 'change-case';
@@ -121,6 +122,24 @@ const loanType = [
   {
     label: 'Pay Day Loan',
     value: 'pay day loan',
+  },
+  {
+    label: 'Personal Loan',
+    value: 'personal loan',
+  },
+];
+
+const loanTypePayDay = [
+  {
+    label: 'Pay Day Loan',
+    value: 'pay day loan',
+  },
+];
+
+const loanTypePersonal = [
+  {
+    label: 'Personal Loan',
+    value: 'personal loan',
   },
 ];
 
@@ -489,10 +508,6 @@ const BankComponent = ({ touched, errors, getFieldProps, banks, values, setField
   </Stack>
 );
 
-// const sendOtp = async (toast, field, value, setLoading) => {
-
-// };
-
 function handleClick(
   toast,
   setLoading,
@@ -797,9 +812,8 @@ const WorkComponent = ({
             }}
           />
           <br />
-          <LocalizationProvider dateAdapter={AdapterDateFns}  >
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
-            
               label="What's your Payday"
               inputFormat="MM/dd/yyyy"
               value={values.payDay}
@@ -884,7 +898,7 @@ const WorkComponent = ({
 //   </Stack>
 // );
 
-const LoanComponent = ({ touched, errors, getFieldProps }) => (
+const LoanComponent = ({ touched, errors, getFieldProps, settings }) => (
   <Box>
     <StyledTextField
       fullWidth
@@ -908,11 +922,29 @@ const LoanComponent = ({ touched, errors, getFieldProps }) => (
       error={Boolean(touched.type && errors.type)}
       helperText={touched.type && errors.type}
     >
-      {loanType.map((option, index) => (
-        <option key={index} value={option.value}>
-          {option.label}
-        </option>
-      ))}
+      {settings?.personalLoanState === 'active' && settings?.payDayLoanState === 'active'
+        ? loanType.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))
+        : settings?.personalLoanState === 'disabled' && settings?.payDayLoanState === 'active'
+        ? loanTypePayDay.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))
+        : settings?.personalLoanState === 'active' && settings?.payDayLoanState === 'disabled'
+        ? loanTypePersonal.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))
+        : []?.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))}
     </StyledTextField>
     <StyledTextField
       fullWidth
@@ -969,11 +1001,12 @@ const stepComponents = (
   loading,
   setLoading,
   toast,
-  profile
+  profile,
+  settings
 ) => {
   switch (activeStep) {
     case 0:
-      return <LoanComponent {...{ touched, errors, getFieldProps }} />;
+      return <LoanComponent {...{ touched, errors, getFieldProps, settings }} />;
     case 1:
       return (
         <WorkComponent
@@ -1068,6 +1101,8 @@ function LoanForm(props) {
   const date = new Date();
   date.setMonth(date.getMonth());
 
+  const { settings } = useSelector((state) => state.setting);
+
   let formSchema;
 
   if (activeStep === 0) {
@@ -1111,21 +1146,14 @@ function LoanForm(props) {
     },
     validationSchema: formSchema,
     onSubmit: () => {
-      // console.log('ACTIVE STEP V >>> ');
-      // console.log('ACTIVE STEP h >>> ',  activeStep);
-      // console.log('ACTIVE STEP h >>> ',  values?.isCompanyEmailVerified);
       if (isValid) {
         if (activeStep === 1) {
-          console.log('ACTIVE KOPUS');
           if (values.isCompanyEmailVerified) {
             setActiveStep(activeStep + 1);
           } else {
             toast.error(' Work email not verified! ');
-            // alert('COMPANY EMAIL NOT VERIFIED ');
           }
-          // setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else if ((activeStep === 2 && !isBankVerified) || (activeStep === 1 && !isBankVerified)) {
-          // alert('BBB');
           resolveBank();
         } else {
           if (activeStep === 2) {
@@ -1134,33 +1162,8 @@ function LoanForm(props) {
           if (activeStep >= 3) {
             return submitLoanApplication();
           }
-          // alert('GDF');
           setActiveStep(activeStep + 1);
         }
-        // else if (activeStep === 2 && values?.isCompanyEmailVerified) {
-        //   console.log('ACTIVE KOPUSA >>');
-        //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        // } else if (activeStep === 3 && !bankVerified) {
-        //   resolveBank();
-        // } else {
-        //   if (activeStep === 3) {
-        //     console.log('Imagbolunshus', 'okpekete');
-        //     return handleLoanOffer();
-        //   }
-        //   if (activeStep >= 3) {
-        //     return submitLoanApplication();
-        //   }
-        //   // if (activeStep === 0) {
-        //   //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        //   // }
-        //   if (activeStep === 0 && values?.isCompanyEmailVerified) {
-        //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        //   }
-
-        //
-        // setActiveStep((prevActiveStep) => prevActiveStep += 1);
-        // }
-        // console.log("ACTIVE STEP j >>> ", activeStep);
       } else {
         console.log('ACTIVHDF >>> ', activeStep);
       }
@@ -1263,6 +1266,7 @@ function LoanForm(props) {
 
     const loanRequest = APIService.post('/loan/request', {
       ...values,
+      amount: loanAmount,
       payDay,
     });
 
@@ -1296,8 +1300,14 @@ function LoanForm(props) {
           })
         );
         setLoading(false);
+
+        // if (profile?.debitCard) {
         setDone(true);
+        // } else {
+        //   setDone(true);
+        // }
         setOpenLoanForm(false);
+        setDone(true);
         mutate('/auth/profile');
         return `Your application is in Review!`;
       },
@@ -1358,7 +1368,8 @@ function LoanForm(props) {
             loading,
             setLoading,
             toast,
-            profile
+            profile,
+            settings
           )}
 
           <MobileStepper

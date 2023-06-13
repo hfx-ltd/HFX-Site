@@ -3,7 +3,7 @@ import axios from 'axios';
 // console.info('BASE_URL: ->', process.env.REACT_APP_BASE_URL);
 
 const axiosInstance = axios.create({
-  baseURL: 'https://fastquid-api-production.up.railway.app/api' /*  "http://192.168.0.103:8080/api" */,
+  baseURL:  "fastquid-api-production-b840.up.railway.app/api" , /* 'https://fastquid-api-production.up.railway.app/api' "http://192.168.38.183:8080/api" */
   headers: {
     'Content-Type': 'application/json',
   },
