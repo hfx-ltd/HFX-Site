@@ -33,7 +33,7 @@ export default function Router({ isAuth, loading, profile, profileMutate }) {
         { path: 'support', element: <Support profile={profile} /> },
         { path: 'settings', element: <Settings profile={profile} /> },
       ],
-    },
+    }, 
     {
       path: '/',
       element: !isAuth && !profile ? <AuthLayout loading={loading} /> : <Navigate to="/dashboard" />,
