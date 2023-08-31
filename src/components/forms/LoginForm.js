@@ -71,6 +71,7 @@ export default function LoginForm(props) {
           return 'Login successful!';
         },
         error: (err) => {
+          console.log("WERR :: ", err);
           setLoading(false);
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },

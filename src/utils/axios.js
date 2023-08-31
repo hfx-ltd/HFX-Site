@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // console.info('BASE_URL: ->', process.env.REACT_APP_BASE_URL);
+/* "https://fastquid-api-production-b840.up.railway.app/api" , "http://192.168.38.183:8080/api"  'https://fastquid-api-production.up.railway.app/api' */
 
 const axiosInstance = axios.create({
-  baseURL:
-    'https://fastquid-api-production.up.railway.app/api' /* "https://fastquid-api-production-b840.up.railway.app/api" , "http://192.168.38.183:8080/api" */,
+  baseURL: 'https://fast-quid-api-service.vercel.app/api',
   headers: {
     'Content-Type': 'application/json',
   },
