@@ -57,7 +57,7 @@ export default function LoginForm(props) {
           localStorage.setItem('accessToken', res?.data?.accessToken);
           localStorage.setItem('refreshToken', res?.data?.refreshToken);
           mutate();
-          console.log('PROFILE DATA >> ', data);
+          // console.log('PROFILE DATA >> ', data);
           setTimeout(() => {
             mutate();
             // console.log('PROFILE DATA >> ', data);
@@ -71,7 +71,7 @@ export default function LoginForm(props) {
           return 'Login successful!';
         },
         error: (err) => {
-          console.log("WERR :: ", err);
+          // console.log("WERR :: ", err);
           setLoading(false);
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },
