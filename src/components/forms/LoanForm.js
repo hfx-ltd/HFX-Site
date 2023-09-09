@@ -203,29 +203,36 @@ const duration = [
 
 const reason = [
   {
-    label: 'Cash Advance',
-    value: 'Cash advance',
+    label: 'Education',
+    value: 'education',
   },
   {
-    label: 'Major purchase',
-    value: 'Major purchase',
+    label: 'Medical',
+    value: 'medical',
   },
   {
-    label: 'Medical expenses',
-    value: 'Medical expenses',
+    label: 'Rent',
+    value: 'rent',
   },
   {
-    label: 'Car financing',
-    value: 'Car financing',
+    label: 'Travel',
+    value: 'travel',
   },
   {
-    label: 'Live until next paycheck',
-    value: 'Live until next paycheck',
+    label: 'Business',
+    value: 'business',
   },
-
   {
-    label: 'Other',
-    value: 'Other',
+    label: 'Events',
+    value: 'events',
+  },
+  {
+    label: 'House keep',
+    value: 'house keep',
+  },
+  {
+    label: 'Others',
+    value: 'others',
   },
 ];
 
@@ -408,7 +415,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
     <Stack spacing={3}>
       <LoadingBackdrop open={loading} setOpen={setLoading} />
       <Box>
-        <Typography variant="subtitle2">Loan Offer Amount</Typography>
+        <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
         <Typography variant="h2" color="primary">
           {formatCurrency(lAmount)}
         </Typography>
@@ -520,15 +527,15 @@ function handleClick(
   companies
 ) {
   // Code to be executed when the element is clicked
-  console.log('VALU', values.companyName);
+  // console.log('VALU', values.companyName);
   const domain = companies.filter((elem) => elem?.label === values.companyName);
   const companyDomain = companyEmail.toString().split('@')[1];
 
-  console.log('DOMAIN', domain[0]?.domain);
+  // console.log('DOMAIN', domain[0]?.domain);
 
   // Check if company domain matches
   if (companyDomain === domain[0]?.domain) {
-    console.log('EQUAL ');
+    // console.log('EQUAL ');
     setCompError(false);
     setCompErrorText('');
 
@@ -639,7 +646,7 @@ const WorkComponent = ({
                 if (val?.target?.innerText !== '') {
                   setFieldValue('companyName', val?.target?.innerText);
                 }
-                console.log('INPUT CHANGES ', val?.target?.innerText);
+                // console.log('INPUT CHANGES ', val?.target?.innerText);
               }}
               sx={{ marginBottom: 1 }}
               renderInput={(params) => (
