@@ -239,10 +239,14 @@ const LoanCard = (props) => {
           {profile?.loan && profile?.loan?.status !== 'settled' ? (
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Item
-                keyName="Interest"
-                value={`${formatCurrency(profile?.loan?.interestAmount)}(${profile?.loan?.interest}%)`}
+                keyName="Borrowed"
+                value={`${formatCurrency(profile?.loan?.amountBorrowed)} `}
               />
-              <Item keyName="Total Amount Due" value={formatCurrency(profile?.loan?.totalAmountDue)} alignLeft />
+               <Item
+                keyName="Due On"
+                value={`${new Date(profile?.loan?.dueDate).toDateString() ?? ""} `}
+              />
+              <Item keyName="Amount Due" value={formatCurrency(profile?.loan?.totalAmountDue)} alignLeft />
             </Stack>
           ) : null}
         </CardContent>
