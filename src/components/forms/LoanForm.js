@@ -388,7 +388,7 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }) => {
+const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }) => {
   const theme = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCycle);
 
@@ -409,7 +409,11 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       totalAmountDue,
       interestAmount,
     }));
-  };
+  }; 
+
+  // console.log("LOAN DATA :: :: ", loanOffer);
+  // console.log("LOAN AMOUNT :: :: ", loanAmount);
+  // console.log("LOAN AMOUNT :: :: ", getFieldProps('amount').value);
 
   return (
     <Stack spacing={3}>
@@ -450,7 +454,8 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       </Box>
       <Paper elevation={3} sx={{ padding: 2 }}>
         <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
-        <ItemList keyName="Loan Amount" value={formatCurrency(lAmount || 0)} />
+        <ItemList keyName="Loan Amount" value={formatCurrency(getFieldProps('amount').value || 0)} />
+        <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
         <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
         <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
         <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
@@ -596,10 +601,10 @@ const WorkComponent = ({
   setIsCompanyEmailVerified,
 }) => {
   const date = new Date();
-  const month = 0;
-  const d = new Date(date.getFullYear(), month + 1, 0);
-  const maxDate = new Date().setDate(d.getDate());
-
+  // const month = 0;
+           
+  // const d = new Date(date.getFullYear(), month + 1, 0);
+  const maxDate =  new Date().setDate(date.getDate() + 30); 
   const [sent, setSent] = useState(false);
   const [otpCode, setOtpCode] = useState();
   const [enableVerify, setEnableVerify] = useState(false);
@@ -1039,7 +1044,7 @@ const stepComponents = (
       );
     case 3:
       return (
-        <ReviewComponent {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading }} />
+        <ReviewComponent {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }} />
       );
     default:
       return <div />;

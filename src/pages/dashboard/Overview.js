@@ -41,7 +41,7 @@ function Overview(props) {
   return (
     <Page title="Overview">
       <Container maxWidth="xl"> 
-        <ColoredTypography variant="h3" sx={{ mb: 5 }}>
+        <ColoredTypography variant="h3" sx={{ mb: 3 }}>
           Hello {sentenceCase(profile?.firstName)},
         </ColoredTypography>
         <Grid container spacing={2}>

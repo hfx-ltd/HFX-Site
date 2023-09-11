@@ -112,7 +112,7 @@ function TransactionList(props) {
       flex: 1,
       renderCell: (params) => (
         <StyledTypography variant="body1">
-          {formatDistance((new Date(params?.value)), Date.now(), { addSuffix: true}).replace("Minute", "Min")}
+         {new Date(params.value).toDateString()}
         </StyledTypography>
       ),
     },
