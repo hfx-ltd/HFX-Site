@@ -384,17 +384,31 @@ const ItemList = ({ keyName, value }) => (
   </Stack>
 );
 
+const daysOfMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22, 23, 24, 25,26, 27, 28, 29, 30, 31];
+
 function valuetext(value) {
   return `${value}°C`;
 }
 
-const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }) => {
+const ReviewComponent = ({
+  values,
+  loanAmount,
+  setLoanAmount,
+  setLoanOffer,
+  loanOffer,
+  loading,
+  setLoading,
+  getFieldProps,
+}) => {
   const theme = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCycle);
 
-  const [lAmount, setLAmount] = useState(loanOffer?.amount);
-  const [interestAmount, setInterestAmount] = useState(loanOffer?.interestAmount);
-  const [repayAmount, setRepayAmount] = useState(loanOffer?.amount + percentage(loanOffer?.interest, loanAmount));
+  const [lAmount, setLAmount] = useState(getFieldProps('amount').value);
+  const reqAmount = getFieldProps('amount').value;
+  const [interestAmount, setInterestAmount] = useState(percentage(loanOffer?.interest, getFieldProps('amount').value));
+  const [repayAmount, setRepayAmount] = useState(
+    parseInt(`${reqAmount}`, 10) + percentage(loanOffer?.interest, getFieldProps('amount').value)
+  );
 
   const handleChange = (_, newValue) => {
     setLoanAmount(newValue);
@@ -409,7 +423,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       totalAmountDue,
       interestAmount,
     }));
-  }; 
+  };
 
   // console.log("LOAN DATA :: :: ", loanOffer);
   // console.log("LOAN AMOUNT :: :: ", loanAmount);
@@ -421,7 +435,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       <Box>
         <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
         <Typography variant="h2" color="primary">
-          {formatCurrency(lAmount)}
+          {formatCurrency(loanOffer?.amount)}
         </Typography>
         <Slider
           aria-label="Amount"
@@ -454,7 +468,7 @@ const ReviewComponent = ({ values, loanAmount, setLoanAmount, setLoanOffer, loan
       </Box>
       <Paper elevation={3} sx={{ padding: 2 }}>
         <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
-        <ItemList keyName="Loan Amount" value={formatCurrency(getFieldProps('amount').value || 0)} />
+        <ItemList keyName="Loan Amount" value={formatCurrency(reqAmount || 0)} />
         <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
         <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
         <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
@@ -470,6 +484,7 @@ const BankComponent = ({ touched, errors, getFieldProps, banks, values, setField
     <Typography variant="subtitle2">Add Bank Information</Typography>
     <StyledTextField
       fullWidth
+      type="number"
       label="Bank Verification Number (BVN)"
       {...getFieldProps('bvn')}
       error={Boolean(touched.bvn && errors.bvn)}
@@ -500,6 +515,7 @@ const BankComponent = ({ touched, errors, getFieldProps, banks, values, setField
         setFieldValue('accountName', '');
         setBankVerified(false);
       }}
+      type="number"
       error={Boolean(touched.accountNumber && errors.accountNumber)}
       helperText={touched.accountNumber && errors.accountNumber}
     />
@@ -601,10 +617,8 @@ const WorkComponent = ({
   setIsCompanyEmailVerified,
 }) => {
   const date = new Date();
-  // const month = 0;
-           
-  // const d = new Date(date.getFullYear(), month + 1, 0);
-  const maxDate =  new Date().setDate(date.getDate() + 30); 
+
+  const maxDate = new Date().setDate(date.getDate() + 30);
   const [sent, setSent] = useState(false);
   const [otpCode, setOtpCode] = useState();
   const [enableVerify, setEnableVerify] = useState(false);
@@ -615,9 +629,13 @@ const WorkComponent = ({
 
   const { companies } = useSelector((state) => state.company);
 
+  
+
   useEffect(() => {
     setFieldValue('payDay', values.payDay);
   }, []);
+
+  const dateSuffixer = (num) => num === 1 || num === 21 || num === 31 ? "st" : num === 2 || num === 22 ? "nd" : num === 3  || num === 23 ? "rd" : 'th'
 
   return (
     <Stack spacing={2}>
@@ -678,15 +696,6 @@ const WorkComponent = ({
             />
           )}
 
-          {/* <StyledTextField
-            fullWidth
-            autoComplete="phone"
-            type="text"
-            label="Company Phone Number"
-            {...getFieldProps('companyPhoneNumber')}
-            error={Boolean(touched.companyPhoneNumber && errors.companyPhoneNumber)}
-            helperText={touched.companyPhoneNumber && errors.companyPhoneNumber}
-          /> */}
           <StyledTextField
             fullWidth
             autoComplete="email-address"
@@ -824,7 +833,24 @@ const WorkComponent = ({
             }}
           />
           <br />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+
+          <FormControl fullWidth>
+            <InputLabel htmlFor="payDay" sx={{ bgcolor: 'background.paper' }}>
+              <em>Pay day</em>
+            </InputLabel>
+            <NativeSelect
+              input={<OutlinedInput variant="outlined" {...getFieldProps('payDay')} id="payDay" />}
+              id="payDay"
+            >
+              {daysOfMonth.map((item) => (
+                <option key={item} value={item.toString()}>
+                  {`${item}${dateSuffixer(item)} day of the month`}
+                </option>
+              ))}
+            </NativeSelect>
+          </FormControl>
+
+          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
             <MobileDatePicker
               label="What's your Payday"
               inputFormat="MM/dd/yyyy"
@@ -842,7 +868,8 @@ const WorkComponent = ({
                 '& .MuiPickersToolbar-penIconButton': { display: 'none' },
               }}
             />
-          </LocalizationProvider>
+          </LocalizationProvider> */}
+         
           {/* <StyledTextField
           fullWidth
           label="What's your payday"
@@ -1044,7 +1071,9 @@ const stepComponents = (
       );
     case 3:
       return (
-        <ReviewComponent {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }} />
+        <ReviewComponent
+          {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }}
+        />
       );
     default:
       return <div />;
@@ -1075,7 +1104,7 @@ const workSchema = Yup.object().shape({
     .required('Company email address is required'),
   jobTitle: Yup.string().required('Job title is required'),
   monthlyIncome: Yup.string().required('Monthly income is required'),
-  payDay: Yup.date().required('Pay day is required'),
+  payDay: Yup.number().required('Pay day is required'),
 });
 
 const bankSchema = Yup.object().shape({
@@ -1153,7 +1182,7 @@ function LoanForm(props) {
       isCompanyEmailVerified: isCompanyEmailVerified || false,
       jobTitle: profile?.work?.jobTitle || 'assistant',
       monthlyIncome: profile?.work?.monthlyIncome || '',
-      payDay: date.setDate(profile?.work?.payDay || date.setDate(date.getDate)),
+      payDay: new Date().getDate(), // date.setDate(profile?.work?.payDay || date.setDate(date.getDate)),
       isBankVerified: isBankVerified ?? false,
     },
     validationSchema: formSchema,

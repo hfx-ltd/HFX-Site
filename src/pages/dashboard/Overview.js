@@ -31,7 +31,7 @@ function Overview(props) {
 
   useEffect(() => {
     if (data) {
-      console.log("DATARINA >>>", data);
+      // console.log("DATARINA >>>", data);
       setTransactions(data);
     }
   }, [data]);
