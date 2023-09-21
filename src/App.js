@@ -26,48 +26,24 @@ function App() {
 
  
   const handl = () => {
-    console.log('STATE :: :: ', document.visibilityState);
-
-    const update = setInterval(() => {
-      const countDown = new Date(); // Add 5 minutes to current time
-      const cDown = countDown.setMinutes(countDown.getMinutes() + 5);
-      const now = new Date().getTime();
-      const diff = cDown - now; // Diff b/w countdown and now
-  
-      console.log(new Date(cDown).toDateString());
-  
-      // let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      // let seconds = Math.floor((diff % (1000 * 60 )) / (1000 ));
-  
-      if (diff < 1) {
-        // Log out the user here
-        clearInterval(update);
-        // if (update.hasRef) {
-          if (document.visibilityState === 'hidden') {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            dispatch(setAuth(false));
-            dispatch(setProfile(null));
-          }
-        // }
-      }
-    }, 1000);
-  
-
-    if (document.visibilityState === 'hidden' && isAuth) {
-      // Start counting
-      try {
-        update.refresh();
-        // update();
-        // console.log('Time  now', cDown.toLocaleString());
-      } catch (error) {
-        console.log('JOJO', error);
-      }
-    } else {
-      console.log('fxggj k');
-      clearInterval(update);
+    if (isAuth && profile) {
+     setInterval(() => {
+       if (document.visibilityState === 'hidden' && isAuth) {
+         setTimeout(() => {
+           // Log out here
+           localStorage.removeItem('accessToken');
+           localStorage.removeItem('refreshToken');
+           dispatch(setAuth(false));
+           dispatch(setProfile(null));
+         }, 3000);
+       }
+       else {
+         // Stop timeout
+       }
+     }, 1000 * 60 * 5);
     }
-  }
+   
+   }
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -83,7 +59,7 @@ function App() {
     return () => {
       document.removeEventListener('visibilitychange', handl)
     }
-  }, [dispatch, isAuth,]);
+  }, [isAuth]);
 
   // useEffect(() => {
   //   effect

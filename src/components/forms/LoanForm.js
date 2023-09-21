@@ -843,41 +843,14 @@ const WorkComponent = ({
               id="payDay"
             >
               {daysOfMonth.map((item) => (
-                <option key={item} value={item.toString()}>
-                  {`${item}${dateSuffixer(item)} day of the month`}
+                <option key={item} value={item}>
+                  {`${item}${dateSuffixer(item)}`}
                 </option>
               ))}
             </NativeSelect>
           </FormControl>
 
-          {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker
-              label="What's your Payday"
-              inputFormat="MM/dd/yyyy"
-              value={values.payDay}
-              disableToolbar
-              minDate={date}
-              maxDate={maxDate}
-              onChange={(value) => {
-                console.log('CHECK VALUE', value);
-                setFieldValue('payDay', value);
-                setDatePicked(true);
-              }}
-              renderInput={(params) => <TextField fullWidth disabled {...params} error={!isDatePicked} />}
-              sx={{
-                '& .MuiPickersToolbar-penIconButton': { display: 'none' },
-              }}
-            />
-          </LocalizationProvider> */}
-         
-          {/* <StyledTextField
-          fullWidth
-          label="What's your payday"
-          placeholder="eg: 28"
-          {...getFieldProps('payDay')}
-          error={Boolean(touched.payDay && errors.payDay)}
-          helperText={touched.payDay && errors.payDay}
-        /> */}
+
         </div>
       ) : null}
       <Spacer size={3} />
@@ -1271,6 +1244,7 @@ function LoanForm(props) {
     if (values.type === 'personal loan') {
       payload = {
         type: values.type,
+        salaryDate: values.payDay,
         duration: values.duration,
       };
     } else {
@@ -1278,6 +1252,7 @@ function LoanForm(props) {
         type: values.type,
         duration: values.duration,
         monthlyIncome: values.monthlyIncome,
+        salaryDate: values.payDay
       };
     }
 
