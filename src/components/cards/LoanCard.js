@@ -102,7 +102,7 @@ const LoanCard = (props) => {
     channels: ['card'],
   };
 
-  const initializePayment = usePaystackPayment(config);
+  const initializePayment = usePaystackPayment(config); 
 
   useEffect(() => {
     if (profile?.loan) {

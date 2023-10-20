@@ -390,95 +390,6 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const ReviewComponent = ({
-  values,
-  loanAmount,
-  setLoanAmount,
-  setLoanOffer,
-  loanOffer,
-  loading,
-  setLoading,
-  getFieldProps,
-}) => {
-  const theme = useTheme();
-  const { themeMode } = useSelector((state) => state.lifeCycle);
-
-  const [lAmount, setLAmount] = useState(getFieldProps('amount').value);
-  const reqAmount = getFieldProps('amount').value;
-  const [interestAmount, setInterestAmount] = useState(percentage(loanOffer?.interest, getFieldProps('amount').value));
-  const [repayAmount, setRepayAmount] = useState(
-    parseInt(`${reqAmount}`, 10) + percentage(loanOffer?.interest, getFieldProps('amount').value)
-  );
-
-  const handleChange = (_, newValue) => {
-    setLoanAmount(newValue);
-    setLAmount(newValue);
-    const interest = loanOffer?.interest;
-    const interestAmount = percentage(interest, newValue);
-    setInterestAmount(interestAmount);
-    const totalAmountDue = newValue + interestAmount;
-    setRepayAmount(totalAmountDue);
-    setLoanOffer((prevValues) => ({
-      ...prevValues,
-      totalAmountDue,
-      interestAmount,
-    }));
-  };
-
-  // console.log("LOAN DATA :: :: ", loanOffer);
-  // console.log("LOAN AMOUNT :: :: ", loanAmount);
-  // console.log("LOAN AMOUNT :: :: ", getFieldProps('amount').value);
-
-  return (
-    <Stack spacing={3}>
-      <LoadingBackdrop open={loading} setOpen={setLoading} />
-      <Box>
-        <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
-        <Typography variant="h2" color="primary">
-          {formatCurrency(loanOffer?.amount)}
-        </Typography>
-        <Slider
-          aria-label="Amount"
-          defaultValue={loanOffer?.amount}
-          getAriaValueText={valuetext}
-          onChange={handleChange}
-          valueLabelDisplay="auto"
-          step={5000}
-          marks
-          min={5000}
-          max={loanOffer?.amount}
-          sx={{ height: 5 }}
-        />
-        <Paper
-          elevation={0}
-          sx={{
-            bgcolor: themeMode === 'dark' ? alpha(theme.palette.background.default, 1.0) : 'primary.lighter',
-            padding: 1,
-            marginBottom: 2,
-          }}
-        >
-          <Typography variant="subtitle2">Loan Duration</Typography>
-          <Typography color="primary.dark" variant="h5">
-            {loanOffer?.duration}
-          </Typography>
-        </Paper>
-        <Typography variant="body1" color="text.secondary">
-          Repayment on time can increase the amount and loan period.
-        </Typography>
-      </Box>
-      <Paper elevation={3} sx={{ padding: 2 }}>
-        <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
-        <ItemList keyName="Loan Amount" value={formatCurrency(reqAmount || 0)} />
-        <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
-        <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
-        <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
-        <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
-      </Paper>
-      <Spacer size={3} />
-    </Stack>
-  );
-};
-
 const BankComponent = ({ touched, errors, getFieldProps, banks, values, setFieldValue, setBankVerified }) => (
   <Stack spacing={2}>
     <Typography variant="subtitle2">Add Bank Information</Typography>
@@ -995,6 +906,109 @@ const LoanComponent = ({ touched, errors, getFieldProps, settings }) => (
   </Box>
 );
 
+const ReviewComponent = ({
+  values,
+  loanAmount,
+  setLoanAmount,
+  setLoanOffer,
+  loanOffer,
+  loading,
+  setLoading,
+  getFieldProps,
+}) => {
+  const theme = useTheme();
+  const { themeMode } = useSelector((state) => state.lifeCycle);
+
+  const [lAmount, setLAmount] = useState(getFieldProps('amount').value);
+  const reqAmount = getFieldProps('amount').value;
+  const [interestAmount, setInterestAmount] = useState(percentage(loanOffer?.interest, getFieldProps('amount').value));
+  const [repayAmount, setRepayAmount] = useState(
+    parseInt(`${reqAmount}`, 10) + percentage(loanOffer?.interest, getFieldProps('amount').value)
+  );
+
+  const handleChange = (_, newValue) => {
+    setLoanAmount(newValue);
+    setLAmount(newValue);
+    const interest = loanOffer?.interest;
+    const interestAmount = percentage(interest, newValue);
+    setInterestAmount(interestAmount);
+    const totalAmountDue = newValue + interestAmount;
+    setRepayAmount(totalAmountDue);
+    setLoanOffer((prevValues) => ({
+      ...prevValues,
+      totalAmountDue,
+      interestAmount,
+    }));
+  };
+  
+  
+
+  useEffect(() => {
+    setLoanAmount(lAmount);
+    const interest = loanOffer?.interest;
+    const interestAmount = percentage(interest, lAmount);
+    setInterestAmount(interestAmount);
+    const totalAmountDue = parseInt(lAmount, 10) + interestAmount;
+    setRepayAmount(totalAmountDue);
+    setLoanOffer((prevValues) => ({
+      ...prevValues,
+      totalAmountDue: repayAmount,
+      interestAmount,
+    }));
+    console.log("AMT :: ", lAmount);
+    console.log("OFFEA :: ", loanOffer);
+  }, [])
+
+  return (
+    <Stack spacing={3}>
+      <LoadingBackdrop open={loading} setOpen={setLoading} />
+      <Box>
+        <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
+        <Typography variant="h2" color="primary">
+          {formatCurrency(loanOffer?.amount)}
+        </Typography>
+        <Slider
+          aria-label="Amount"
+          defaultValue={loanOffer?.amount}
+          getAriaValueText={valuetext}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          step={5000}
+          marks
+          min={5000}
+          max={loanOffer?.amount}
+          sx={{ height: 5 }}
+        />
+        <Paper
+          elevation={0}
+          sx={{
+            bgcolor: themeMode === 'dark' ? alpha(theme.palette.background.default, 1.0) : 'primary.lighter',
+            padding: 1,
+            marginBottom: 2,
+          }}
+        >
+          <Typography variant="subtitle2">Loan Duration</Typography>
+          <Typography color="primary.dark" variant="h5">
+            {loanOffer?.duration}
+          </Typography>
+        </Paper>
+        <Typography variant="body1" color="text.secondary">
+          Repayment on time can increase the amount and loan period.
+        </Typography>
+      </Box>
+      <Paper elevation={3} sx={{ padding: 2 }}>
+        <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
+        <ItemList keyName="Loan Amount" value={formatCurrency(reqAmount || 0)} />
+        <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
+        <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
+        <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
+        <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
+      </Paper>
+      <Spacer size={3} />
+    </Stack>
+  );
+};
+
 const stepComponents = (
   activeStep,
   touched,
@@ -1261,7 +1275,7 @@ function LoanForm(props) {
     toast.promise(response, {
       loading: 'Checking Your Eligibility...',
       success: (res) => {
-        // console.log('response', res.data);
+        console.log('response', res.data);
         setLoanAmount(res.data?.amount);
         setLoanOffer(res.data);
         setActiveStep(3);
@@ -1286,6 +1300,8 @@ function LoanForm(props) {
       payDay,
     });
 
+    console.log("LOAN APPLI .... ");
+
     toast.promise(loanRequest, {
       loading: 'Loading',
       success: () => {
@@ -1306,6 +1322,9 @@ function LoanForm(props) {
       salary: values.monthlyIncome,
       company: values.companyName,
     });
+
+    console.log("LOAN  OFFER ::: ... ", loanOffer);
+
     toast.promise(response, {
       loading: 'Loading',
       success: (res) => {
@@ -1314,7 +1333,7 @@ function LoanForm(props) {
             key: 'loan',
             value: res.data,
           })
-        );
+        ); 
         setLoading(false);
 
         // if (profile?.debitCard) {
