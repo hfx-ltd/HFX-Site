@@ -210,9 +210,12 @@ const LoanCard = (props) => {
             </IconButton>
           </Stack>
           <Stack direction={matches ? 'row' : 'column'} justifyContent="space-between" alignItems="center">
-            <ColoredTypography variant="h2" gutterBottom>
+            {
+              profile?.loan?.status === 'credited' ?  <ColoredTypography variant="h2" gutterBottom>
               {viewBalance ? formatCurrency(amount) : '**********'}
-            </ColoredTypography>
+            </ColoredTypography> : <Box />
+            }
+           
             {profile?.loan?.status === 'settled' || !profile?.loan ? (
               <Button onClick={handleApply} variant="contained" size="large" fullWidth={!matches}>
                 Apply For a Loan
