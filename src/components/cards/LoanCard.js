@@ -213,7 +213,7 @@ const LoanCard = (props) => {
             {
               profile?.loan?.status === 'credited' ?  <ColoredTypography variant="h2" gutterBottom>
               {viewBalance ? formatCurrency(amount) : '**********'}
-            </ColoredTypography> : <Box />
+            </ColoredTypography> : <ColoredTypography variant="h2" gutterBottom > {formatCurrency(0)} </ColoredTypography>
             }
            
             {profile?.loan?.status === 'settled' || !profile?.loan ? (
@@ -239,7 +239,7 @@ const LoanCard = (props) => {
               </Alert>
             )}
           </Stack>
-          {profile?.loan && profile?.loan?.status !== 'settled' ? (
+          {profile?.loan &&  profile?.loan?.status === 'credited' ? (
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Item
                 keyName="Borrowed"

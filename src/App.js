@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // routes
 import { toast } from 'react-hot-toast'
+import io from "socket.io-client";
 import Router from './routes'
 // theme
 import ThemeProvider from './theme'
@@ -15,6 +16,8 @@ import useCompany from './hooks/useCompany'
 import { setCompanies } from './store/reducer/company'
 import useSettings from './hooks/useSettings'
 import { setSettings } from './store/reducer/settings'
+import { baseURL } from './utils/axios';
+
 
 function App () {
   const { isAuth, profile } = useSelector(state => state.auth)
@@ -23,37 +26,58 @@ function App () {
   const { data: settingsData } = useSettings()
   const { data: companyData } = useCompany()
   const dispatch = useDispatch()
+  let socketClient;
 
   const handl = () => {
     if (isAuth && profile) {
-      console.log("HERE NOW ::: ");
-      setInterval(() => {
-        const ti = setTimeout(() => {
-          console.log('LOG OUT NOW HERE >>>');
-          // Log out here
-          if (document.visibilityState === 'hidden' && isAuth) {
-            console.log('LOG OUT NOW HERE >>>');
-            localStorage.removeItem('accessToken')
-            localStorage.removeItem('refreshToken')
-            dispatch(setAuth(false))
-            dispatch(setProfile(null))
-          }
-          else {
-            clearTimeout(ti)
-          }
-        }, 1000 * 60 * 5)
-        
-      }, 1000 * 60 * 30)
+      if (document.visibilityState === 'hidden') {
+        // Send to server
+        socketClient?.emit("left-tab", {userId: profile?.id, email: profile?.emailAddress})
+      }
+      else {
+        socketClient?.emit("back-to-tab", {userId: profile?.id, email: profile?.emailAddress})
+      }
     }
   }
 
   useEffect(() => {
-    socket.on('connect', () => {
+    socketClient = io(baseURL);
+    // socketClient.emit("setup", profile);
+    // socketClient.on("userConnected", () => setSocketConnected(true));
+    // socketClient.on("typing", () => setIsTyping(true));
+    // socketClient.on("stop typing", () => setIsTyping(false));
+  }, []);
+
+  // useEffect(() => {
+  //   if (socketClient) {
+     
+  //   }
+  // })
+
+  useEffect(() => {
+   if (socketClient) {
+    socketClient?.on('connect', () => {
       console.log(socket.id) // x8WIv7-mJelg7on_ALbx
     })
 
-    return () => socket.disconnect()
-  }, [])
+    if (isAuth && profile) {
+      socketClient?.emit('setup', profile);
+
+      socketClient?.on('logout-user', (data) => {
+        console.log("USER TO LOGOUT ::: ", data) // x8WIv7-mJelg7on_ALbx
+        // alert("LOG OUT NOW!!! ");
+        if (data?.email === profile?.emailAddress) {
+          dispatch(setAuth(false));
+          dispatch(setProfile(null))
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+        }
+      })
+    }
+   }
+
+    // return () => socket?.disconnect()
+  }, [isAuth, profile])
 
   useEffect(() => {
     document.addEventListener('visibilitychange', handl)
@@ -62,10 +86,6 @@ function App () {
       document.removeEventListener('visibilitychange', handl)
     }
   }, [document.visibilityState])
-
-  // useEffect(() => {
-  //   effect
-  // }, [data])
 
   useEffect(() => {
     dispatch(setLoading(dataLoading))
@@ -85,10 +105,10 @@ function App () {
         dispatch(setAuth(true))
       }
 
-      socket.on(`${data?.id}-user-updated`, payload => {
+      socketClient?.on(`${data?.id}-user-updated`, payload => {
         dispatch(setProfile(payload))
       })
-      socket.on(`${data?.id}-loan-updated`, payload => {
+      socketClient?.on(`${data?.id}-loan-updated`, payload => {
         // console.log('payload', payload);
         dispatch(
           updateProfile({
