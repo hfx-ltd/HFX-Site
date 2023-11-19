@@ -527,16 +527,16 @@ const WorkComponent = ({
   profile,
   setIsCompanyEmailVerified,
 }) => {
-  const date = new Date();
+  // const date = new Date();
 
-  const maxDate = new Date().setDate(date.getDate() + 30);
+  // const maxDate = new Date().setDate(date.getDate() + 30);
   const [sent, setSent] = useState(false);
   const [otpCode, setOtpCode] = useState();
   const [enableVerify, setEnableVerify] = useState(false);
   const [verified, setVerified] = useState(false);
   const [compError, setCompError] = useState(false);
   const [compErrorText, setCompErrorText] = useState('');
-  const [isDatePicked, setDatePicked] = useState(false);
+  // const [isDatePicked, setDatePicked] = useState(false);
 
   const { companies } = useSelector((state) => state.company);
 

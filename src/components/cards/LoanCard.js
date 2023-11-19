@@ -226,11 +226,11 @@ const LoanCard = (props) => {
               </Button>
             ) : profile?.loan?.status === 'denied' ? (
               <Box display={'flex'} flexDirection="row" justifyContent={'space-between'} alignItems={'center'}>
-                <Alert severity={statusVariant(profile?.loan?.status)}>
+                {/* <Alert severity={statusVariant(profile?.loan?.status)}>
                   {profile?.loan?.status === 'pending' ? 'In Review' : profile?.loan?.status}
-                </Alert>
+                </Alert> */}
                 <Button sx={{ ml: 2 }} onClick={handleApply} variant="contained" size="large" fullWidth={!matches}>
-                  Reapply
+                  Apply
                 </Button>
               </Box>
             ) : (
