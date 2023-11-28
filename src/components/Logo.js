@@ -16,7 +16,7 @@ export default function Logo({  disabledLink = false, sx }) {
   const logo = (
     <Box sx={{ display: 'flex', alignItems: 'center', ...sx }}>
       <Box sx={{ width: 210 }}>
-        <img src={'/logo.svg'} width="100%" alt="..." />
+        <img src={'/static/logolight.svg'} width="100%" alt="..." />
       </Box>
       <br/>
       <br/>

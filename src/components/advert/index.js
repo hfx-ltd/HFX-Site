@@ -33,7 +33,10 @@ function Advert(props) {
 
   if (overlay) {
     backgroundStyle = {
-      background: `linear-gradient(0deg, rgb(40 16 63 / 65%), rgb(148 129 190 / 21%)), url(${featuredImage})`,
+      background: `linear-gradient(0deg, rgb(0 0 24 / 60%), rgb(0 0 0 / 8%)), url(${featuredImage})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      backgroundSize: 'cover'
     };
   } else {
     backgroundStyle = {

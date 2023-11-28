@@ -2,7 +2,7 @@
 import PropType from 'prop-types';
 import { useEffect, useState } from 'react';
 import { usePaystackPayment } from 'react-paystack';
-import { styled, alpha } from '@mui/material/styles';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import { useSWRConfig } from 'swr';
 import { useDispatch } from 'react-redux';
 import toast, { Toaster } from 'react-hot-toast';
@@ -24,7 +24,7 @@ import { updateProfile } from '../../store/reducer/auth';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  backgroundColor: alpha(theme.palette.primary.main, 0.24),
+  backgroundColor: alpha(theme.palette.primary.main, 1),
 }));
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
@@ -53,10 +53,10 @@ const statusVariant = (status) => {
 
 const Item = ({ keyName, value, alignLeft = false }) => (
   <Box>
-    <Typography variant="body2" color="text.secondary" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
+    <Typography variant="body2" color="white" sx={{ textAlign: alignLeft ? 'end' : 'start', color: 'white' }}>
       {keyName}
     </Typography>
-    <Typography variant="subtitle1" color="text.primary" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
+    <Typography variant="subtitle1" color="white" sx={{ textAlign: alignLeft ? 'end' : 'start', color: 'white' }}>
       {value}
     </Typography>
   </Box>
@@ -64,10 +64,10 @@ const Item = ({ keyName, value, alignLeft = false }) => (
 
 const DebitCardComponent = ({ openPayStackModel }) => (
   <Box>
-    <Typography variant="subtitle1" color="text.secondary">
+    <Typography variant="subtitle1" color="text.secondary" sx={{color: 'white'}} >
       This will enable auto debit when you loan is due.
     </Typography>
-    <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+    <Typography variant="subtitle1" color="text.secondary" gutterBottom  sx={{color: 'white'}}>
       You will be charged {formatCurrency(process.env.REACT_APP_LINK_DEBITCARD_CHARGE)} to link your card.
     </Typography>
 
@@ -103,6 +103,7 @@ const LoanCard = (props) => {
   };
 
   const initializePayment = usePaystackPayment(config); 
+  const theme = useTheme();
 
   useEffect(() => {
     if (profile?.loan) {
@@ -198,38 +199,35 @@ const LoanCard = (props) => {
       </CustomModal>
       <StyledCard variant="outlined">
         <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack direction="row" justifyContent="space-between" alignItems="center" color={'white'} >
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <Iconify icon="bi:cash-coin" />
-              <Typography variant="overline" style={{ marginLeft: 5 }}>
+              <Typography variant="overline" color={'white'} style={{ marginLeft: 5 }}>
                 Loan Balance
               </Typography>
             </div>
             <IconButton aria-label="ViewBalance" onClick={handleViewBalance}>
-              <Iconify icon={viewBalance ? 'eva:eye-outline' : 'eva:eye-off-outline'} />
+              <Iconify sx={{color: 'white'}} icon={viewBalance ? 'eva:eye-outline' : 'eva:eye-off-outline'} />
             </IconButton>
           </Stack>
-          <Stack direction={matches ? 'row' : 'column'} justifyContent="space-between" alignItems="center">
+          <Stack direction={matches ? 'row' : 'column'} sx={{color: 'white'}} justifyContent="space-between" alignItems="center">
             {
-              profile?.loan?.status === 'credited' ?  <ColoredTypography variant="h2" gutterBottom>
+              profile?.loan?.status === 'credited' ?  <ColoredTypography sx={{color: 'white'}} color={'white'} variant="h2" gutterBottom>
               {viewBalance ? formatCurrency(amount) : '**********'}
-            </ColoredTypography> : <ColoredTypography variant="h2" gutterBottom > {formatCurrency(0)} </ColoredTypography>
+            </ColoredTypography> : <ColoredTypography sx={{color: 'white'}} color={'white'} variant="h2" gutterBottom > {formatCurrency(0)} </ColoredTypography>
             }
            
             {profile?.loan?.status === 'settled' || !profile?.loan ? (
-              <Button onClick={handleApply} variant="contained" size="large" fullWidth={!matches}>
+              <Button onClick={handleApply} variant="contained" sx={{bgcolor: 'white', color: theme.palette.primary.main }}  size="large" fullWidth={!matches}>
                 Apply For a Loan
               </Button>
             ) : profile?.loan?.status === 'credited' ? (
-              <Button onClick={handleRepay} variant="contained" size="large" fullWidth={!matches}>
+              <Button onClick={handleRepay} variant="contained" sx={{bgcolor: 'white', color: theme.palette.primary.main }} size="large" fullWidth={!matches}>
                 Repay Loan
               </Button>
             ) : profile?.loan?.status === 'denied' ? (
               <Box display={'flex'} flexDirection="row" justifyContent={'space-between'} alignItems={'center'}>
-                {/* <Alert severity={statusVariant(profile?.loan?.status)}>
-                  {profile?.loan?.status === 'pending' ? 'In Review' : profile?.loan?.status}
-                </Alert> */}
-                <Button sx={{ ml: 2 }} onClick={handleApply} variant="contained" size="large" fullWidth={!matches}>
+                <Button sx={{ ml: 2, bgcolor: 'white', color: theme.palette.primary.main}} onClick={handleApply}  variant="contained" size="large" fullWidth={!matches}>
                   Apply
                 </Button>
               </Box>
@@ -240,7 +238,7 @@ const LoanCard = (props) => {
             )}
           </Stack>
           {profile?.loan &&  profile?.loan?.status === 'credited' ? (
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Stack direction="row" justifyContent="space-between" color="white" alignItems="center">
               <Item
                 keyName="Borrowed"
                 value={`${formatCurrency(profile?.loan?.amountBorrowed)} `}

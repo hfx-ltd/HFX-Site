@@ -119,7 +119,7 @@ function TransactionList(props) {
   ];
 
   return (
-    <>
+    <div style={{height: '56vh'}} >
       {full ? (
         <StyledFullDateGrid
           rows={data}
@@ -146,7 +146,7 @@ function TransactionList(props) {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
 
