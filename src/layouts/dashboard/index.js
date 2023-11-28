@@ -16,7 +16,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
   overflow: 'hidden',
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: 'white',
 }));
 
 const MainStyle = styled('div')(({ theme }) => ({
