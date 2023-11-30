@@ -1087,7 +1087,7 @@ const workSchema = Yup.object().shape({
   companyLocation: Yup.string().required('Company Location is required'),
   companyEmailAddress: Yup.string()
     .email('Company email must be a valid email address')
-    .matches(companyMailRegExp, 'Must be a valid email with company extension')
+    // .matches(companyMailRegExp, 'Must be a valid email with company extension')
     .required('Company email address is required'),
   jobTitle: Yup.string().required('Job title is required'),
   monthlyIncome: Yup.string().required('Monthly income is required'),
