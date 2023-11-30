@@ -48,11 +48,6 @@ function App () {
     // socketClient.on("stop typing", () => setIsTyping(false));
   }, []);
 
-  // useEffect(() => {
-  //   if (socketClient) {
-     
-  //   }
-  // })
 
   useEffect(() => {
    if (socketClient) {
