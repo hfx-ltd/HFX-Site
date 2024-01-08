@@ -84,7 +84,8 @@ export default function AuthLayout({ loading }) {
               <Container maxWidth="sm">
                 <Logo
                   title="FastQuid"
-                  titleColor={location?.pathname !== '/404' ? 'white' : 'white'}
+                  colorizer={"black"}
+                  titleColor={location?.pathname !== '/404' ? 'black' : 'white'}
                   sx={{ justifyContent: 'center', marginBottom: 0, marginTop: 3 }}
                 />
                 <Outlet />

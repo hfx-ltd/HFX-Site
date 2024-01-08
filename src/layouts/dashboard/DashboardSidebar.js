@@ -68,7 +68,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Logo titleColor="white" title="Fastquid" />
+        <Logo titleColor="white" title="Fastquid" colorizer={"white"} />
       </Box>
 
       <NavSection navConfig={navConfig} />

@@ -12,11 +12,11 @@ Logo.propTypes = {
   sx: PropTypes.object,
 };
 
-export default function Logo({  disabledLink = false, sx }) {
+export default function Logo({  disabledLink = false, sx, colorizer }) {
   const logo = (
     <Box sx={{ display: 'flex', alignItems: 'center', ...sx }}>
       <Box sx={{ width: 210 }}>
-        <img src={'/static/logolight.svg'} width="100%" alt="..." />
+        <img src={colorizer === "white" ? '/logolight.svg' : '/logo.svg'} width="100%" alt="..." />
       </Box>
       <br/>
       <br/>

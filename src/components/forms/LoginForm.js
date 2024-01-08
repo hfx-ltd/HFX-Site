@@ -62,12 +62,7 @@ export default function LoginForm(props) {
             mutate();
             // console.log('PROFILE DATA >> ', data);
           }, 5000);
-          //
-          // // console.log("PROFILE MUTATE", `${mutate().the}`);
-          // mutate().then((val) => {
-          //   console.log("PROFILE MUTATE", `${{...val}}`);
-          // });
-          // navigate('/dashboard/overview', { replace: true });
+          
           return 'Login successful!';
         },
         error: (err) => {
