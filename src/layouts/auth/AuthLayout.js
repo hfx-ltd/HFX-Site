@@ -81,7 +81,9 @@ export default function AuthLayout({ loading }) {
           />
           <Grid item xs={12} sm={7} md={6} height={'100%'}>
             <RootStyle>
-              <Container maxWidth="sm">
+              <Container maxWidth="sm" onClick={() => {
+                window.open("https://fastquid.ng", '_self');
+              }} >
                 <Logo
                   title="FastQuid"
                   colorizer={"black"}

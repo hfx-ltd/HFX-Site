@@ -49,9 +49,9 @@ function a11yProps(index) {
   };
 }
 
-const ColoredTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
-}));
+// const ColoredTypography = styled(Typography)(({ theme }) => ({
+//   color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
+// }));
 
 const tabComponent = (tab, profile, mutate, matches) => {
   switch (tab) {

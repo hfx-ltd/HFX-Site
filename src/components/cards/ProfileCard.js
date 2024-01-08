@@ -32,8 +32,7 @@ const BackgroundBox = styled(Box)(({ theme }) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   backgroundPositionY: 'center',
-  backgroundImage: `url(https://i.imgur.com/jZ1ErR4.jpg)`,
-  backgroundColor: "red"
+  backgroundColor: "#18113c"
 }));
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
