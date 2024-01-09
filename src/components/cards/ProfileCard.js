@@ -18,8 +18,9 @@ import APIService from '../../service';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: "#18113c",
   padding: 0,
+  borderColor: "#18113c",
 }));
 
 const ContentBox = styled(Box)(({ theme }) => ({
@@ -85,7 +86,7 @@ function ProfileCard(props) {
   };
 
   return (
-    <StyledCard variant="outlined">
+    <StyledCard variant="elevation">
       <CardContent sx={{ padding: 0, paddingBottom: '0px !important' }}>
         <BackgroundBox />
         <LinearProgress variant="determinate" value={progress} />
