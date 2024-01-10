@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
 import { useSWRConfig } from 'swr';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Page from '../../components/Page';
 import ProfileCard from '../../components/cards/ProfileCard';

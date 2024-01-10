@@ -1,5 +1,4 @@
-import PropType from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { capitalCase } from 'change-case';
 import { styled } from '@mui/material/styles';
 import toast, { Toaster } from 'react-hot-toast';
@@ -11,8 +10,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Iconify from '../Iconify';
 import APIService from '../../service';
 // import bgImg from '';
 
@@ -86,10 +83,10 @@ function ProfileCard(props) {
   };
 
   return (
-    <StyledCard variant="elevation">
+    <StyledCard variant="outlined">
       <CardContent sx={{ padding: 0, paddingBottom: '0px !important' }}>
         <BackgroundBox />
-        <LinearProgress variant="determinate" value={progress} />
+        <LinearProgress variant="determinate" color='info' value={progress} />
         <ContentBox>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

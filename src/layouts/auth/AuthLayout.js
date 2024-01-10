@@ -81,12 +81,11 @@ export default function AuthLayout({ loading }) {
           />
           <Grid item xs={12} sm={7} md={6} height={'100%'}>
             <RootStyle>
-              <Container maxWidth="sm" onClick={() => {
-                window.open("https://fastquid.ng", '_self');
-              }} >
+              <Container maxWidth="sm"  >
                 <Logo
                   title="FastQuid"
                   colorizer={"black"}
+                  disabledLink
                   titleColor={location?.pathname !== '/404' ? 'black' : 'white'}
                   sx={{ justifyContent: 'center', marginBottom: 0, marginTop: 3 }}
                 />

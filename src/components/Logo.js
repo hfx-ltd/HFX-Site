@@ -15,7 +15,9 @@ Logo.propTypes = {
 export default function Logo({  disabledLink = false, sx, colorizer }) {
   const logo = (
     <Box sx={{ display: 'flex', alignItems: 'center', ...sx }}>
-      <Box sx={{ width: 210 }}>
+      <Box sx={{ width: 210 }} onClick={() => {
+                window.open("https://fastquid.ng", '_self');
+              }} >
         <img src={colorizer === "white" ? '/logolight.svg' : '/logo.svg'} width="100%" alt="..." />
       </Box>
       <br/>
