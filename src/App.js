@@ -32,9 +32,11 @@ function App () {
     if (isAuth && profile) {
       if (document.visibilityState === 'hidden') {
         // Send to server
+        console.log("LEFT TAB JUST NOW !!");
         socketClient?.emit("left-tab", {userId: profile?.id, email: profile?.emailAddress})
       }
       else {
+        console.log("CAME BACK JUST NOW !!");
         socketClient?.emit("back-to-tab", {userId: profile?.id, email: profile?.emailAddress})
       }
     }
@@ -52,7 +54,7 @@ function App () {
   useEffect(() => {
    if (socketClient) {
     socketClient?.on('connect', () => {
-      console.log(socket.id) // x8WIv7-mJelg7on_ALbx
+      console.log("SOCKET ID :: ", socket.id) // x8WIv7-mJelg7on_ALbx
     })
 
     if (isAuth && profile) {
