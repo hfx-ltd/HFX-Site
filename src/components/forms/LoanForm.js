@@ -915,10 +915,11 @@ const ReviewComponent = ({
   loading,
   setLoading,
   getFieldProps,
+  profile
 }) => {
   const theme = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCycle);
-
+  const [showOffer, setShowOffer] = React.useState(true);
   const [lAmount, setLAmount] = useState(getFieldProps('amount').value);
   const reqAmount = getFieldProps('amount').value;
   const [interestAmount, setInterestAmount] = useState(percentage(loanOffer?.interest, getFieldProps('amount').value));
@@ -941,7 +942,7 @@ const ReviewComponent = ({
     }));
   };
   
-  
+  // console.log("SALARY AMOUNT :: ", profile);
 
   useEffect(() => {
     setLoanAmount(lAmount);
@@ -957,11 +958,21 @@ const ReviewComponent = ({
     }));
     console.log("AMT :: ", lAmount);
     console.log("OFFEA :: ", loanOffer);
+
+    // const salaryAmount = loanOffer?.amount * 2;
+    // console.log("SALA :  ", salaryAmount);
+
+    if (lAmount > loanOffer?.amount) {
+      setShowOffer(false)
+    }
+    
   }, [])
 
   return (
     <Stack spacing={3}>
-      <LoadingBackdrop open={loading} setOpen={setLoading} />
+     {
+      showOffer ? <>
+       <LoadingBackdrop open={loading} setOpen={setLoading} />
       <Box>
         <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
         <Typography variant="h2" color="primary">
@@ -1004,7 +1015,13 @@ const ReviewComponent = ({
         <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
         <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
       </Paper>
-      <Spacer size={3} />
+      <Spacer size={3} /> </> : <Box p={4} >
+        <Typography variant="h2" color="primary">
+          Amount Exceeded Limit!
+        </Typography>
+        <Typography gutterBottom variant="subtitle2"  >Loan offer can not exceed 50% of your monthly income.</Typography>
+      </Box>
+     }
     </Stack>
   );
 };
@@ -1059,7 +1076,7 @@ const stepComponents = (
     case 3:
       return (
         <ReviewComponent
-          {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps }}
+          {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps, profile }}
         />
       );
     default:
@@ -1431,16 +1448,19 @@ function LoanForm(props) {
                     {'Reject Offer'}
                   </LoadingButton>
                 )}
-                <LoadingButton
+                {
+                  getFieldProps('amount').value > loanOffer?.amount ? <></> : <LoadingButton
                   size="medium"
                   variant="contained"
                   type="submit"
+                  color={activeStep === maxSteps - 1 ? "success" : "primary"}
                   disabled={loading}
                   endIcon={<Iconify icon="eva:chevron-right-outline" />}
                   loading={loading}
                 >
                   {activeStep === maxSteps - 1 ? 'Accept Offer' : 'Next'}
                 </LoadingButton>
+                }
               </Box>
             }
             backButton={
