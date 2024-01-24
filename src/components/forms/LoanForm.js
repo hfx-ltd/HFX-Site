@@ -384,7 +384,9 @@ const ItemList = ({ keyName, value }) => (
   </Stack>
 );
 
-const daysOfMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,22, 23, 24, 25,26, 27, 28, 29, 30, 31];
+const daysOfMonth = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+];
 
 function valuetext(value) {
   return `${value}°C`;
@@ -540,13 +542,18 @@ const WorkComponent = ({
 
   const { companies } = useSelector((state) => state.company);
 
-  
-
   useEffect(() => {
     setFieldValue('payDay', values.payDay);
   }, []);
 
-  const dateSuffixer = (num) => num === 1 || num === 21 || num === 31 ? "st" : num === 2 || num === 22 ? "nd" : num === 3  || num === 23 ? "rd" : 'th'
+  const dateSuffixer = (num) =>
+    num === 1 || num === 21 || num === 31
+      ? 'st'
+      : num === 2 || num === 22
+      ? 'nd'
+      : num === 3 || num === 23
+      ? 'rd'
+      : 'th';
 
   return (
     <Stack spacing={2}>
@@ -760,8 +767,6 @@ const WorkComponent = ({
               ))}
             </NativeSelect>
           </FormControl>
-
-
         </div>
       ) : null}
       <Spacer size={3} />
@@ -915,7 +920,7 @@ const ReviewComponent = ({
   loading,
   setLoading,
   getFieldProps,
-  profile
+  profile,
 }) => {
   const theme = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCycle);
@@ -941,7 +946,7 @@ const ReviewComponent = ({
       interestAmount,
     }));
   };
-  
+
   // console.log("SALARY AMOUNT :: ", profile);
 
   useEffect(() => {
@@ -956,72 +961,76 @@ const ReviewComponent = ({
       totalAmountDue: repayAmount,
       interestAmount,
     }));
-    console.log("AMT :: ", lAmount);
-    console.log("OFFEA :: ", loanOffer);
+    console.log('AMT :: ', lAmount);
+    console.log('OFFEA :: ', loanOffer);
 
     // const salaryAmount = loanOffer?.amount * 2;
     // console.log("SALA :  ", salaryAmount);
 
     if (lAmount > loanOffer?.amount) {
-      setShowOffer(false)
+      setShowOffer(false);
     }
-    
-  }, [])
+  }, []);
 
   return (
     <Stack spacing={3}>
-     {
-      showOffer ? <>
-       <LoadingBackdrop open={loading} setOpen={setLoading} />
-      <Box>
-        <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
-        <Typography variant="h2" color="primary">
-          {formatCurrency(loanOffer?.amount)}
-        </Typography>
-        <Slider
-          aria-label="Amount"
-          defaultValue={loanOffer?.amount}
-          getAriaValueText={valuetext}
-          onChange={handleChange}
-          valueLabelDisplay="auto"
-          step={5000}
-          marks
-          min={5000}
-          max={loanOffer?.amount}
-          sx={{ height: 5 }}
-        />
-        <Paper
-          elevation={0}
-          sx={{
-            bgcolor: themeMode === 'dark' ? alpha(theme.palette.background.default, 1.0) : 'primary.lighter',
-            padding: 1,
-            marginBottom: 2,
-          }}
-        >
-          <Typography variant="subtitle2">Loan Duration</Typography>
-          <Typography color="primary.dark" variant="h5">
-            {loanOffer?.duration}
+      {showOffer ? (
+        <>
+          <LoadingBackdrop open={loading} setOpen={setLoading} />
+          <Box>
+            <Typography variant="subtitle2">Maximum Loan Offer Amount Accessible</Typography>
+            <Typography variant="h2" color="primary">
+              {formatCurrency(loanOffer?.amount)}
+            </Typography>
+            <Slider
+              aria-label="Amount"
+              defaultValue={loanOffer?.amount}
+              getAriaValueText={valuetext}
+              onChange={handleChange}
+              valueLabelDisplay="auto"
+              step={5000}
+              marks
+              min={5000}
+              max={loanOffer?.amount}
+              sx={{ height: 5 }}
+            />
+            <Paper
+              elevation={0}
+              sx={{
+                bgcolor: themeMode === 'dark' ? alpha(theme.palette.background.default, 1.0) : 'primary.lighter',
+                padding: 1,
+                marginBottom: 2,
+              }}
+            >
+              <Typography variant="subtitle2">Loan Duration</Typography>
+              <Typography color="primary.dark" variant="h5">
+                {loanOffer?.duration}
+              </Typography>
+            </Paper>
+            <Typography variant="body1" color="text.secondary">
+              Repayment on time can increase the amount and loan period.
+            </Typography>
+          </Box>
+          <Paper elevation={3} sx={{ padding: 2 }}>
+            <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
+            <ItemList keyName="Loan Amount" value={formatCurrency(reqAmount || 0)} />
+            <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
+            <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
+            <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
+            <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
+          </Paper>
+          <Spacer size={3} />{' '}
+        </>
+      ) : (
+        <Box p={4}>
+          <Typography variant="h2" color="primary">
+            Amount Exceeded Limit!
           </Typography>
-        </Paper>
-        <Typography variant="body1" color="text.secondary">
-          Repayment on time can increase the amount and loan period.
-        </Typography>
-      </Box>
-      <Paper elevation={3} sx={{ padding: 2 }}>
-        <ItemList keyName="Due Date" value={loanOffer?.dueDate} />
-        <ItemList keyName="Loan Amount" value={formatCurrency(reqAmount || 0)} />
-        <ItemList keyName="Offer Amount" value={formatCurrency(lAmount || 0)} />
-        <ItemList keyName="Repayment Amount" value={formatCurrency(repayAmount || 0)} />
-        <ItemList keyName="Interest" value={`${loanOffer?.interest}%`} />
-        <ItemList keyName="Interest Amount" value={formatCurrency(interestAmount)} />
-      </Paper>
-      <Spacer size={3} /> </> : <Box p={4} >
-        <Typography variant="h2" color="primary">
-          Amount Exceeded Limit!
-        </Typography>
-        <Typography gutterBottom variant="subtitle2"  >Loan offer can not exceed 50% of your monthly income.</Typography>
-      </Box>
-     }
+          <Typography gutterBottom variant="subtitle2">
+            Loan offer can not exceed 50% of your monthly income.
+          </Typography>
+        </Box>
+      )}
     </Stack>
   );
 };
@@ -1076,7 +1085,17 @@ const stepComponents = (
     case 3:
       return (
         <ReviewComponent
-          {...{ values, loanAmount, setLoanAmount, setLoanOffer, loanOffer, loading, setLoading, getFieldProps, profile }}
+          {...{
+            values,
+            loanAmount,
+            setLoanAmount,
+            setLoanOffer,
+            loanOffer,
+            loading,
+            setLoading,
+            getFieldProps,
+            profile,
+          }}
         />
       );
     default:
@@ -1283,7 +1302,7 @@ function LoanForm(props) {
         type: values.type,
         duration: values.duration,
         monthlyIncome: values.monthlyIncome,
-        salaryDate: values.payDay
+        salaryDate: values.payDay,
       };
     }
 
@@ -1317,7 +1336,7 @@ function LoanForm(props) {
       payDay,
     });
 
-    console.log("LOAN APPLI .... ");
+    console.log('LOAN APPLI .... ');
 
     toast.promise(loanRequest, {
       loading: 'Loading',
@@ -1340,7 +1359,7 @@ function LoanForm(props) {
       company: values.companyName,
     });
 
-    console.log("LOAN  OFFER ::: ... ", loanOffer);
+    console.log('LOAN  OFFER ::: ... ', loanOffer);
 
     toast.promise(response, {
       loading: 'Loading',
@@ -1350,7 +1369,7 @@ function LoanForm(props) {
             key: 'loan',
             value: res.data,
           })
-        ); 
+        );
         setLoading(false);
 
         // if (profile?.debitCard) {
@@ -1445,22 +1464,24 @@ function LoanForm(props) {
                       setOpenLoanForm(false);
                     }}
                   >
-                    {'Reject Offer'}
+                    {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : 'Reject Offer'}
                   </LoadingButton>
                 )}
-                {
-                  getFieldProps('amount').value > loanOffer?.amount ? <></> : <LoadingButton
-                  size="medium"
-                  variant="contained"
-                  type="submit"
-                  color={activeStep === maxSteps - 1 ? "success" : "primary"}
-                  disabled={loading}
-                  endIcon={<Iconify icon="eva:chevron-right-outline" />}
-                  loading={loading}
-                >
-                  {activeStep === maxSteps - 1 ? 'Accept Offer' : 'Next'}
-                </LoadingButton>
-                }
+                {getFieldProps('amount').value > loanOffer?.amount ? (
+                  <></>
+                ) : (
+                  <LoadingButton
+                    size="medium"
+                    variant="contained"
+                    type="submit"
+                    color={activeStep === maxSteps - 1 ? 'success' : 'primary'}
+                    disabled={loading}
+                    endIcon={<Iconify icon="eva:chevron-right-outline" />}
+                    loading={loading}
+                  >
+                    {activeStep === maxSteps - 1 ? 'Accept Offer' : 'Next'}
+                  </LoadingButton>
+                )}
               </Box>
             }
             backButton={
