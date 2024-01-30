@@ -1170,6 +1170,8 @@ function LoanForm(props) {
 
   const { settings } = useSelector((state) => state.setting);
 
+  console.log("LOAN OFFER", loanOffer);
+
   let formSchema;
 
   if (activeStep === 0) {
@@ -1339,12 +1341,13 @@ function LoanForm(props) {
       payDay,
     });
 
-    console.log('LOAN APPLI .... ');
+    console.log('LOAN REQUEUST DATA .... ', loanRequest);
 
     toast.promise(loanRequest, {
       loading: 'Loading',
       success: () => {
         createLoan();
+        
         return 'Your loan request has been sent successfully!';
       },
       error: (err) => {
@@ -1405,7 +1408,7 @@ function LoanForm(props) {
 
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      <CustomModal open={openReason} setOpen={setOpenReason} title={"Reject Loan Offer"} modalSize="xs">
+      <CustomModal open={openReason} setOpen={setOpenReason}  title={"Reject Loan Offer"} modalSize="xs">
         <RejectOfferForm setOpen={setOpenReason}   />
         {/* <VerifyOTPForm
           location={location}
@@ -1467,7 +1470,7 @@ function LoanForm(props) {
                       setDone(false);
                       setOpenLoanForm(false);
                       // Trigger dialog for stating reason for rejecting loan offer.
-
+                      setOpenReason(true)
                     }}
                   >
                     {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : 'Reject Offer'}
