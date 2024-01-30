@@ -1409,7 +1409,7 @@ function LoanForm(props) {
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
       <CustomModal open={openReason} setOpen={setOpenReason}  title={"Reject Loan Offer"} modalSize="xs">
-        <RejectOfferForm setOpen={setOpenReason}   />
+        <RejectOfferForm setOpen={setOpenReason} setDone={setDone} setOpenLoanForm={setOpenLoanForm} />
         {/* <VerifyOTPForm
           location={location}
           toast={toast}
@@ -1467,10 +1467,11 @@ function LoanForm(props) {
                     loading={loading}
                     onClick={() => {
                       setLoading(false);
-                      setDone(false);
-                      setOpenLoanForm(false);
+                      // setDone(false);
+                     
                       // Trigger dialog for stating reason for rejecting loan offer.
                       setOpenReason(true)
+                      // setOpenLoanForm(false);
                     }}
                   >
                     {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : 'Reject Offer'}
