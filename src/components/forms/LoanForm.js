@@ -48,6 +48,8 @@ import NumberFormatCustom from './inputs/NumberFormatCustom';
 import formatDate from '../../utils/formatDate';
 import percentage from '../../utils/percentage';
 import Spacer from '../spacer';
+import CustomModal from '../modal/CustomModal';
+import RejectOfferForm from './RejectOfferForm';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -1150,6 +1152,7 @@ function LoanForm(props) {
   const dispatch = useDispatch();
   const [loanAmount, setLoanAmount] = useState(0);
   const [activeStep, setActiveStep] = React.useState(0);
+  const [openReason, setOpenReason] = React.useState(false);
   const [bankVerified, setBankVerified] = useState(!!profile?.bank?.accountName);
   //   profile?.company?.isCompanyEmailVerified
   // const [openOtpModal, setOpenOtpModal] = useState(false);
@@ -1402,16 +1405,17 @@ function LoanForm(props) {
 
   return (
     <Stack sx={{ width: '100%' }} spacing={4}>
-      {/* <CustomModal open={openOtpModal} setOpen={setOpenOtpModal} title={modalTitle} modalSize="xs">
-        <VerifyOTPForm
+      <CustomModal open={openReason} setOpen={setOpenReason} title={"Reject Loan Offer"} modalSize="xs">
+        <RejectOfferForm setOpen={setOpenReason}   />
+        {/* <VerifyOTPForm
           location={location}
           toast={toast}
           profileEmail={profile?.emailAddress}
           fieldName={modalFieldName}
           fieldValue={modalFieldValue}
           callback={handleOtpCallback}
-        />
-      </CustomModal> */}
+        /> */}
+      </CustomModal>
       <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
         {steps.map((label) => (
           <Step key={label}>
@@ -1462,6 +1466,8 @@ function LoanForm(props) {
                       setLoading(false);
                       setDone(false);
                       setOpenLoanForm(false);
+                      // Trigger dialog for stating reason for rejecting loan offer.
+
                     }}
                   >
                     {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : 'Reject Offer'}

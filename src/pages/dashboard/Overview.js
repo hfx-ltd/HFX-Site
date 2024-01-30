@@ -1,14 +1,14 @@
 import PropType from 'prop-types'
 import { useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import { sentenceCase } from 'change-case'
 import Container from '@mui/material/Container'
 // import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 // components
-import useSWR from 'swr'
+// import useSWR from 'swr'
 import { Box } from '@mui/material'
 import LoanCard from '../../components/cards/LoanCard'
 import Page from '../../components/Page'
@@ -29,7 +29,7 @@ function Overview (props) {
   const [transactions, setTransactions] = useState([])
 
   // const { data } = useSWRFetch('transaction/single');
-  const { data, mutate, error } = useSWRFetch('/transaction/single')
+  const { data } = useSWRFetch('/transaction/single')
 
   useEffect(() => {
     if (data) {
@@ -38,7 +38,7 @@ function Overview (props) {
     }
   }, [data])
 
-  const handleAdvert = () => {}
+  // const handleAdvert = () => {}
 
   return (
     <Page title='Overview'>

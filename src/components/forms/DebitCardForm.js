@@ -74,7 +74,7 @@ function DebitCardForm(props) {
   return (
     <>
       {loading && <LoadingBackdrop open={loading} setOpen={setLoading} />}
-      <CustomModal open={openModal} setOpen={setOpenModal} title="Link Your DebitCard" modalSize="xs">
+      {/* <CustomModal open={openModal} setOpen={setOpenModal} title="Link Your DebitCard" modalSize="xs">
         <Box>
           <Typography variant="subtitle1" color="text.secondary">
             You must add a debit card to proceed with the loan.
@@ -91,7 +91,7 @@ function DebitCardForm(props) {
             Continue
           </Button>
         </Box>
-      </CustomModal>
+      </CustomModal> */}
       <Grid container spacing={2}>
         <Grid item sm={6} xs={12}>
           <Typography variant="h4">Debit Card</Typography>

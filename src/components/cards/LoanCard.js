@@ -194,9 +194,9 @@ const LoanCard = (props) => {
           setDone={setDone}
         />
       </CustomModal>
-      <CustomModal open={openDebitCardModal} setOpen={setOpenDebitCardModal} title="Link Your DebitCard" modalSize="xs">
+      {/* <CustomModal open={openDebitCardModal} setOpen={setOpenDebitCardModal} title="Link Your DebitCard" modalSize="xs">
         <DebitCardComponent openPayStackModel={openPayStackModel} />
-      </CustomModal>
+      </CustomModal> */}
       <StyledCard variant="outlined">
         <CardContent>
           <Stack direction="row" justifyContent="space-between" alignItems="center" color={'white'} >
