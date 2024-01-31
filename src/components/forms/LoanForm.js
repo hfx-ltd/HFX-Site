@@ -7,9 +7,6 @@ import { useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useFormik, Form, FormikProvider } from 'formik';
 // import { sentenceCase } from 'change-case';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // material
 import LoadingButton from '@mui/lab/LoadingButton';
 import { styled, useTheme, alpha } from '@mui/material/styles';
@@ -34,6 +31,7 @@ import Slider from '@mui/material/Slider';
 import Autocomplete from '@mui/material/Autocomplete';
 // Third party
 // Services
+import { useMediaQuery } from '@mui/material';
 import APIService from '../../service';
 // component
 import Iconify from '../Iconify';
@@ -61,10 +59,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginTop: 10,
 }));
 
-const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
-  marginBottom: 10,
-  marginTop: 10,
-}));
+// const StyledAutocomplete = styled(Autocomplete)(({ theme }) => ({
+//   marginBottom: 10,
+//   marginTop: 10,
+// }));
 
 const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
@@ -152,56 +150,6 @@ const duration = [
   },
 ];
 
-// const reasonOld = [
-//   {
-//     label: 'Debt consolidation',
-//     value: 'Debt consolidation',
-//   },
-//   {
-//     label: 'Credit card refinancing',
-//     value: 'Credit card refinancing',
-//   },
-//   {
-//     label: 'Major purchase',
-//     value: 'Major purchase',
-//   },
-//   {
-//     label: 'Home improvement',
-//     value: 'Home improvement',
-//   },
-//   {
-//     label: 'Moving/ relocation',
-//     value: 'Moving/ relocation',
-//   },
-//   {
-//     label: 'Medical expenses',
-//     value: 'Medical expenses',
-//   },
-//   {
-//     label: 'Car financing',
-//     value: 'Car financing',
-//   },
-//   {
-//     label: 'Business',
-//     value: 'Business',
-//   },
-//   {
-//     label: 'Special occasion',
-//     value: 'Special occasion',
-//   },
-//   {
-//     label: 'Vacation',
-//     value: 'Vacation',
-//   },
-//   {
-//     label: 'Taxes',
-//     value: 'Taxes',
-//   },
-//   {
-//     label: 'Other',
-//     value: 'Other',
-//   },
-// ];
 
 const reason = [
   {
@@ -238,55 +186,6 @@ const reason = [
   },
 ];
 
-// const educations = [
-//   {
-//     label: 'Primary School',
-//     value: 'primary school',
-//   },
-//   {
-//     label: 'Middle School',
-//     value: 'middle school',
-//   },
-//   {
-//     label: 'High School',
-//     value: 'high school',
-//   },
-//   {
-//     label: 'University',
-//     value: 'university',
-//   },
-//   {
-//     label: 'Masters',
-//     value: 'masters',
-//   },
-//   {
-//     label: 'PHD',
-//     value: 'PHD',
-//   },
-//   {
-//     label: 'Others',
-//     value: 'others',
-//   },
-// ];
-
-// const marital = [
-//   {
-//     label: 'Single',
-//     value: 'single',
-//   },
-//   {
-//     label: 'Married',
-//     value: 'married',
-//   },
-//   {
-//     label: 'Divorced',
-//     value: 'divorced',
-//   },
-//   {
-//     label: 'Widowed',
-//     value: 'widowed',
-//   },
-// ];
 
 const employments = [
   {
@@ -310,35 +209,6 @@ const employments = [
     value: 'internship',
   },
 ];
-
-// const companies = [
-//   { label: 'Zema Group', domain: 'mtcz.us' },
-//   { label: 'Proxify Inc', domain: 'proxify.com' },
-//   { label: 'Deluta Group', domain: 'dels.io' },
-// ];
-
-// const jobTitles = [
-//   {
-//     label: 'Assistant',
-//     value: 'assistant',
-//   },
-//   {
-//     label: 'Common Staff',
-//     value: 'common staff',
-//   },
-//   {
-//     label: 'Team Leader',
-//     value: 'team leader',
-//   },
-//   {
-//     label: 'Branch Manager',
-//     value: 'branch manager',
-//   },
-//   {
-//     label: 'Others',
-//     value: 'others',
-//   },
-// ];
 
 const kids = [
   {
@@ -1125,7 +995,7 @@ const workSchema = Yup.object().shape({
   companyLocation: Yup.string().required('Company Location is required'),
   companyEmailAddress: Yup.string()
     .email('Company email must be a valid email address')
-    // .matches(companyMailRegExp, 'Must be a valid email with company extension')
+    .matches(companyMailRegExp, 'Must be a valid email with company extension')
     .required('Company email address is required'),
   jobTitle: Yup.string().required('Job title is required'),
   monthlyIncome: Yup.string().required('Monthly income is required'),
@@ -1155,8 +1025,8 @@ function LoanForm(props) {
   const [openReason, setOpenReason] = React.useState(false);
   const [bankVerified, setBankVerified] = useState(!!profile?.bank?.accountName);
   //   profile?.company?.isCompanyEmailVerified
-  // const [openOtpModal, setOpenOtpModal] = useState(false);
-  // const [modalTitle, setModalTitle] = useState('');
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [deviceType, setDeviceType] = useState(false);
   // const [modalFieldName, setModalFieldName] = useState('');
   // const [modalFieldValue, setModalFieldValue] = useState('');
   const [isBankVerified, setIsBankVerified] = useState(false);
@@ -1170,7 +1040,9 @@ function LoanForm(props) {
 
   const { settings } = useSelector((state) => state.setting);
 
-  console.log("LOAN OFFER", loanOffer);
+  // console.log("LOAN OFFER", loanOffer);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   let formSchema;
 
@@ -1181,6 +1053,16 @@ function LoanForm(props) {
   } else {
     formSchema = bankSchema;
   }
+
+  useEffect(() => {
+    if (mobile) {
+      setDeviceType('mobile')
+    }
+    else {
+      setDeviceType('pc')
+    }
+   
+  }, [mobile])
 
   useEffect(() => {
     if (bankList?.length) {
@@ -1461,12 +1343,13 @@ function LoanForm(props) {
                   <LoadingButton
                     size="medium"
                     variant="contained"
-                    sx={{ mr: 1 }}
+                    sx={{ mr: deviceType !== "mobile" ? 1 : 0.36 }}
                     disabled={loading}
-                    endIcon={<Iconify icon="eva:close-fill" />}
-                    loading={loading}
+                    endIcon={deviceType !== "mobile" && <Iconify icon="eva:close-fill" />}
+                    loading={rejectLoading}
                     onClick={() => {
                       setLoading(false);
+                      setRejectLoading(false)
                       // setDone(false);
                      
                       // Trigger dialog for stating reason for rejecting loan offer.
@@ -1474,7 +1357,7 @@ function LoanForm(props) {
                       // setOpenLoanForm(false);
                     }}
                   >
-                    {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : 'Reject Offer'}
+                    {getFieldProps('amount').value > loanOffer?.amount ? 'Re-apply' : deviceType === "mobile" ? 'Reject' : 'Reject Offer'}
                   </LoadingButton>
                 )}
                 {getFieldProps('amount').value > loanOffer?.amount ? (
@@ -1486,10 +1369,10 @@ function LoanForm(props) {
                     type="submit"
                     color={activeStep === maxSteps - 1 ? 'success' : 'primary'}
                     disabled={loading}
-                    endIcon={<Iconify icon="eva:chevron-right-outline" />}
+                    endIcon={deviceType !== "mobile" && <Iconify icon="eva:chevron-right-outline" />}
                     loading={loading}
                   >
-                    {activeStep === maxSteps - 1 ? 'Accept Offer' : 'Next'}
+                    {activeStep === maxSteps - 1 ? deviceType === "mobile" ? 'Accept' : 'Accept Offer' : 'Next'}
                   </LoadingButton>
                 )}
               </Box>
@@ -1500,6 +1383,7 @@ function LoanForm(props) {
                 startIcon={<Iconify icon="eva:chevron-left-outline" />}
                 disabled={activeStep === 0}
                 onClick={handleBack}
+                sx={{width: deviceType === "mobile" && 40}}
               >
                 Back
               </Button>
