@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // routes
 import { toast } from 'react-hot-toast'
-import io from "socket.io-client";
+import io from 'socket.io-client'
 import Router from './routes'
 // theme
 import ThemeProvider from './theme'
@@ -16,8 +16,7 @@ import useCompany from './hooks/useCompany'
 import { setCompanies } from './store/reducer/company'
 import useSettings from './hooks/useSettings'
 import { setSettings } from './store/reducer/settings'
-import { baseURL } from './utils/axios';
-
+import { baseURL } from './utils/axios'
 
 function App () {
   const { isAuth, profile } = useSelector(state => state.auth)
@@ -26,55 +25,52 @@ function App () {
   const { data: settingsData } = useSettings()
   const { data: companyData } = useCompany()
   const dispatch = useDispatch()
-  let socketClient;
+  // let socketClient
 
-  const handl = () => {
+  const handl = useCallback(() => {
     if (isAuth && profile) {
       if (document.visibilityState === 'hidden') {
         // Send to server
-        console.log("LEFT TAB JUST NOW !!");
-        socketClient?.emit("left-tab", {userId: profile?.id, email: profile?.emailAddress})
-      }
-      else {
-        console.log("CAME BACK JUST NOW !!");
-        socketClient?.emit("back-to-tab", {userId: profile?.id, email: profile?.emailAddress})
+        console.log('LEFT TAB JUST NOW !!')
+        socket?.emit('left-tab', { userId: profile?.id, email: profile?.emailAddress })
+      } else {
+        console.log('CAME BACK JUST NOW !!')
+        socket?.emit('back-to-tab', { userId: profile?.id, email: profile?.emailAddress })
       }
     }
-  }
+  }, [isAuth, profile])
 
   useEffect(() => {
-    socketClient = io(baseURL);
+    // socketClient = io(baseURL)
     // socketClient.emit("setup", profile);
     // socketClient.on("userConnected", () => setSocketConnected(true));
     // socketClient.on("typing", () => setIsTyping(true));
     // socketClient.on("stop typing", () => setIsTyping(false));
-  }, []);
-
+  }, [])
 
   useEffect(() => {
-   if (socketClient) {
-    socketClient?.on('connect', () => {
-      console.log("SOCKET ID :: ", socket.id) // x8WIv7-mJelg7on_ALbx
-    })
-
-    if (isAuth && profile) {
-      socketClient?.emit('setup', profile);
-
-      socketClient?.on('logout-user', (data) => {
-        console.log("USER TO LOGOUT ::: ", data) // x8WIv7-mJelg7on_ALbx
-        // alert("LOG OUT NOW!!! ");
-        if (data?.email === profile?.emailAddress) {
-          dispatch(setAuth(false));
-          dispatch(setProfile(null))
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-        }
+    if (socket) {
+      socket?.on('connect', () => {
+        console.log('SOCKET ID :: ', socket.id) // x8WIv7-mJelg7on_ALbx
       })
-    }
-   }
 
-    // return () => socket?.disconnect()
-  }, [isAuth, profile])
+      if (isAuth && profile) {
+        socket?.emit('setup', profile)
+
+        socket?.on('logout-user', data => {
+          console.log('USER TO LOGOUT ::: ', data) // x8WIv7-mJelg7on_ALbx
+          // alert("LOG OUT NOW!!! ");
+          if (data?.email === profile?.emailAddress) {
+            dispatch(setAuth(false))
+            dispatch(setProfile(null))
+            localStorage.removeItem('accessToken')
+            localStorage.removeItem('refreshToken')
+          }
+        })
+      }
+    }
+    // return () => socketClient?.disconnect()
+  }, [dispatch, isAuth, profile])
 
   useEffect(() => {
     document.addEventListener('visibilitychange', handl)
@@ -82,7 +78,7 @@ function App () {
     return () => {
       document.removeEventListener('visibilitychange', handl)
     }
-  }, [document.visibilityState])
+  }, [handl])
 
   useEffect(() => {
     dispatch(setLoading(dataLoading))
@@ -102,10 +98,10 @@ function App () {
         dispatch(setAuth(true))
       }
 
-      socketClient?.on(`${data?.id}-user-updated`, payload => {
+      socket?.on(`${data?.id}-user-updated`, payload => {
         dispatch(setProfile(payload))
       })
-      socketClient?.on(`${data?.id}-loan-updated`, payload => {
+      socket?.on(`${data?.id}-loan-updated`, payload => {
         // console.log('payload', payload);
         dispatch(
           updateProfile({

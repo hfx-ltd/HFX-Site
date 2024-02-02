@@ -10,8 +10,12 @@ import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 // Third party
 import toast, { Toaster } from 'react-hot-toast';
-// import { setAuth, setProfile, updateProfile } from '../../store/reducer/auth';
+import io from 'socket.io-client'
+import { useDispatch } from 'react-redux';
+// import { setAuth } from '../../store/reducer/auth';
+import { baseURL } from '../../utils/axios';
 import { useProfile } from '../../hooks';
+import socket from '../../utils/socket'
 // Services
 import APIService from '../../service';
 // component
@@ -23,7 +27,8 @@ export default function LoginForm(props) {
   const { mutate } = props;
   const [loading, setLoading] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  let  socketClient;
 
   const { data, loading: dataLoading, mutate: profileMutate } = useProfile();
   // const navigate = useNavigate();
@@ -41,6 +46,7 @@ export default function LoginForm(props) {
     validationSchema: LoginSchema,
     onSubmit: async () => {
       setLoading(true);
+      socketClient = io(baseURL);
       const response = APIService.post('/auth/login', values);
 
       toast.promise(response, {
@@ -56,8 +62,20 @@ export default function LoginForm(props) {
 
           localStorage.setItem('accessToken', res?.data?.accessToken);
           localStorage.setItem('refreshToken', res?.data?.refreshToken);
+          // if (socketClient) {
+          //   // alert("AVAILa")
+          //   socketClient?.connect();
+          //   socketClient?.on('connect', () => {
+          //     console.log('SOCKET ID :: ', socket.id) // x8WIv7-mJelg7on_ALbx
+          //   })
+            
+
+          //   socketClient?.emit('setup', res?.data?.user)
+          // }
           mutate();
+         
           // console.log('PROFILE DATA >> ', data);
+          // socketClient?.emit('setup', profile)
           setTimeout(() => {
             mutate();
             // console.log('PROFILE DATA >> ', data);
@@ -66,7 +84,7 @@ export default function LoginForm(props) {
           return 'Login successful!';
         },
         error: (err) => {
-          // console.log("WERR :: ", err);
+          console.log("WERR :: ", err);
           setLoading(false);
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },
