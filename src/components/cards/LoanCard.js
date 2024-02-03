@@ -120,11 +120,11 @@ const LoanCard = (props) => {
   useEffect(() => {
     if (done && !profile?.debitCard) {
       // open paystack modal
-      setOpenDebitCardModal(true);
+      // setOpenDebitCardModal(true);
     }
 
     if (profile?.loan && !profile.debitCard) {
-      setOpenDebitCardModal(true);
+      // setOpenDebitCardModal(true);
     }
   }, [done]);
 

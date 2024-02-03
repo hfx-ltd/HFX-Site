@@ -332,10 +332,11 @@ function handleClick (
 ) {
   // Code to be executed when the element is clicked
   // console.log('VALU', values.companyName);
-  const domain = companies.filter(elem => elem?.label === values.companyName)
+  const domain = companies.filter(elem => elem?.label.toLowerCase() === values.companyName.toLowerCase())
   const companyDomain = companyEmail.toString().split('@')[1]
 
-  // console.log('DOMAIN', domain[0]?.domain);
+  console.log('COMPANIES :: ', values.companyName)
+  console.log('DOMAIN', domain[0]?.domain)
 
   // Check if company domain matches
   if (companyDomain === domain[0]?.domain) {
@@ -456,6 +457,12 @@ const WorkComponent = ({
               onInputChange={val => {
                 if (val?.target?.innerText !== '') {
                   setFieldValue('companyName', val?.target?.innerText)
+                  const specif = companies?.filter(
+                    elem => elem?.name.toLowerCase() === val?.target?.innerText.toLowerCase()
+                  )
+                  // console.log("THAT SPE :: ", val?.target?.innerText.toLowerCase());
+                  console.log('THAT SPECIAL COMPANY :: ', specif[0].id)
+                  setFieldValue('company', `${specif[0].id}`)
                 }
                 // console.log('INPUT CHANGES ', val?.target?.innerText);
               }}
@@ -1082,6 +1089,7 @@ function LoanForm (props) {
       bankCode: profile?.bank?.bankCode || '120001',
       employmentStatus: profile?.work?.employmentStatus || 'employee',
       companyName: profile?.work?.companyName || '',
+      company: profile?.work?.company || '',
       companyLocation: profile?.work?.companyLocation || '',
       companyPhoneNumber: profile?.work?.companyPhoneNumber || '',
       companyEmailAddress: profile?.work?.companyEmailAddress || '',
@@ -1093,6 +1101,7 @@ function LoanForm (props) {
     },
     validationSchema: formSchema,
     onSubmit: () => {
+      console.log('PAYLOADS', values)
       if (isValid) {
         if (activeStep === 1) {
           if (values.isCompanyEmailVerified) {
@@ -1137,6 +1146,7 @@ function LoanForm (props) {
         return res?.data?.message
       },
       error: err => {
+        console.log("BANK RESOLVE ERROR :: ", err);
         setLoading(false)
         return err?.response?.data?.message || err?.message || 'Something went wrong, try again.'
       },
@@ -1186,7 +1196,31 @@ function LoanForm (props) {
         duration: values.duration,
         monthlyIncome: values.monthlyIncome,
         salaryDate: values.payDay,
+        employmentStatus: values.employmentStatus,
+        companyName: values.companyName,
+        company: values.company,
+        companyLocation: values.companyLocation,
+        companyPhoneNumber: values.companyPhoneNumber,
+        companyEmailAddress: values.companyEmailAddress,
+        isCompanyEmailVerified: values.isCompanyEmailVerified,
+        jobTitle: values.jobTitle,
+        payDay: values.payDay,
       }
+
+      /*
+      const workPayload = {
+      employmentStatus: req.body.employmentStatus,
+      companyName: req.body.companyName,
+      company: req.body.company,
+      companyLocation: req.body.companyLocation,
+      companyPhoneNumber: req.body.companyPhoneNumber,
+      companyEmailAddress: req.body.companyEmailAddress,
+      isCompanyEmailVerified: req.body.isCompanyEmailVerified,
+      jobTitle: req.body.jobTitle,
+      monthlyIncome: req.body.monthlyIncome,
+      payDay: req.body.payDay,
+    }
+      */
     }
 
     const response = APIService.post('/loan/check-eligibility', payload)
@@ -1257,12 +1291,12 @@ function LoanForm (props) {
         setLoading(false)
 
         // if (profile?.debitCard) {
-        setDone(true)
+        // setDone(true)
         // } else {
         //   setDone(true);
         // }
         setOpenLoanForm(false)
-        setDone(true)
+        // setDone(true)
         mutate('/auth/profile')
         return `Your application is in Review!`
       },
