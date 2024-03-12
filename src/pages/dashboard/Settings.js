@@ -8,13 +8,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { setThemeMode, toggleReceiveNotification } from '../../store/reducer/lifeCycle';
+import { toggleReceiveNotification } from '../../store/reducer/lifeCycle';
 import Page from '../../components/Page';
 import Spacer from '../../components/spacer';
 
-const ColoredTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
-}));
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -24,15 +21,11 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function Settings() {
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
-  const { themeMode, notifyEmail } = useSelector((state) => state.lifeCycle);
+  const { notifyEmail } = useSelector((state) => state.lifeCycle);
   const dispatch = useDispatch();
   // const navigate = useNavigate();
 
-  const handleChange = (evt) => {
-    const value = evt.target.checked ? 'dark' : 'light';
-    localStorage.setItem('mode', value);
-    dispatch(setThemeMode(value));
-  };
+
 
   const handleChangeNotification = () => {
     dispatch(toggleReceiveNotification());
@@ -41,36 +34,7 @@ function Settings() {
   return (
     <Page title="Settings">
       <Container maxWidth="xl">
-        <ColoredTypography variant="h4" sx={{ mb: 5 }}>
-          Settings
-        </ColoredTypography>
-        <StyledGrid
-          container
-          spacing={matches ? 2 : 0}
-          display={'flex'}
-          flexDirection={'row'}
-          justifyContent={'space-between'}
-          alignItems={!matches && 'center'}
-        >
-          <Grid item sm={4} xs={12} padding={2} width={'100%'}>
-            <Typography variant="h4">Theme</Typography>
-            <Typography variant="body2" color="text.secondary">
-              Change your theme to dark or light
-            </Typography>
-          </Grid>
-          <Grid item sm={8} xs={12} paddingX={2} width={'100%'}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={themeMode === 'dark'}
-                  onChange={handleChange}
-                  inputProps={{ 'aria-label': 'controlled' }}
-                />
-              }
-              label="Dark Mode"
-            />
-          </Grid>
-        </StyledGrid>
+       
         <Spacer size={3} />
         <StyledGrid
           container
