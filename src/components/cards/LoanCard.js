@@ -22,7 +22,7 @@ import { LoanForm } from '../forms'
 import EmptyCard from './EmptyCard'
 import APIService from '../../service'
 import { updateProfile } from '../../store/reducer/auth'
-import { setLoading as stLoading } from "../../store/reducer/lifeCycle"
+// import { setLoading } from "../../store/reducer/lifeCycle"
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
@@ -90,7 +90,7 @@ const axiosInstance2 = axios.create({
 const LoanCard = props => {
   const { matches, profile } = props
   const [done, setDone] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, stLoading] = useState(false)
   const [viewBalance, setViewBalance] = useState(true)
   const [openLoanForm, setOpenLoanForm] = useState(false)
   const [openDebitCardModal, setOpenDebitCardModal] = useState(false)
@@ -102,36 +102,6 @@ const LoanCard = props => {
   const dispatch = useDispatch()
   const { mutate } = useSWRConfig()
 
-  // const config = {
-  //   reference: `${referenceName}${new Date().getTime().toString()}`,
-  //   email: profile?.emailAddress,
-  //   firstname: profile?.firstName,
-  //   lastname: profile?.lastName,
-  //   phone: profile?.phoneNumber?.replace('+234', '0'),
-  //   // eslint-disable-next-line radix
-  //   amount: parseInt(payableAmount) * 100,
-  //   publicKey: 'pk_test_743c8bec42d91f3ce953317ff81b65fb1fe1a752',
-  //   channels: ['card'],
-  // };
-
-  // const options = {
-  //   method: 'POST',
-  //   url: 'https://flickopenapi.co/collection/create-charge',
-  //   headers: {
-  //     accept: 'application/json',
-  //     'content-type': 'application/json',
-
-  //   },
-  //   data: {
-  //     email: profile?.emailAddress,
-  //     Phoneno: profile?.phoneNumber?.replace('+234', '0'),
-  //     amount: `${parseInt(payableAmount, 10) * 100}`,
-  //     webhookUrl: 'https://app.fastquid.ng',
-  //     currency_collected: 'NGN',
-  //     currency_settled: 'NGN',
-  //     redirectUrl: 'https://getflick.co',
-  //   },
-  // }
 
   const flickConfig = {
     email: profile?.emailAddress,
@@ -139,8 +109,9 @@ const LoanCard = props => {
     amount: `${parseInt(payableAmount, 10) * 100}`,
     currency_collected: 'NGN',
     currency_settled: 'NGN',
-    redirectUrl: 'https://app.fastquid.ng',
-    webhookUrl: 'http://192.168.133.247:8080/webhook',
+    redirectUrl: 'https://app.fastquid.ng/repayment',
+    transactionId: `Flick_repayment_${new Date().getTime()}`,
+    webhookUrl: 'https://fast-quid-api-service.vercel.app/api/loan/disburse-webhook',
   }
 
   // const initializePayment = usePaystackPayment(config);
@@ -181,15 +152,15 @@ const LoanCard = props => {
   }
 
   // you can call this function anything
-  const onSuccess = reference => {
-    setLoading(true)
+  const onSuccess = response => {
+    stLoading(true)
     // Implementation for whatever you want to do with reference and after success call.
-    const response = APIService.post('/transaction/create', reference)
-    toast.promise(response, {
+    const resp = APIService.post('/transaction/repay', {loan: profile?.loan, user: profile, response})
+    toast.promise(resp, {
       loading: 'loading...',
       success: res => {
         setDone(false)
-        setLoading(false)
+        stLoading(false)
         setOpenDebitCardModal(false)
         dispatch(
           updateProfile({
@@ -203,32 +174,30 @@ const LoanCard = props => {
           : 'Your Loan Has Been Settled Successfully!'
       },
       error: err => {
-        setLoading(false)
+        stLoading(false)
         return err?.response?.data?.message || err?.message || 'Something went wrong, try again.'
       },
     })
   }
 
-  // you can call this function anything
-  const onClose = () => {
-    setLoading(false)
-  }
-
   const handleRepay = () => {
+    console.log("FLIQUE:: ", flickConfig);
     setReferenceName('LOAN_REPAYMENT_')
     setPayableAmount(profile?.loan?.totalAmountDue)
 
     stLoading(true)
 
     axiosInstance2
-      .post('/collection/create-charge', flickConfig, {})
+      .post('/collection/create-charge', flickConfig)
       .then(res => {
         stLoading(false)
         console.log('FLICK RESPONSE CHECKOUT', res.data?.data)
         window.open(res.data?.data?.url, '_blank')
 
+        onSuccess(res.data?.data);
+
         // Transaction response / ID
-        const transactionId = res.data?.data?.transactionId
+        // const transactionId = res.data?.data?.Id
       })
       .catch(error => {
         console.log('FLICK CHECKOUT ERROR ', error)
@@ -246,7 +215,7 @@ const LoanCard = props => {
           loanOffer={loanOffer}
           setLoanOffer={setLoanOffer}
           loading={loading}
-          setLoading={setLoading}
+          setLoading={stLoading}
           toast={toast}
           setOpenLoanForm={setOpenLoanForm}
           setDone={setDone}

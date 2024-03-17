@@ -1,5 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
+import Repaid from '../pages/dashboard/Repaid';
 import CompleteSignup from '../pages/auth/completeSignup';
 import DashboardLayout from '../layouts/dashboard';
 import AuthLayout from '../layouts/auth/AuthLayout';
@@ -35,6 +36,10 @@ export default function Router({ isAuth, loading, profile, profileMutate }) {
       ],
     }, 
     {
+      path: '/repayment',
+      element: <Repaid profile={profile} />,
+    }, 
+    {
       path: '/',
       element: !isAuth && !profile ? <AuthLayout loading={loading} /> : <Navigate to="/dashboard" />,
       children: [
@@ -47,6 +52,7 @@ export default function Router({ isAuth, loading, profile, profileMutate }) {
         { path: '404', element: <NotFound /> },
         { path: 'complete_signup', element: <CompleteSignup /> },
         { path: '*', element: <Navigate to="/404" /> },
+        { path: 'repayment', element: <Repaid profile={profile} /> },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
