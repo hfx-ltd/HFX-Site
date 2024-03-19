@@ -192,7 +192,8 @@ const LoanCard = props => {
       .then(res => {
         stLoading(false)
         console.log('FLICK RESPONSE CHECKOUT', res.data?.data)
-        window.open(res.data?.data?.url, '_blank')
+        // window.open(res.data?.data?.url, '_blank')
+        window.location.href=`${res.data?.data?.url}`.
 
         onSuccess(res.data?.data);
 
