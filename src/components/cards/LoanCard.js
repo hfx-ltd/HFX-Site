@@ -191,13 +191,13 @@ const LoanCard = props => {
     stLoading(true)
 
     axiosInstance2
-      .post('/collection/create-charge', flickConfig)
+      .post('/collection/create-charge', flickConfig, {headers: {"Access-Control-Allow-Origin": "*"},},)
       .then(res => {
         stLoading(false)
         console.log('FLICK RESPONSE CHECKOUT', res.data?.data)
-        // window.open(res.data?.data?.url, '_blank')
+        window.open(res.data?.data?.url, '_blank')
         setSpinning(false);
-        window.location.href=`${res.data?.data?.url}`.
+        // window.location.href=`${res.data?.data?.url}`.
 
         onSuccess(res.data?.data);
 
