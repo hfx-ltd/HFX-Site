@@ -278,7 +278,7 @@ const LoanCard = props => {
                 size='large'
                 fullWidth={!matches}
                 endIcon={ 
-                  spinning && <CircularProgress />
+                  spinning && <CircularProgress size={32} />
                 }
               >
                 Repay Loan
