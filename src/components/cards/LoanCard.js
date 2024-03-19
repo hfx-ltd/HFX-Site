@@ -15,6 +15,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import axios from 'axios'
+import { CircularProgress } from '@mui/material'
 import Iconify from '../Iconify'
 import formatCurrency from '../../utils/formatCurrency'
 import CustomModal from '../modal/CustomModal'
@@ -90,6 +91,7 @@ const axiosInstance2 = axios.create({
 const LoanCard = props => {
   const { matches, profile } = props
   const [done, setDone] = useState(false)
+  const [spinning, setSpinning] = useState(false)
   const [loading, stLoading] = useState(false)
   const [viewBalance, setViewBalance] = useState(true)
   const [openLoanForm, setOpenLoanForm] = useState(false)
@@ -182,6 +184,7 @@ const LoanCard = props => {
 
   const handleRepay = () => {
     console.log("FLIQUE:: ", flickConfig);
+    setSpinning(true);
     setReferenceName('LOAN_REPAYMENT_')
     setPayableAmount(profile?.loan?.totalAmountDue)
 
@@ -193,6 +196,7 @@ const LoanCard = props => {
         stLoading(false)
         console.log('FLICK RESPONSE CHECKOUT', res.data?.data)
         // window.open(res.data?.data?.url, '_blank')
+        setSpinning(false);
         window.location.href=`${res.data?.data?.url}`.
 
         onSuccess(res.data?.data);
@@ -203,6 +207,7 @@ const LoanCard = props => {
       .catch(error => {
         console.log('FLICK CHECKOUT ERROR ', error)
         stLoading(false)
+        setSpinning(false);
       })
     // initializePayment(onSuccess, onClose);
   }
@@ -272,8 +277,12 @@ const LoanCard = props => {
                 sx={{ bgcolor: 'white', color: theme.palette.primary.main }}
                 size='large'
                 fullWidth={!matches}
+                endIcon={ 
+                  spinning && <CircularProgress />
+                }
               >
                 Repay Loan
+               
               </Button>
             ) : profile?.loan?.status === 'denied' ? (
               <Box display={'flex'} flexDirection='row' justifyContent={'space-between'} alignItems={'center'}>
