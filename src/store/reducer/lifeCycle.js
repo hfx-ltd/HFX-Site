@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  loading: true,
+  loading: false,
   themeMode: localStorage.getItem('mode') || 'light',
   notifyEmail: true,
   status: {

@@ -1,52 +1,57 @@
-import { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 // routes
-import { toast } from 'react-hot-toast'
-import io from 'socket.io-client'
-import Router from './routes'
-// theme
-import ThemeProvider from './theme'
-// components
-import ScrollToTop from './components/ScrollToTop'
+// import { toast } from 'react-hot-toast';
+// import io from 'socket.io-client';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { Backdrop, CircularProgress, ThemeProvider, useMediaQuery } from '@mui/material'
+import toast, { Toaster } from 'react-hot-toast'
+import Home from './pages/home'
+import Header from './layouts/header'
+import theme from './theme'
+import MobileHeader from './layouts/header/mobile-header'
+import Footer from './layouts/footer'
+import Login from './pages/auth/Login'
+import Signup from './pages/auth/Signup'
+import About from './pages/about'
+import ContactUs from './pages/contact'
+import Overview from './pages/dashboard/Overview'
+import Profile from './pages/dashboard/Profile'
+import Transactions from './pages/dashboard/Transactions'
+import DashboardLayout from './layouts/dashboard'
+import VerifyOtp from './pages/auth/VerifyOtp'
+import socket from './utils/socket'
 import { useProfile } from './hooks'
 import { setAuth, setProfile, updateProfile, logOut } from './store/reducer/auth'
-import socket from './utils/socket'
 import { setLoading } from './store/reducer/lifeCycle'
-import useCompany from './hooks/useCompany'
-import { setCompanies } from './store/reducer/company'
-import useSettings from './hooks/useSettings'
-import { setSettings } from './store/reducer/settings'
-import { baseURL } from './utils/axios'
+import Support from './pages/dashboard/Support'
+import Deposit from './pages/dashboard/Deposit'
+import Withdraw from './pages/dashboard/Withdraw'
+import OurPlans from './pages/dashboard/Plans'
+// theme
 
 function App () {
   const { isAuth, profile } = useSelector(state => state.auth)
   const { loading } = useSelector(state => state.lifeCycle)
+  const [deviceType, setDeviceType] = React.useState('mobile')
+  const [show, setShow] = React.useState(true);
   const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile()
-  const { data: settingsData } = useSettings()
-  const { data: companyData } = useCompany()
   const dispatch = useDispatch()
-  // let socketClient
+  const location = useLocation()
+  // const { data: settingsData } = useSettings()
 
-  const handl = useCallback(() => {
-    if (isAuth && profile) {
-      if (document.visibilityState === 'hidden') {
-        // Send to server
-        console.log('LEFT TAB JUST NOW !!')
-        socket?.emit('left-tab', { userId: profile?.id, email: profile?.emailAddress })
-      } else {
-        console.log('CAME BACK JUST NOW !!')
-        socket?.emit('back-to-tab', { userId: profile?.id, email: profile?.emailAddress })
-      }
-    }
-  }, [isAuth, profile])
+  const xs = useMediaQuery(theme.breakpoints.only('xs'))
+  const sm = useMediaQuery(theme.breakpoints.only('sm'))
 
   useEffect(() => {
-    // socketClient = io(baseURL)
-    // socketClient.emit("setup", profile);
-    // socketClient.on("userConnected", () => setSocketConnected(true));
-    // socketClient.on("typing", () => setIsTyping(true));
-    // socketClient.on("stop typing", () => setIsTyping(false));
-  }, [])
+    if (xs) {
+      setDeviceType('mobile')
+    } else if (sm) {
+      setDeviceType('tablet')
+    } else {
+      setDeviceType('pc')
+    }
+  }, [sm, xs])
 
   useEffect(() => {
     if (socket) {
@@ -73,17 +78,10 @@ function App () {
   }, [dispatch, isAuth, profile])
 
   useEffect(() => {
-    document.addEventListener('visibilitychange', handl)
-
-    return () => {
-      document.removeEventListener('visibilitychange', handl)
-    }
-  }, [handl])
-
-  useEffect(() => {
     dispatch(setLoading(dataLoading))
 
     if (data) {
+      console.log("APP.JS PROFILE ::: ", data);
       // handle account status here
 
       if (data?.accountStatus === 'frozen') {
@@ -112,26 +110,67 @@ function App () {
       })
     }
 
-    if (companyData) {
-      dispatch(setCompanies(companyData?.docs))
-    }
-
-    if (settingsData) {
-      dispatch(setSettings(settingsData?.docs[0]))
-    }
-
     if (loggedOut) {
       dispatch(setAuth(false))
       dispatch(setProfile(null))
     }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading, dispatch, companyData, settingsData])
+  }, [data, loggedOut, dataLoading])
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/dashboard')) {
+      setShow(false)
+    }else {
+      setShow(true)
+    }
+    window.scrollTo(0, 0);
+  }, [location])
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken')
+
+    if (accessToken) {
+      dispatch(setAuth(true));
+    }
+  }, [])
+
 
   return (
-    <ThemeProvider>
-      <ScrollToTop />
-      <Router isAuth={isAuth} profile={profile} profileMutate={profileMutate} loading={loading} />
+   <div style={{height: '100vh'}} >
+     <ThemeProvider theme={theme}  >
+      <Toaster />
+      <Backdrop sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 5000 }} open={loading}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+      {show && <>{deviceType === 'pc' ? <Header /> : <MobileHeader />}</>}
+      <Routes  >
+        <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/login' element={<Login profileMutate={profileMutate} />} />
+        <Route path='/signup' element={<Signup profileMutate={profileMutate} />} />
+        <Route path='/verify-otp' element={<VerifyOtp deviceType={deviceType} />} />
+        <Route path='/contact-us' element={<ContactUs />} />
+        <Route
+          path='/dashboard'
+          shouldRevalidate
+          element={isAuth && profile ? <DashboardLayout profile={profile} loading={loading} /> : <Navigate to='/' />}
+        >
+          <Route path='/dashboard' element={<Navigate to='/dashboard/overview' />} />
+          <Route path='/dashboard/overview' element={<Overview profile={profile} />} />
+          <Route path='/dashboard/deposit' element={<Deposit profile={profile} />} />
+          <Route path='/dashboard/withdraw' element={<Withdraw />} />
+          <Route path='/dashboard/investment-plans' element={<OurPlans />} />
+          <Route path='/dashboard/transactions' element={<Transactions />} />
+          <Route path='/dashboard/profile' element={<Profile profile={profile} />} />
+          <Route path='/dashboard/support' element={<Support profile={profile} />} />
+        </Route>
+      </Routes>
+      {
+        show && <Footer />
+      }
+      
     </ThemeProvider>
+   </div>
   )
 }
 

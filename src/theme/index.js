@@ -1,49 +1,113 @@
-import PropTypes from 'prop-types';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-// material
-import { CssBaseline } from '@mui/material';
-import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
-//
-import palette from './palette';
-import typography from './typography';
-import componentsOverride from './overrides';
-import shadows, { customShadows } from './shadows';
+import { createTheme } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
-ThemeProvider.propTypes = {
-  children: PropTypes.node,
-};
-
-export default function ThemeProvider({ children }) {
-  const { themeMode } = useSelector((state) => state.lifeCycle);
-
-  const shadowColor = themeMode === 'dark' ? '#000' : '#335';
-
-  const themeOptions = useMemo(
-    () => ({
-      palette: {
-        ...palette(themeMode),
-        mode: themeMode,
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#161616",
+      light: "#1616161d",
+    },
+    secondary: {
+      main: "#CD0511",
+      light: "#CD05111d",
+    },
+    info: {
+      main: "#07B4B4",
+    },
+  },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputBase-root": {
+            border: "none", // Remove the border
+          },
+        },
       },
-      shape: { borderRadius: 8 },
-      typography,
-      shadows: shadows(shadowColor),
-      customShadows: customShadows(shadowColor, palette(themeMode)),
-    }),
-    [themeMode]
-  );
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          width: "86%",
+          maxWidth: "90%",
+        },
+        disableGutters: true,
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        circular: {
+          ":root": {
+            border: "2px solid",
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: "Poppins",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          border: "none",
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          disableUnderline: true,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          border: "0.4px solid",
+        },
+      },
+    },
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          textAlign: "left",
+          justifyContent: "start",
+        },
+      },
+    },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          padding: 0
+        }
+      }
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none'
+        }
+      }
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'none'
+        }
+      }
+    }
+  },
+});
 
-  const theme = createTheme(themeOptions);
-  theme.components = componentsOverride(theme);
-
-  return (
-    <StyledEngineProvider injectFirst>
-      <MUIThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </MUIThemeProvider>
-    </StyledEngineProvider>
-  );
-}
+export default theme;

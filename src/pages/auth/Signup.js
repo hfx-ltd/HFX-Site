@@ -1,59 +1,56 @@
 import { Link as RouterLink } from 'react-router-dom';
+import React from 'react';
 // @mui
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
+import { Toolbar, useMediaQuery } from '@mui/material';
+import SignupForm from '../../components/forms/signup-form';
 // sections
-import { RegisterForm } from '../../components/forms';
+// import { RegisterForm } from '../../components/forms';
 // ----------------------------------------------------------------------
 
-const ContentStyle = styled('div')(({ theme }) => ({
-  width: '100%',
-  margin: 'auto',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column',
-  padding: theme.spacing(5),
-  background: theme.palette.background.paper,
-  borderRadius: 16,
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(2),
-  },
-}));
+const Signup = ({props}) => {
+  const theme = useTheme();
+  const [deviceType, setDeviceType] = React.useState('mobile');
 
-const ColoredTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
-}));
+  const xs = useMediaQuery(theme.breakpoints.only('xs'));
+  const sm = useMediaQuery(theme.breakpoints.only('sm'));
 
-const Signup = (props) => (
-  <Box>
-    <ContentStyle>
-      <ColoredTypography variant="h3">Let’s get you started!</ColoredTypography>
+  React.useEffect(() => {
+    if (xs) {
+      setDeviceType('mobile');
+    } else if (sm) {
+      setDeviceType('tablet');
+    } else {
+      setDeviceType('pc');
+    }
+  }, [sm, xs]);
+  return (
+    <Box>
+      <Toolbar />
+      <Toolbar />
+      <SignupForm deviceType={deviceType} theme={theme} mutate={props.profileMutate} />
 
-      <Typography sx={{ color: 'text.secondary', mb: 5 }}>Hey there, let’s set up your FastQuid account.</Typography>
-      <RegisterForm mutate={props.profileMutate} />
-    </ContentStyle>
-
-    <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 5 }}>
-      <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
-        Already have an account?
-        <Link
-          component={RouterLink}
-          variant="subtitle2"
-          color="black"
-          to="/login"
-          underline="hover"
-          sx={{ marginLeft: 1 }}
-        >
-          Login
-        </Link>
-      </Box>
-    </Stack>
-  </Box>
-);
+      <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 5 }}>
+        <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
+          Already have an account?
+          <Link
+            component={RouterLink}
+            variant="subtitle2"
+            color="black"
+            to="/login"
+            underline="hover"
+            sx={{ marginLeft: 1 }}
+          >
+            Login
+          </Link>
+        </Box>
+      </Stack>
+    </Box>
+  );
+};
 
 export default Signup;

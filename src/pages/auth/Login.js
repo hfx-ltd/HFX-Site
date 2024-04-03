@@ -1,48 +1,44 @@
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
+import React from "react"
 // sections
-import { Grid } from '@mui/material';
-import { LoginForm } from '../../components/forms';
+import { Grid, Toolbar, useMediaQuery } from '@mui/material';
+import LoginForm from '../../components/forms/login-form';
+// import { LoginForm } from '../../components/forms';
 
-// ----------------------------------------------------------------------
-
-const ContentStyle = styled('div')(({ theme }) => ({
-  width: '100%',
-  margin: 'auto',
-  height: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column',
-  padding: theme.spacing(5),
-  background: '#fff', 
-  borderRadius: 16,
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(2),
-  },
-}));
-
-const ColoredTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
-}));
-
-// ----------------------------------------------------------------------
 
 export default function Login(props) {
+
+  const theme = useTheme();
+  const [deviceType, setDeviceType] = React.useState('mobile');
+
+  const xs = useMediaQuery(theme.breakpoints.only('xs'))
+  const sm = useMediaQuery(theme.breakpoints.only('sm'))
+
+  React.useEffect(() => {
+    if (xs) {
+      setDeviceType('mobile');
+      
+    }
+    else if (sm) {
+      setDeviceType('tablet');
+      
+    } else {
+      setDeviceType('pc');
+    }
+  }, [sm, xs])
+
+
   return (
-    <Box>
-      <ContentStyle>
-        <ColoredTypography variant="h3">Sign into your account!</ColoredTypography>
-
-        <Typography sx={{ color: 'black', mb: 5 }}>Securely login to your FastQuid.</Typography>
-        <LoginForm mutate={props.profileMutate} />
-      </ContentStyle>
-
+    <Box bgcolor={'#F4F4F4'} >
+      <Toolbar/>
+      <Toolbar/>
+       <LoginForm deviceType={deviceType} theme={theme} mutate={props.profileMutate} />
       <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ my: 2 }}>
         <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
           Don't have an account?
@@ -61,6 +57,7 @@ export default function Login(props) {
           Forgot password?
         </Link>
       </Stack>
+      <Toolbar/>
     </Box>
   );
 }

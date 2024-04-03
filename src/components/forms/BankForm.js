@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from '@mui/material/Typography';
 import APIService from '../../service';
-import { useSWRFetch } from '../../hooks';
+// import { useSWRFetch } from '../../hooks';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   marginBottom: 10,
@@ -32,7 +32,8 @@ const bankSchema = Yup.object().shape({
 function BankForm(props) {
   const { bank, setBank, mutate, loading, setLoading, setOpenModal } = props;
   const [banks, setBanks] = useState([]);
-  const { data: bankList } = useSWRFetch('/bank/list');
+  // const { data: bankList } = useSWRFetch('/bank/list');
+  let bankList;
 
   useEffect(() => {
     if (bankList?.length) {

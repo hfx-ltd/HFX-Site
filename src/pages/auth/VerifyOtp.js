@@ -8,13 +8,13 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 // sections
-import { VerifyOTPForm } from '../../components/forms';
+import { Container, Toolbar } from '@mui/material';
+import VerifyOTPForm from '../../components/forms/VerifyOTPForm';
 import APIService from '../../service';
 
 // ----------------------------------------------------------------------
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  width: '100%',
   margin: 'auto',
   height: '100%',
   display: 'flex',
@@ -33,7 +33,7 @@ const ColoredTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
 }));
 
-const VerifyOtp = () => {
+const VerifyOtp = ({deviceType}) => {
   const [loading, setLoading] = useState(false);
   const [resendCount, setResendCount] = useState(0);
   const location = useLocation();
@@ -68,7 +68,11 @@ const VerifyOtp = () => {
   };
 
   return (
-    <Box>
+    <Box p={2} component={deviceType === "pc" ? Container : Box} >
+      <Toolbar/>
+      {
+        deviceType === "pc" ? <Toolbar/> : <br/>
+      }
       <ContentStyle>
         <ColoredTypography variant="h3">Verify Account!</ColoredTypography>
 

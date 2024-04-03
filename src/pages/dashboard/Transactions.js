@@ -7,9 +7,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { useSWRFetch } from '../../hooks';
+// import { useSWRFetch } from '../../hooks';
 import Page from '../../components/Page';
-import TransactionList from '../../components/list/TransactionList';
+// import TransactionList from '../../components/list/TransactionList';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,25 +51,25 @@ function Transactions(props) {
   const [tab, setTab] = useState(0);
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const [transactions, setTransactions] = useState([]);
-  const { data } = useSWRFetch('transaction/single');
+  // const { data } = useSWRFetch('transaction/single');
 
-  useEffect(() => {
-    if (data?.length) {
-      setTransactions(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.length) {
+  //     setTransactions(data);
+  //   }
+  // }, [data]);
 
-  const handleChange = (_, newValue) => {
-    const type = tabs[newValue]?.toLowerCase();
-    if (data?.length) {
-      if (newValue === 0) {
-        setTransactions(data);
-      } else {
-        setTransactions(() => data?.filter((item) => item?.type === type));
-      }
-    }
-    setTab(newValue);
-  };
+  // const handleChange = (_, newValue) => {
+  //   const type = tabs[newValue]?.toLowerCase();
+  //   if (data?.length) {
+  //     if (newValue === 0) {
+  //       setTransactions(data);
+  //     } else {
+  //       setTransactions(() => data?.filter((item) => item?.type === type));
+  //     }
+  //   }
+  //   setTab(newValue);
+  // };
 
   return (
     <Page title="Transactions">
@@ -78,7 +78,7 @@ function Transactions(props) {
           Transactions
         </ColoredTypography>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
-          <Tabs value={tab} onChange={handleChange} aria-label="tab">
+          <Tabs value={tab} onChange={() => {}} aria-label="tab">
             {tabs.map((item, index) => (
               <Tab key={index} label={item} {...a11yProps(0)} />
             ))}
@@ -86,7 +86,7 @@ function Transactions(props) {
         </Box>
         {tabs?.map((item, index) => (
           <TabPanel key={item} value={tab} index={index}>
-            <TransactionList matches={matches} data={transactions} full />
+            {/* <TransactionList matches={matches} data={transactions} full /> */}
           </TabPanel>
         ))}
       </Container>

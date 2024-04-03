@@ -26,7 +26,7 @@ import { logOut } from '../../store/reducer/auth';
 const DRAWER_WIDTH = 280;
 
 const RootStyle = styled('div')(({ theme }) => ({
-  backgroundColor: alpha(theme.palette.background.default, 0.72),
+  backgroundColor: alpha(theme.palette.primary.main, 0.72),
   [theme.breakpoints.up('lg')]: {
     flexShrink: 0,
     width: DRAWER_WIDTH,
@@ -68,7 +68,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Logo titleColor="white" title="Fastquid" colorizer={"white"} />
+        <Logo titleColor="white" title="HFX" colorizer={"white"} />
       </Box>
 
       <NavSection navConfig={navConfig} />
@@ -92,7 +92,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
           open={isOpenSidebar}
           onClose={onCloseSidebar}
           PaperProps={{
-            sx: { width: DRAWER_WIDTH, backgroundColor: themeMode === 'dark' ? alpha(themer.palette.background.default, 1.0) : 'primary.darker' },
+            sx: { width: DRAWER_WIDTH, backgroundColor: themer.palette.primary.main },
           }}
         >
           {renderContent}
@@ -106,7 +106,7 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              backgroundColor: themeMode === 'dark' ? alpha(themer.palette.background.default, 1.0) : 'primary.darker',
+              backgroundColor: themer.palette.primary.main,
               borderRightStyle: 'dashed',
             },
           }}

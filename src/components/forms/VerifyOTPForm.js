@@ -57,6 +57,10 @@ function VerifyOTPForm(props) {
             localStorage.setItem('refreshToken', location?.state?.refreshToken);
             // //   fetch user here
             mutate('/auth/profile');
+            
+
+            navigate('/dashboard/overview', { state: location?.state?.emailAddress, replace: true });
+
           } else if (location?.state?.emailAddress) {
             navigate('/reset-password', { state: location?.state?.emailAddress, replace: true });
           } else {

@@ -53,7 +53,7 @@ function NavItem({ item, active }) {
   };
 
   const activeRootStyle = {
-    color: 'primary.darker',
+    color: theme.palette.secondary.main,
     fontWeight: 'fontWeightMedium',
     bgcolor: theme.palette.common.white,
   };
