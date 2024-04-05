@@ -28,6 +28,8 @@ import Support from './pages/dashboard/Support'
 import Deposit from './pages/dashboard/Deposit'
 import Withdraw from './pages/dashboard/Withdraw'
 import OurPlans from './pages/dashboard/Plans'
+import Services from './pages/services'
+import Advantages from './pages/advantages'
 // theme
 
 function App () {
@@ -123,7 +125,9 @@ function App () {
     }else {
       setShow(true)
     }
-    window.scrollTo(0, 0);
+    if (!location.pathname.startsWith('/service')) {
+      window.scrollTo(0, 0);
+    }
   }, [location])
 
   useEffect(() => {
@@ -146,8 +150,10 @@ function App () {
       <Routes  >
         <Route path='/' element={<Home />} />
         <Route path='/about' element={<About />} />
-        <Route path='/login' element={<Login profileMutate={profileMutate} />} />
-        <Route path='/signup' element={<Signup profileMutate={profileMutate} />} />
+        <Route path='/service' element={<Services />} />
+        <Route path='/advantages' element={<Advantages />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/verify-otp' element={<VerifyOtp deviceType={deviceType} />} />
         <Route path='/contact-us' element={<ContactUs />} />
         <Route

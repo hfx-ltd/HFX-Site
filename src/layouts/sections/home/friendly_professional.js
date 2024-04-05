@@ -32,7 +32,7 @@ const FriendlyProfessional = ({ theme, deviceType }) => (
               </Typography>
 
               <Typography  gutterBottom my={2}>
-              The HFM brand has become a global leader in online trading, specializing in forex, derivatives on US and UK stocks, commodities, spot metals, and indices.Client fund security has been a part of our philosophy alongside unmatched trading conditions and customer support
+              The HFX brand has become a global leader in online trading, specializing in forex, derivatives on US and UK stocks, commodities, spot metals, and indices.Client fund security has been a part of our philosophy alongside unmatched trading conditions and customer support
               </Typography>
             </Box>
           </Grid>

@@ -19,7 +19,7 @@ const OurMission = ({ theme, deviceType }) => (
         </Typography>
         <br/>
         <Typography>
-        Our mission is to provide the best customer service to our clients by maintaining a superb client-centric culture. HFM aims to lead the way through the use of cutting-edge technology, innovative system solutions and unrivalled customer service.
+        Our mission is to provide the best customer service to our clients by maintaining a superb client-centric culture. HFX aims to lead the way through the use of cutting-edge technology, innovative system solutions and unrivalled customer service.
         </Typography>
       </Box>
     </Container>

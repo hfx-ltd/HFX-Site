@@ -17,7 +17,7 @@ const Signup = ({props}) => {
   const [deviceType, setDeviceType] = React.useState('mobile');
 
   const xs = useMediaQuery(theme.breakpoints.only('xs'));
-  const sm = useMediaQuery(theme.breakpoints.only('sm'));
+  const sm = useMediaQuery(theme.breakpoints.only('sm')); 
 
   React.useEffect(() => {
     if (xs) {
@@ -32,7 +32,7 @@ const Signup = ({props}) => {
     <Box>
       <Toolbar />
       <Toolbar />
-      <SignupForm deviceType={deviceType} theme={theme} mutate={props.profileMutate} />
+      <SignupForm deviceType={deviceType} theme={theme} />
 
       <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ pb: 5 }}>
         <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>

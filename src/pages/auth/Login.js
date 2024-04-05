@@ -38,7 +38,7 @@ export default function Login(props) {
     <Box bgcolor={'#F4F4F4'} >
       <Toolbar/>
       <Toolbar/>
-       <LoginForm deviceType={deviceType} theme={theme} mutate={props.profileMutate} />
+       <LoginForm deviceType={deviceType} theme={theme} />
       <Stack direction="column" alignItems="center" justifyContent="center" spacing={2} sx={{ my: 2 }}>
         <Box sx={{ color: 'rgba(0, 0, 0, 0.85)' }}>
           Don't have an account?

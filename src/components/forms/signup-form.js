@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import APIService from '../../service';
 
-const SignupForm = ({ theme, deviceType, mutate }) => {
+const SignupForm = ({ theme, deviceType, }) => {
   const [show, setShow] = React.useState(false);
   const [loading, setLoading] = React.useState();
 

@@ -16,12 +16,13 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ArrowDropDown, Menu } from '@mui/icons-material'
 import OutlinedBtn from '../../components/buttons/outlined-button'
 import logo from '../../assets/images/hfx-logo.png'
 import FilledBtn from '../../components/buttons/filled-button'
 import './nav.css'
+import { setCurrentService } from '../../store/reducer/misc'
 
 const pages = [
   {
@@ -46,23 +47,6 @@ const pages = [
   },
 ]
 
-const resources = [
-  { title: 'Publications', to: '/resources/publications' },
-  { title: 'Downloads', to: '/resources/downloads' },
-  { title: 'Reports', to: '/resources/reports' },
-  { title: 'Gallery', to: '/resources/gallery' },
-  { title: 'Research', to: '/resources/research' },
-]
-
-const abouts = [
-  { title: 'About RSPHCMB', to: '/about' },
-  { title: 'Board of Trustees', to: '/about/bot' },
-  { title: 'Departments', to: '/about/departments' },
-  { title: 'Health Authority', to: '/about/lga' },
-  { title: 'Health Centres', to: '/about/health-centres' },
-  { title: 'Ward Committees', to: '/about/wdc' },
-]
-
 const Header = () => {
   const [scrolled, setScrolled] = React.useState(false)
   const [show, setShow] = React.useState(true)
@@ -72,6 +56,7 @@ const Header = () => {
 
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
 
   const theme = useTheme()
 
@@ -85,10 +70,6 @@ const Header = () => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null)
   }
 
   const handleScroll = () => {
@@ -114,7 +95,7 @@ const Header = () => {
     },
     {
       title: 'Why Choose Us',
-      link: '/why-choose-us',
+      link: '/advantages',
     },
     {
       title: 'Partner With Us',
@@ -123,8 +104,8 @@ const Header = () => {
     {
       title: 'Blog',
       link: '/blog',
-    }
-  ];
+    },
+  ]
 
   const rightItems = [
     {
@@ -142,40 +123,43 @@ const Header = () => {
     {
       title: 'Help & FAQs',
       link: '/help',
-    }
+    },
   ]
 
-
   const investItems1 = [
-    
     {
       title: 'Mutual funds',
-      link: '/mutual-funds',
+      link: '/service',
+      type: 'mutual-funds',
     },
     {
       title: 'Forex',
-      link: '/forex',
+      link: '/service',
+      type: 'forex',
     },
     {
       title: 'Shares',
-      link: '/shares',
-    }
+      link: '/service',
+      type: 'shares',
+    },
   ]
 
   const investItems2 = [
-    
     {
       title: 'ETFs',
-      link: '/etfs',
+      link: '/service',
+      type: 'etfs',
     },
     {
       title: 'Crypto currencies',
-      link: '/crypto-invest',
+      type: 'crypto',
+      link: '/service',
     },
     {
       title: 'Commodities',
-      link: '/commodities-invest',
-    }
+      link: '/service',
+      type: 'commodities',
+    },
   ]
 
   return (
@@ -263,32 +247,46 @@ const Header = () => {
                     </Button>
                     <div className='dropdown2-content'>
                       {2 > 1 && (
-                        <Grid container spacing={{ xs: 0, md: 0 }} sx={{color: 'white'}} columns={{ xs: 4, sm: 8, md: 12 }}>
-                          <Grid item xs={12} sm={6} md={6} >
-                            {
-                              investItems1.map((item) => (<ListItem key={item.title} type='button' >
-                                <NavLink to={item.link} >
+                        <Grid
+                          container
+                          spacing={{ xs: 0, md: 0 }}
+                          sx={{ color: 'white' }}
+                          columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                          <Grid item xs={12} sm={6} md={6}>
+                            {investItems1.map(item => (
+                              <ListItem
+                                key={item.title}
+                                type='button'
+                                onClick={() => {
+                                  dispatch(setCurrentService(item.title))
+                                }}
+                              >
+                                <NavLink to={item.link} state={{ title: item?.title }}>
                                   {item.title}
                                 </NavLink>
-                              </ListItem>))
-                            }
+                              </ListItem>
+                            ))}
                           </Grid>
                           <Divider />
-                          <Grid item xs={12} sm={6} md={6} >
-                            {
-                              investItems2.map((item) => (<ListItem key={item.title} type='button' >
-                                <NavLink to={item.link} >
-                                  {item.title}
-                                </NavLink>
-                              </ListItem>))
-                            }
+                          <Grid item xs={12} sm={6} md={6}>
+                            {investItems2.map(item => (
+                              <ListItem
+                                key={item.title}
+                                type='button'
+                                onClick={() => {
+                                  dispatch(setCurrentService(item.title))
+                                }}
+                              >
+                                <NavLink to={item.link} state={{ title: item?.title }}>{item.title}</NavLink>
+                              </ListItem>
+                            ))}
                           </Grid>
                         </Grid>
                       )}
                     </div>
                   </div>
-                ) : 
-                page.title === 'Company' ? (
+                ) : page.title === 'Company' ? (
                   <div className='dropdown'>
                     <Button
                       class='dropbtn'
@@ -313,32 +311,32 @@ const Header = () => {
                     </Button>
                     <div className='dropdown2-content'>
                       {2 > 1 && (
-                        <Grid container spacing={{ xs: 0, md: 0 }} sx={{color: 'white'}} columns={{ xs: 4, sm: 8, md: 12 }}>
-                          <Grid item xs={12} sm={6} md={6} >
-                            {
-                              leftItems.map((item) => (<ListItem key={item.title} type='button' >
-                                <NavLink to={item.link} >
-                                  {item.title}
-                                </NavLink>
-                              </ListItem>))
-                            }
+                        <Grid
+                          container
+                          spacing={{ xs: 0, md: 0 }}
+                          sx={{ color: 'white' }}
+                          columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                          <Grid item xs={12} sm={6} md={6}>
+                            {leftItems.map(item => (
+                              <ListItem key={item.title} type='button'>
+                                <NavLink to={item.link}>{item.title}</NavLink>
+                              </ListItem>
+                            ))}
                           </Grid>
                           <Divider />
-                          <Grid item xs={12} sm={6} md={6} >
-                            {
-                              rightItems.map((item) => (<ListItem key={item.title} type='button' >
-                                <NavLink to={item.link} >
-                                  {item.title}
-                                </NavLink>
-                              </ListItem>))
-                            }
+                          <Grid item xs={12} sm={6} md={6}>
+                            {rightItems.map(item => (
+                              <ListItem key={item.title} type='button'>
+                                <NavLink to={item.link}>{item.title}</NavLink>
+                              </ListItem>
+                            ))}
                           </Grid>
                         </Grid>
                       )}
                     </div>
                   </div>
-                ) : 
-                (
+                ) : (
                   <>
                     <Button
                       // aria-describedby={id}
@@ -386,7 +384,7 @@ const Header = () => {
             sx={{
               flexGrow: 1,
               display: { xs: 'none', md: 'flex' },
-              justifyContent: 'end'
+              justifyContent: 'end',
             }}
           >
             {isAuth ? (
