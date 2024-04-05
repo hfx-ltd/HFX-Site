@@ -5,15 +5,17 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Grid,
   IconButton,
+  ListItem,
   MenuItem,
   Toolbar,
   Typography,
   useTheme,
 } from '@mui/material'
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ArrowDropDown, Menu } from '@mui/icons-material'
 import OutlinedBtn from '../../components/buttons/outlined-button'
@@ -105,6 +107,77 @@ const Header = () => {
     }
   }, [])
 
+  const leftItems = [
+    {
+      title: 'About Us',
+      link: '/about',
+    },
+    {
+      title: 'Why Choose Us',
+      link: '/why-choose-us',
+    },
+    {
+      title: 'Partner With Us',
+      link: '/partner-with-us',
+    },
+    {
+      title: 'Blog',
+      link: '/blog',
+    }
+  ];
+
+  const rightItems = [
+    {
+      title: 'Social Support',
+      link: '/csr',
+    },
+    {
+      title: 'Sponsorship',
+      link: '/sponsorship',
+    },
+    {
+      title: 'Gallery',
+      link: '/gallery',
+    },
+    {
+      title: 'Help & FAQs',
+      link: '/help',
+    }
+  ]
+
+
+  const investItems1 = [
+    
+    {
+      title: 'Mutual funds',
+      link: '/mutual-funds',
+    },
+    {
+      title: 'Forex',
+      link: '/forex',
+    },
+    {
+      title: 'Shares',
+      link: '/shares',
+    }
+  ]
+
+  const investItems2 = [
+    
+    {
+      title: 'ETFs',
+      link: '/etfs',
+    },
+    {
+      title: 'Crypto currencies',
+      link: '/crypto-invest',
+    },
+    {
+      title: 'Commodities',
+      link: '/commodities-invest',
+    }
+  ]
+
   return (
     <AppBar
       id='appbar-id'
@@ -190,46 +263,26 @@ const Header = () => {
                     </Button>
                     <div className='dropdown2-content'>
                       {2 > 1 && (
-                        <Grid container spacing={{ xs: 0, md: 0 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                          {[1, 2, 3].map((item, index) => (
-                            <Grid item xs={12} sm={4} md={4} key={index}>
-                              <Typography>Hello Testing ... </Typography>
-                            </Grid>
-                          ))}
-                          {/* {newServiceData?.map((item, index) => (
-                          <Grid item xs={12} sm={4} md={4} key={index}>
-                            {item.items?.length > 0 ? (
-                              <AccordionSection item={item} index={index} />
-                            ) : (
-                              <Button
-                                key={index}
-                                variant="text"
-                                sx={{
-                                  textTransform: "capitalize",
-                                  textAlign: "start",
-                                  fontSize: 15,
-                                  fontWeight: 500,
-                                  color: "black",
-                                  marginLeft: 1,
-                                }}
-                                id="basic-button2"
-                                aria-controls={
-                                  open ? "basic-menu2" : undefined
-                                }
-                                onClick={() =>
-                                  navigate({
-                                    pathname: `/services/${  item.title}`,
-                                    state: {
-                                      title: item.title,
-                                    },
-                                  })
-                                }
-                              >
-                                {item?.title}
-                              </Button>
-                            )}
+                        <Grid container spacing={{ xs: 0, md: 0 }} sx={{color: 'white'}} columns={{ xs: 4, sm: 8, md: 12 }}>
+                          <Grid item xs={12} sm={6} md={6} >
+                            {
+                              investItems1.map((item) => (<ListItem key={item.title} type='button' >
+                                <NavLink to={item.link} >
+                                  {item.title}
+                                </NavLink>
+                              </ListItem>))
+                            }
                           </Grid>
-                        ))} */}
+                          <Divider />
+                          <Grid item xs={12} sm={6} md={6} >
+                            {
+                              investItems2.map((item) => (<ListItem key={item.title} type='button' >
+                                <NavLink to={item.link} >
+                                  {item.title}
+                                </NavLink>
+                              </ListItem>))
+                            }
+                          </Grid>
                         </Grid>
                       )}
                     </div>
@@ -260,46 +313,26 @@ const Header = () => {
                     </Button>
                     <div className='dropdown2-content'>
                       {2 > 1 && (
-                        <Grid container spacing={{ xs: 0, md: 0 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                          {[1, 2, 3].map((item, index) => (
-                            <Grid item xs={12} sm={4} md={4} key={index}>
-                              <Typography>Hello Testing ... </Typography>
-                            </Grid>
-                          ))}
-                          {/* {newServiceData?.map((item, index) => (
-                          <Grid item xs={12} sm={4} md={4} key={index}>
-                            {item.items?.length > 0 ? (
-                              <AccordionSection item={item} index={index} />
-                            ) : (
-                              <Button
-                                key={index}
-                                variant="text"
-                                sx={{
-                                  textTransform: "capitalize",
-                                  textAlign: "start",
-                                  fontSize: 15,
-                                  fontWeight: 500,
-                                  color: "black",
-                                  marginLeft: 1,
-                                }}
-                                id="basic-button2"
-                                aria-controls={
-                                  open ? "basic-menu2" : undefined
-                                }
-                                onClick={() =>
-                                  navigate({
-                                    pathname: `/services/${  item.title}`,
-                                    state: {
-                                      title: item.title,
-                                    },
-                                  })
-                                }
-                              >
-                                {item?.title}
-                              </Button>
-                            )}
+                        <Grid container spacing={{ xs: 0, md: 0 }} sx={{color: 'white'}} columns={{ xs: 4, sm: 8, md: 12 }}>
+                          <Grid item xs={12} sm={6} md={6} >
+                            {
+                              leftItems.map((item) => (<ListItem key={item.title} type='button' >
+                                <NavLink to={item.link} >
+                                  {item.title}
+                                </NavLink>
+                              </ListItem>))
+                            }
                           </Grid>
-                        ))} */}
+                          <Divider />
+                          <Grid item xs={12} sm={6} md={6} >
+                            {
+                              rightItems.map((item) => (<ListItem key={item.title} type='button' >
+                                <NavLink to={item.link} >
+                                  {item.title}
+                                </NavLink>
+                              </ListItem>))
+                            }
+                          </Grid>
                         </Grid>
                       )}
                     </div>
