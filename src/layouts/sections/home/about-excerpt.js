@@ -16,7 +16,7 @@ const AboutExcerpt = ({ theme, deviceType}) => (
         <Typography gutterBottom py={1}>
           Our journey began with a commitment to transparency, integrity, and excellence. Over the years, we have
           evolved into a trusted partner for individuals and businesses seeking sound financial advice and reliable
-          investment opportunities. CjFx provides opportunities for users to trade global markets including Commodities,
+          investment opportunities. HFX LTD provides opportunities for users to trade global markets including Commodities,
           forex, crypto, stocks, metals and indices, where financial expertise meets client-centric service. Established
           with a vision to redefine the landscape of financial services, we take pride in offering innovative solutions
           to meet the diverse needs of our clients.

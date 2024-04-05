@@ -17,7 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ArrowDropDown, Menu } from '@mui/icons-material'
 import OutlinedBtn from '../../components/buttons/outlined-button'
-import logo from '../../assets/images/hfm_logo.svg'
+import logo from '../../assets/images/hfx-logo.png'
 import FilledBtn from '../../components/buttons/filled-button'
 import './nav.css'
 

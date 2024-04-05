@@ -11,7 +11,7 @@ const demoTestimonials = [
   {
     fullname: 'Daniel Carter',
     position: 'Client at HFX',
-    content: "I can't speak highly enough of the top-notch services provided by Cjfx. The ROI on my investments has far exceeded my expectations, and I am grateful for the expertise and professionalism of the Cjfx team. Truly outstanding!"
+    content: "I can't speak highly enough of the top-notch services provided by HFX LTD. The ROI on my investments has far exceeded my expectations, and I am grateful for the expertise and professionalism of the HFX LTD team. Truly outstanding!"
   },
   {
     fullname: 'Sophia Patel ',
@@ -21,7 +21,7 @@ const demoTestimonials = [
   {
     fullname: 'Daniel Carter',
     position: 'Client at HFX',
-    content: "I can't speak highly enough of the top-notch services provided by Cjfx. The ROI on my investments has far exceeded my expectations, and I am grateful for the expertise and professionalism of the Cjfx team. Truly outstanding!"
+    content: "I can't speak highly enough of the top-notch services provided by HFX LTD. The ROI on my investments has far exceeded my expectations, and I am grateful for the expertise and professionalism of the HFX LTD team. Truly outstanding!"
   }
 ]
 

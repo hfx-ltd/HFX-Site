@@ -19,7 +19,7 @@ export default function Logo({  disabledLink = false, sx, colorizer }) {
       <Box sx={{ width: 210 }} onClick={() => {
                 navigate('/')
               }} >
-        <img src={colorizer === "white" ? '/hfm_logo.svg' : '/logo.svg'} width="100%" alt="..." />
+        <img src={colorizer === "white" ? '/hfx-logo.png' : '/logo.png'} width="100%" alt="..." />
       </Box>
       <br/>
       <br/>

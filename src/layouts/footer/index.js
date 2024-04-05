@@ -2,7 +2,7 @@ import { Box, Button, Container, Grid, IconButton, TextField, Toolbar, Typograph
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Outbound, Send } from '@mui/icons-material'
-import logo from '../../assets/images/hfm_logo.svg'
+import logo from '../../assets/images/hfx-logo.png'
 import MiniFooter from './mini_footer'
 
 const Footer = ({ deviceType }) => {
@@ -15,8 +15,8 @@ const Footer = ({ deviceType }) => {
         <Grid container spacing={6}>
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <Box display='flex' flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
-              <img src={logo} alt='' />
-              <Typography fontSize={13} color={'darkgray'}>
+              <img src={logo} alt='' width={'50%'} />
+              <Typography fontSize={13} color={'darkgray'} pt={2} >
                 CALL US DIRECTLY
               </Typography>
               <Typography gutterBottom>+1 212-226-3126</Typography>
