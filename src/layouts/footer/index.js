@@ -65,11 +65,11 @@ const Footer = ({ deviceType }) => {
                   <br />
                 </>
               )}
-              <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+              <Link to='/faqs' style={{ textDecoration: 'none', color: 'white' }}>
                 FAQs
               </Link>
               <br />
-              <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+              <Link to='/contact-us' style={{ textDecoration: 'none', color: 'white' }}>
                 Support
               </Link>
               <br />

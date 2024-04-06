@@ -2,25 +2,9 @@ import { ExpandMore } from '@mui/icons-material'
 import { Accordion, AccordionDetails, AccordionSummary, Box, Container, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 
-const demoFAQs = [
-  {
-    question: 'Client Prospecting',
-    answer:
-      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-  },
-  {
-    question: 'Website Research',
-    answer:
-      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-  },
-  {
-    question: 'Grant & Funding Research',
-    answer:
-      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-  },
-]
 
-const FAQs = ({ theme, deviceType }) => {
+
+const FAQs = ({ theme, deviceType, data }) => {
   const [expanded, setExpanded] = React.useState(false)
 
   const handleChange = panel => (event, isExpanded) => {
@@ -37,7 +21,7 @@ const FAQs = ({ theme, deviceType }) => {
             Frequently Asked <span style={{ color: theme.palette.secondary.main }}> Questions </span>
           </Typography>
           <br />
-          {demoFAQs.map((item, index) => (
+          {data.map((item, index) => (
             <Accordion
               defaultExpanded={index === 0}
               key={item.question}

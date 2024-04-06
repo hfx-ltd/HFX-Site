@@ -1,6 +1,7 @@
-import { Container, Grid, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Card, Container, Grid, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import ContactForm from '../../components/forms/contact-form';
+import MapView from './map';
 
 const ContactUs = () => {
   const theme = useTheme();
@@ -20,22 +21,21 @@ const ContactUs = () => {
   }, [sm, xs]);
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#F4F4F4' }}>
       <Toolbar />
       <Toolbar />
+      {deviceType === 'pc' && <Toolbar />}
       <Container>
-        <Typography variant="h5" gutterBottom>
-          Contact Form
-        </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={7} md={8}>
-            <ContactForm />
-          </Grid>
-          <Grid item xs={12} sm={7} md={8}>
-            <Typography>JKsjs</Typography>
-          </Grid>
-        </Grid>
+      <Typography variant={deviceType !== 'pc' ? 'h5' : 'h2'} py={2} gutterBottom>
+        We are Always Here <span style={{ color: theme.palette.secondary.main }}> To Help You </span>
+      </Typography>{' '}
       </Container>
+      <Container component={Card} sx={{ border: 'none', boxShadow: 'revert', p: 4 }} elevation={2}>
+        <ContactForm />
+      </Container>
+      <Toolbar />
+      <MapView address={'No 2 Olu-Obasanjo Road, Waterlines'} />
+      <Toolbar />
     </div>
   );
 };

@@ -30,6 +30,7 @@ import Withdraw from './pages/dashboard/Withdraw'
 import OurPlans from './pages/dashboard/Plans'
 import Services from './pages/services'
 import Advantages from './pages/advantages'
+import FAQPage from './pages/faqs'
 // theme
 
 function App () {
@@ -156,6 +157,7 @@ function App () {
         <Route path='/signup' element={<Signup />} />
         <Route path='/verify-otp' element={<VerifyOtp deviceType={deviceType} />} />
         <Route path='/contact-us' element={<ContactUs />} />
+        <Route path='/faqs' element={<FAQPage />} />
         <Route
           path='/dashboard'
           shouldRevalidate

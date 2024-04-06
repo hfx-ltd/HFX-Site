@@ -9,6 +9,24 @@ import FriendlyProfessional from '../../layouts/sections/home/friendly_professio
 import StartInvesting from '../../layouts/sections/home/start_investing';
 import FAQs from '../../layouts/sections/home/faqs';
 
+const demoFAQs = [
+  {
+    question: 'Client Prospecting',
+    answer:
+      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
+  },
+  {
+    question: 'Website Research',
+    answer:
+      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
+  },
+  {
+    question: 'Grant & Funding Research',
+    answer:
+      'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
+  },
+]
+
 const Home = () => {
   const theme = useTheme();
   const [deviceType, setDeviceType] = React.useState('mobile');
@@ -45,7 +63,7 @@ const Home = () => {
       <FriendlyProfessional theme={theme} deviceType={deviceType} />
       <Toolbar/>
       <StartInvesting theme={theme} deviceType={deviceType} />
-      <FAQs theme={theme} deviceType={deviceType}/>
+      <FAQs theme={theme} deviceType={deviceType}  data={demoFAQs} />
     </div>
   );
 };
