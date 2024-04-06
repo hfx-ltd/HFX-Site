@@ -19,31 +19,31 @@ const formSchema = Yup.object().shape({
 
 const subjects = [
   {
-    value: 'Loan Repayment',
-    label: 'Loan Repayment',
+    value: 'investment',
+    label: 'Investment',
   },
   {
-    value: 'Disbursement',
-    label: 'Disbursement',
+    value: 'technical support',
+    label: 'Technical Support',
   },
   {
-    value: 'Debit',
-    label: 'Debit',
+    value: 'marketing',
+    label: 'Marketing',
   },
   {
-    value: 'Fraud',
-    label: 'Fraud',
+    value: 'customer service',
+    label: 'Customer Service',
   },
   {
-    value: 'General Inquiries',
-    label: 'General Inquiries',
+    value: 'payments',
+    label: 'Payments',
   },
   {
-    value: 'Funds Transfer',
-    label: 'Funds Transfer',
+    value: 'partners',
+    label: 'Partners',
   },
   {
-    value: 'Others',
+    value: 'others',
     label: 'Others',
   },
 ];
