@@ -33,8 +33,8 @@ const ContactUs = () => {
       <Container component={Card} sx={{ border: 'none', boxShadow: 'revert', p: 4 }} elevation={2}>
         <ContactForm />
       </Container>
-      <Toolbar />
-      <MapView address={'No 2 Olu-Obasanjo Road, Waterlines'} />
+      {/* <Toolbar /> */}
+      {/* <MapView address={'No 2 Olu-Obasanjo Road, Waterlines'} /> */}
       <Toolbar />
     </div>
   );

@@ -32,6 +32,7 @@ import Services from './pages/services'
 import Advantages from './pages/advantages'
 import FAQPage from './pages/faqs'
 import Gallery from './pages/gallery'
+import Blog from './pages/blog'
 // theme
 
 function App () {
@@ -159,6 +160,7 @@ function App () {
         <Route path='/verify-otp' element={<VerifyOtp deviceType={deviceType} />} />
         <Route path='/contact-us' element={<ContactUs />} />
         <Route path='/faqs' element={<FAQPage />} />
+        <Route path='/blog' element={<Blog />} />
         <Route path='/gallery' element={<Gallery />} />
         <Route
           path='/dashboard'

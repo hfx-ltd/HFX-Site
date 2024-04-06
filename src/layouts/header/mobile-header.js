@@ -2,6 +2,7 @@ import React from 'react'
 import { Avatar, Box, useTheme } from '@mui/material'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 
@@ -10,7 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Hidden from '@mui/material/Hidden'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import siteLogo from '../../assets/images/hfx-logo.png'
+import siteLogo from '../../assets/images/logo.png'
 import MobileDrawer from '../../components/drawers/mobile-drawer'
 import OutlinedBtn from '../../components/buttons/outlined-button'
 
@@ -55,7 +56,10 @@ const MobileHeader = props => {
               width: '100%',
             }}
           >
-            <img src={siteLogo} alt='' width='25%' />
+            {/* <img src={siteLogo} alt='' width='25%' /> */}
+            <Typography color="white" fontWeight={600} >
+              HFX <span style={{color: theme.palette.secondary.main, textStyle: 'italic'}} >Limited</span>
+            </Typography>
             <Box display={'flex'} flexDirection={'row'}>
               {isAuth ? (
                 <IconButton>

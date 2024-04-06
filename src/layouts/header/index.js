@@ -51,7 +51,6 @@ const Header = () => {
   const [scrolled, setScrolled] = React.useState(false)
   const [show, setShow] = React.useState(true)
   const [navBackground, setNavBackground] = React.useState('appBarTransparent')
-  const [colorSwitch, setColorSwtch] = React.useState('white')
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const navigate = useNavigate()

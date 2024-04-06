@@ -5,36 +5,21 @@ import {
   Collapse,
   Drawer as MUIDrawer,
   ListItemButton,
-  
+  Toolbar
 } from "@mui/material";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-// import { makeStyles} from "@mui/styles"
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import theme from "../../theme";
 
-const drawerWidth = 270;
-// const useStyles = makeStyles((theme) => ({
-//   drawer: {
-//     width: "275px",
-//     [theme.breakpoints.up("sm")]: {
-//       width: drawerWidth,
-//       flexShrink: 0,
-//     },
-//   },
-//   drawerPaper: {
-//     width: drawerWidth,
-//   },
-//   toolbar: theme.mixins.toolbar,
-//   listRoot: {
-//     width: "100%",
-//     padding: theme.spacing(1),
-//   },
-// }));
+
 
 const MobileDrawer = (props) => {
-//   const classes = useStyles();
+
 
   const drawerItems = [
     {
@@ -44,42 +29,42 @@ const MobileDrawer = (props) => {
     },
     {
       text: "About",
+      hasChildren: false,
+      to: "/about",
+    },
+    {
+      text: "What to Invest",
       hasChildren: true,
       to: "",
       children: [
-        { title: "About RSPHCMB", to: "/about" },
-        { title: "Board of Trustees", to: "/about/bot" },
-        { title: "Departments", to: "/about/departments" },
-        { title: "Health Authority", to: "/about/lga" },
-        { title: "Health Centres", to: "/about/health-centres" },
-        { title: "Ward Committees", to: "/about/wdc" },
+        { title: "Mutual Funds", to: "/service", type: 'mutual-funds', },
+        { title: "Forex", to: "/service", type:'forex', },
+        { title: "Shares", to: "/service", type: 'shares' },
+        { title: "ETFs", to: "/service", type: 'etfs' },
+        { title: "Crypto currencies", to: "/service", type: 'crypto' },
+        { title: "Commodities", to: "/service", type: 'commodities' },
       ],
     },
     {
-      text: "Services",
-      to: "/services",
+      text: "Promotions",
+      to: "/",
       hasChildren: false,
     },
     {
-      text: "Resources",
+      text: "Company",
       hasChildren: true,
       to: "",
       children: [
-        { title: "Publications", to: "/resources/publications" },
-        { title: "Downloads", to: "/resources/downloads" },
-        { title: "Reports", to: "/resources/reports" },
-        { title: "Gallery", to: "/resources/gallery" },
-        { title: "Research", to: "/resources/research" },
+        { title: "Why Choose Us", to: "/advantages" },
+        { title: "Blog", to: "/blog" },
+        { title: "Sponsorship", to: "/" },
+        { title: "Gallery", to: "/gallery" },
+        { title: "Help & FAQs", to: "/faqs" },
       ],
-    },
-    {
-      text: "Blog",
-      to: "",
-      hasChildren: false,
     },
     {
       text: "Contact",
-      to: "/contact",
+      to: "/contact-us",
       hasChildren: false,
     },
   ];
@@ -89,6 +74,9 @@ const MobileDrawer = (props) => {
 
   const [openAbout, setOpenAbout] = React.useState(false);
   const [openResources, setOpenResources] = React.useState(false);
+
+  const { isAuth } = useSelector(state => state.auth)
+  const navigate = useNavigate()
 
   const handleClick1 = () => {
     setOpenAbout(!openAbout);
@@ -102,7 +90,7 @@ const MobileDrawer = (props) => {
     props.window !== undefined ? () => window().document.body : undefined;
 
   const handleListItemClick = (to, index) => {
-    // history.push(to);
+    navigate(to);
     setSelectedIndex(index);
     setMobileOpen(!mobileOpen);
   };
@@ -113,22 +101,11 @@ const MobileDrawer = (props) => {
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        color: 'white',
+        backgroundColor: theme.palette.primary.main,
       }}
     >
-      {/* <div
-        className={classes.toolbar}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <a href="/">
-          <img src={logo} style={{ width: 100 }} alt="site logo" />
-        </a>
-      </div> */}
-
+     <Toolbar />
       <Divider />
       <br />
       <div
@@ -145,24 +122,24 @@ const MobileDrawer = (props) => {
         >
           {drawerItems?.map((item, index) => {
             const { text, to, children } = item;
-            return text === "About" || text === "Resources" ? (
+            return text === "What to Invest" || text === "Company" ? (
               <div key={index}>
                 <ListItem
                   style={{ borderRadius: 6 }}
                   button
                   selected={selectedIndex === index}
-                  onClick={text === "About" ? handleClick1 : handleClick2}
+                  onClick={text === "What to Invest" ? handleClick1 : handleClick2}
                   // onClick={() => handleListItemClick(to, index)}
                 >
                   <ListItemText primary={text} />
-                  {(text === "About" ? openAbout : openResources) ? (
+                  {(text === "What to Invest" ? openAbout : openResources) ? (
                     <ExpandLess />
                   ) : (
                     <ExpandMore />
                   )}
                 </ListItem>
                 <Collapse
-                  in={text === "About" ? openAbout : openResources}
+                  in={text === "What to Invest" ? openAbout : openResources}
                   timeout="auto"
                   unmountOnExit
                 >
@@ -183,26 +160,6 @@ const MobileDrawer = (props) => {
                   </List>
                 </Collapse>
               </div>
-            ) : text === "Blog" ? (
-              <ListItem
-                button
-                key={index}
-                selected={selectedIndex === index}
-                onClick={() => handleListItemClick(to, index)}
-              >
-                <a
-                  href="http://rsphcmb.xyz/blog"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    textDecoration: "none",
-                    textTransform: "capitalize",
-                    color: "inherit",
-                  }}
-                >
-                  {text}
-                </a>
-              </ListItem>
             ) : (
               <ListItem
                 style={{ borderRadius: 6 }}
@@ -218,7 +175,8 @@ const MobileDrawer = (props) => {
         </List>
       </div>
 
-      <div
+      {
+        !isAuth &&  <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -232,25 +190,18 @@ const MobileDrawer = (props) => {
           variant="outlined"
           sx={{
             backgroundColor: "transparent",
-            color: "#00B0EF",
-            borderColor: "#00B0EF",
+            color: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary.main,
             textTransform: "capitalize",
             marginX: 2,
             fontSize: 12,
           }}
+          onClick={() => {
+            setMobileOpen(!mobileOpen);
+            navigate('/login')
+          }}
         >
-          <a
-            href="https://myhealth.ng"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: "none",
-              textTransform: "lowercase",
-              color: "#00B0EF",
-            }}
-          >
-            myhealth.ng
-          </a>
+          Login
         </Button>
         <br />
         <Button
@@ -258,7 +209,7 @@ const MobileDrawer = (props) => {
           disableElevation
           // endIcon={<ArrowDropDown />}
           sx={{
-            backgroundColor: "#00B0EF",
+            backgroundColor: theme.palette.success.main,
             color: "white",
             textTransform: "capitalize",
             fontSize: 12,
@@ -266,12 +217,15 @@ const MobileDrawer = (props) => {
           }}
           onClick={() => {
             setMobileOpen(!mobileOpen);
-            // history.push("/covid19-vaccination-sites");
+            navigate('/signup')
           }}
         >
-          Covid-19 Vaccination Info
+          Register
         </Button>
       </div>
+      }
+
+     
     </div>
   );
 
@@ -282,6 +236,7 @@ const MobileDrawer = (props) => {
       anchor={props.anchor}
       open={mobileOpen}
       onClose={props.handleDrawerToggle}
+      sx={{width: '50%'}}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
