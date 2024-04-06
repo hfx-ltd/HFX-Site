@@ -122,7 +122,7 @@ const Header = () => {
     },
     {
       title: 'Help & FAQs',
-      link: '/help',
+      link: '/faqs',
     },
   ]
 

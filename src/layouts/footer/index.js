@@ -44,7 +44,7 @@ const Footer = ({ deviceType }) => {
               <br />
               <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
                 {' '}
-                Investors
+                News
               </Link>
               <br />
               <Link to='/contact-us' style={{ textDecoration: 'none', color: 'white' }}>

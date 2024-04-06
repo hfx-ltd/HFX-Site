@@ -31,6 +31,7 @@ import OurPlans from './pages/dashboard/Plans'
 import Services from './pages/services'
 import Advantages from './pages/advantages'
 import FAQPage from './pages/faqs'
+import Gallery from './pages/gallery'
 // theme
 
 function App () {
@@ -158,6 +159,7 @@ function App () {
         <Route path='/verify-otp' element={<VerifyOtp deviceType={deviceType} />} />
         <Route path='/contact-us' element={<ContactUs />} />
         <Route path='/faqs' element={<FAQPage />} />
+        <Route path='/gallery' element={<Gallery />} />
         <Route
           path='/dashboard'
           shouldRevalidate

@@ -1,24 +1,9 @@
 import { Accordion, AccordionDetails, AccordionSummary, Card, Container, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { ExpandMore } from '@mui/icons-material';
+import { faqs } from '../../data/faqs';
 
-const demoFAQs = [
-    {
-      question: 'Client Prospecting',
-      answer:
-        'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-    },
-    {
-      question: 'Website Research',
-      answer:
-        'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-    },
-    {
-      question: 'Grant & Funding Research',
-      answer:
-        'We also ensure that the whole team is included in the process and that no one is left out during the turnaround. The most crucial part is ensuring some degree of financial stability during the turnaround.',
-    },
-  ]
+
 
 const FAQPage = () => {
   const theme = useTheme();
@@ -52,8 +37,8 @@ const FAQPage = () => {
         Frequently Asked <span style={{ color: theme.palette.secondary.main }}> Questions </span>
       </Typography>{' '}
       </Container>
-      <Container component={Card} sx={{ border: 'none', boxShadow: 'revert', p: 4 }} elevation={2}>
-      {demoFAQs.map((item, index) => (
+      <Container  sx={{ border: 'none', boxShadow: 'revert', p: 4 }} >
+      {faqs.map((item, index) => (
             <Accordion
               defaultExpanded={index === 0}
               key={item.question}
@@ -66,7 +51,7 @@ const FAQPage = () => {
                 aria-controls={`panel1bh-content${item?.question}`}
                 id={`panel1bh-header${item?.question}`}
               >
-                <Typography gutterBottom>{item?.question}</Typography>
+                <Typography gutterBottom fontWeight={600} >{item?.question}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>{item.answer}</Typography>
