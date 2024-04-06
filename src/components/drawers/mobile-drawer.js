@@ -99,6 +99,7 @@ const MobileDrawer = (props) => {
     <div
       style={{
         height: "100%",
+        width: 225,
         display: "flex",
         flexDirection: "column",
         color: 'white',
@@ -236,7 +237,7 @@ const MobileDrawer = (props) => {
       anchor={props.anchor}
       open={mobileOpen}
       onClose={props.handleDrawerToggle}
-      sx={{width: '50%'}}
+      sx={{width: 300}}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
