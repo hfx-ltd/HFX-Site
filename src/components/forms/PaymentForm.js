@@ -20,7 +20,7 @@ function PaymentForm(props) {
   return (
     <>
       {loading && <LoadingBackdrop open={loading} setOpen={setLoading} />}
-      <CustomModal open={openModal} setOpen={setOpenModal} title="Add Bank Account">
+      <CustomModal open={openModal} setOpen={setOpenModal}  title="Add Bank Account">
         <BankForm
           bank={bank}
           setBank={setBank}

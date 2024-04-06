@@ -15,9 +15,9 @@ import APIService from '../../service';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  backgroundColor: "#18113c",
+  backgroundColor: theme.palette.secondary.main,
   padding: 0,
-  borderColor: "#18113c",
+  borderColor: theme.palette.secondary.main,
 }));
 
 const ContentBox = styled(Box)(({ theme }) => ({
@@ -30,7 +30,7 @@ const BackgroundBox = styled(Box)(({ theme }) => ({
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
   backgroundPositionY: 'center',
-  backgroundColor: "#18113c"
+  backgroundColor: theme.palette.primary.main
 }));
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
@@ -86,7 +86,7 @@ function ProfileCard(props) {
     <StyledCard variant="outlined">
       <CardContent sx={{ padding: 0, paddingBottom: '0px !important' }}>
         <BackgroundBox />
-        <LinearProgress variant="determinate" color='info' value={progress} />
+        <LinearProgress variant="determinate" color='secondary' value={progress} />
         <ContentBox>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

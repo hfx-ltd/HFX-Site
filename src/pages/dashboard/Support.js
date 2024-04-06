@@ -40,7 +40,7 @@ function Support(props) {
             <Avatar src="/static/images/fastquid-admin.png" />
             <div>
               <Typography sx={{ fontWeight: 'bolder', marginLeft: 1 }}>
-                Fastquid Support <br />
+                HFX Limited Support <br />
                 <span style={{ fontWeight: 'lighter', color: 'rgb(33 43 54 / 40%)' }}>support@fastquid.ng</span>
               </Typography>
             </div>
@@ -80,7 +80,7 @@ function Support(props) {
           alignItems={!matches && 'center'}
         >
           <Grid item sm={4} xs={12} padding={2} width={"100%"} >
-            <Typography variant="h4">FastQuid Support</Typography>
+            <Typography variant="h4">HFX Limited Support</Typography>
             <Typography variant="body2" color="text.secondary">
               Talk to us about your complaint
             </Typography>

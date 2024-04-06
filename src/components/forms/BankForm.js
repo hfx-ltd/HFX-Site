@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import toast, { Toaster } from 'react-hot-toast';
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
@@ -75,7 +76,8 @@ function BankForm(props) {
   const { errors, touched, values, handleSubmit, getFieldProps, setFieldValue } = formik;
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
+        <Box p={1} >
         <FormControl fullWidth>
           <InputLabel htmlFor="bankCode" sx={{ bgcolor: 'background.paper' }}>
             <em>Select Bank</em>
@@ -120,6 +122,7 @@ function BankForm(props) {
           {bank?.accountName ? 'Update Bank' : 'Add Bank'}
         </LoadingButton>
         <Toaster />
+        </Box>
       </Form>
     </FormikProvider>
   );
