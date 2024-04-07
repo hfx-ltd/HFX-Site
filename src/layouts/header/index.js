@@ -59,7 +59,7 @@ const Header = () => {
 
   const theme = useTheme()
 
-  const { isAuth, profile } = useSelector(state => state.auth)
+  const { profile } = useSelector(state => state.auth)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -386,7 +386,7 @@ const Header = () => {
               justifyContent: 'end',
             }}
           >
-            {isAuth ? (
+            {profile ? (
               <Box display='flex' flexDirection='row' justifyContent='start' alignItems='center'>
                 <Typography textTransform={'capitalize'} variant='h6'>
                   Hello, {profile?.firstName}

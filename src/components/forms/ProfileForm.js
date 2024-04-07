@@ -144,7 +144,7 @@ function ProfileForm (props) {
       <Grid item sm={4} xs={12}>
         <Typography variant='h4'>Personal Information</Typography>
         <Typography variant='body2' color='text.secondary'>
-          Change your FastQuid information using the form.
+          Change your HFX information using the form.
         </Typography>
       </Grid>
       <Grid item sm={8} xs={12}>

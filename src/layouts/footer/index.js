@@ -42,7 +42,7 @@ const Footer = ({ deviceType }) => {
                 About Us
               </Link>
               <br />
-              <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+              <Link to='/blog' style={{ textDecoration: 'none', color: 'white' }}>
                 {' '}
                 News
               </Link>

@@ -1,10 +1,16 @@
-import { Button, Card, Container, Divider, Grid, Toolbar, Typography } from '@mui/material'
+import { Button, Card, Container, Divider, Grid, Toolbar, Typography , Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle, Slide} from '@mui/material'
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import PropTypes from 'prop-types'
+
+const Transition = React.forwardRef((props, ref) => <Slide direction='up' ref={ref} {...props} />)
 
 function TabPanel (props) {
   const { children, value, index, ...other } = props
@@ -65,12 +71,48 @@ const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) 
 const Withdraw = props => {
   const [value, setValue] = React.useState(0)
   const [openDialog, setOpenDialog] = React.useState(false)
+  const [openAdmin, setOpenAdmin] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
+  const [selectedCrypto, setSelectedCrypto] = React.useState('')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
   return (
     <Container maxWidth='lg' >
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenDialog(false)}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{'Important Notice!'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-slide-description'>
+            {`This feature is currently not available. Please use cryptocurrecny withdrawal option or contact admin for help.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Done</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openAdmin}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenAdmin(false)}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{'Contact Admin Withdrawal Form'}</DialogTitle>
+        <DialogContent>
+          <Box>
+            {/* <DepositForm crypto={selectedCrypto} setOpenModal={setOpenAdmin}  loading={loading} setLoading={setLoading}  /> */}
+          </Box>
+        </DialogContent>
+      </Dialog>
+
       <Card
         elevation={3}
         sx={{ boxShadow: 'revert', border: 'none' }}
@@ -83,22 +125,22 @@ const Withdraw = props => {
       >
         <Box display='flex' flexDirection={'row'}>
           <Typography gutterBottom variant='h6'>
-            Withdraw to:{' '}
+            Withdraw via:{' '}
           </Typography>
         </Box>
         <Divider />
         <br />
         <Box sx={{ bgcolor: '#fefefe' }}>
           <StyledTabs value={value} onChange={handleChange} aria-label='styled tabs example'>
-            <StyledTab label='Bank Transfers' />
-            <StyledTab label='Cryptocurrency' />
+            <StyledTab label='Internet Banking/Mobile Wallets' />
+            <StyledTab label='Crypto Wallet' />
           </StyledTabs>
           <Box sx={{ p: 1 }} />
         </Box>
         <Box>
           <TabPanel value={value} index={0}>
             <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
-              <Typography gutterBottom>Bank Transfer</Typography>
+              <Typography gutterBottom>Bank/Wallets</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={6}>
                   <Box
@@ -116,7 +158,7 @@ const Withdraw = props => {
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
-                      onClick={() => {}}
+                      onClick={() => setOpenDialog(true)}
                     >
                       <Typography>Direct Online Banking</Typography>
                       <img
@@ -135,9 +177,9 @@ const Withdraw = props => {
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
-                      onClick={() => {}}
+                      onClick={() => setOpenDialog(true)}
                     >
-                      <Typography>Wire Transfer</Typography>
+                      <Typography>Withdraw to Paypal</Typography>
                       <img
                         src='https://www.officialjackfx.com/trade.invest/assets/logos/wire_transfer.svg'
                         alt=''

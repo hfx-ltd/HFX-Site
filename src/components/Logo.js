@@ -23,11 +23,6 @@ export default function Logo({  disabledLink = false, sx, colorizer }) {
       </Box>
       <br/>
       <br/>
-      {/* {title && (
-        <Typography component="h1" sx={{ fontFamily: 'Recoleta', color: titleColor, fontSize: 40, marginLeft: 1 }}>
-          FastQuid
-        </Typography>
-      )} */}
     </Box>
   );
 

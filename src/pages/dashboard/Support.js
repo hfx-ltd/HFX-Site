@@ -37,11 +37,11 @@ function Support(props) {
       <CustomModal open={open} setOpen={setOpen} title="Support" modalSize="sm">
         <Box sx={{ textAlign: 'start' }}>
           <Stack direction="row" alignItems="center">
-            <Avatar src="/static/images/fastquid-admin.png" />
+            <Avatar src="/static/images/HFX LTD-admin.png" />
             <div>
               <Typography sx={{ fontWeight: 'bolder', marginLeft: 1 }}>
                 HFX Limited Support <br />
-                <span style={{ fontWeight: 'lighter', color: 'rgb(33 43 54 / 40%)' }}>support@fastquid.ng</span>
+                <span style={{ fontWeight: 'lighter', color: 'rgb(33 43 54 / 40%)' }}>support@HFX LTD.ng</span>
               </Typography>
             </div>
           </Stack>
@@ -51,7 +51,7 @@ function Support(props) {
             Hi {profile?.fullName},
           </Typography>
           <Typography variant="body1" color="text.secondary" gutterBottom>
-            Thank you for contacting FastQuid, we're your bank without barriers.
+            Thank you for contacting HFX LTD, we're your bank without barriers.
             <br />
             Your ticket has been created with the ticket ID <b>{ticket?.ticketId}</b> and subject{' '}
             <span style={{ textTransform: 'uppercase' }}>
@@ -62,7 +62,7 @@ function Support(props) {
           <Spacer size={3} />
           <Typography variant="body1" color="text.secondary">
             Regards,
-            <br /> FastQuid Customer Success Team.
+            <br /> HFX LTD Customer Success Team.
           </Typography>
           <Spacer size={4} />
         </Box>
