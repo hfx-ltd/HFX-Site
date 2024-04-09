@@ -97,10 +97,6 @@ const Header = () => {
       link: '/advantages',
     },
     {
-      title: 'Partner With Us',
-      link: '/partner-with-us',
-    },
-    {
       title: 'Blog',
       link: '/blog',
     },
@@ -108,12 +104,12 @@ const Header = () => {
 
   const rightItems = [
     {
-      title: 'Social Support',
-      link: '/csr',
+      title: 'Privacy Policy',
+      link: '/privacy-policy',
     },
     {
-      title: 'Sponsorship',
-      link: '/sponsorship',
+      title: 'Terms of Service',
+      link: '/terms-service',
     },
     {
       title: 'Gallery',

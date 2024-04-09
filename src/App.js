@@ -33,6 +33,9 @@ import Advantages from './pages/advantages'
 import FAQPage from './pages/faqs'
 import Gallery from './pages/gallery'
 import Blog from './pages/blog'
+import Promotions from './pages/promotions'
+import PrivacyPolicy from './pages/legal/policy'
+import TermsofService from './pages/legal/terms'
 // theme
 
 function App () {
@@ -162,6 +165,9 @@ function App () {
         <Route path='/faqs' element={<FAQPage />} />
         <Route path='/blog' element={<Blog />} />
         <Route path='/gallery' element={<Gallery />} />
+        <Route path='/promotions' element={<Promotions />} />
+        <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+        <Route path='/terms-service' element={<TermsofService />} />
         <Route
           path='/dashboard'
           shouldRevalidate

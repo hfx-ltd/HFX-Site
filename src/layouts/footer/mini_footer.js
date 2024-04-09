@@ -36,11 +36,11 @@ const MiniFooter = () => {
             justifyContent={'start'}
             alignItems={'center'}
           >
-            <Link to={'/'} style={{ paddingRight: 4, textDecoration: 'none', color: 'white' }}>
+            <Link to={'/privacy-policy'} style={{ paddingRight: 4, textDecoration: 'none', color: 'white' }}>
               Privacy policy
             </Link>{' '}
             |{' '}
-            <Link to={'/'} style={{ paddingLeft: 4, textDecoration: 'none', color: 'white' }}>
+            <Link to={'/terms-service'} style={{ paddingLeft: 4, textDecoration: 'none', color: 'white' }}>
               Terms & Conditions
             </Link>
           </Grid>

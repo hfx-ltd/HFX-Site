@@ -1,10 +1,17 @@
-import { Box, Button, FormControl, Grid, InputLabel, NativeSelect, OutlinedInput, TextField, Toolbar } from '@mui/material'
+/* eslint-disable consistent-return */
+import { Box, Button, FormControl, Grid, InputLabel, NativeSelect, OutlinedInput, TextField } from '@mui/material'
 import React from 'react'
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
+import toast from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
 import { countries } from '../../utils/countries'
+import APIService from '../../service'
+import { setLoading } from '../../store/reducer/lifeCycle'
 
 const ContactForm = () => {
+  const { loading } = useSelector(state => state.lifeCycle)
+  const dispatch = useDispatch()
   const validationSchema = Yup.object().shape({
     fullName: Yup.string().required('Full real name is required'),
     emailAddress: Yup.string().email('Enter a valid email address').required('Email address is required'),
@@ -25,11 +32,47 @@ const ContactForm = () => {
       phoneNumber: '',
       currentCustomer: false,
     },
-    validationSchema,
-    onSubmit: () => {},
+    // validationSchema,
+    onSubmit: async values => {
+      const payload = {
+        firstName: values.fullName?.split(' ')[0],
+        lastName: values.fullName?.split(' ')[1] ?? '',
+        emailAddress: values.emailAddress,
+        phoneNumber: values.phoneNumber,
+        subject: values.questionType,
+        country: values.country,
+        currentCustomer: values.currentCustomer,
+        message: values.comment,
+      }
+
+      dispatch(setLoading(true))
+      const response = APIService.post('/support/guest/create', payload)
+
+      toast.promise(response, {
+        loading: 'Sending...',
+        success: res => {
+          dispatch(setLoading(false))
+          clearFields()
+          console.log('SUPPORT DATA >> ', res.data)
+          return `${res.data.message || 'Your compliant has been received successfully'}`
+        },
+        error: err => {
+          dispatch(setLoading(false))
+          return err?.response?.data?.message || err?.message || 'Something went wrong, try again.'
+        },
+      })
+    },
   })
 
-  const { touched, errors, getFieldProps, handleSubmit } = formik
+  const { touched, errors, getFieldProps, handleSubmit, setFieldValue } = formik
+
+  const clearFields = () => {
+    setFieldValue('emailAddress', '')
+    setFieldValue('fullName', '')
+    setFieldValue('phoneNumber', '')
+    setFieldValue('country', '')
+    setFieldValue('comment', '')
+  }
 
   return (
     <div>
@@ -159,9 +202,8 @@ const ContactForm = () => {
         <Box py={4}>
           <TextField
             variant='outlined'
-            label='Email Address'
-            placeholder='Enter your email address'
-            type='email'
+            label='Message'
+            placeholder='Type your message here'
             multiline
             minRows={4}
             fullWidth
@@ -172,10 +214,10 @@ const ContactForm = () => {
             helperText={touched.comment && errors.comment}
           />
         </Box>
-        <Button variant='contained' fullWidth sx={{p: 1}}  onClick={() => handleSubmit()} >
+        <Button disabled={loading} variant='contained' fullWidth sx={{ p: 1 }} onClick={() => handleSubmit()}>
           Submit
         </Button>
-        <br/>
+        <br />
       </Box>
     </div>
   )

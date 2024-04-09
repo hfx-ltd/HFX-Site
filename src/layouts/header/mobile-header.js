@@ -11,7 +11,6 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Hidden from '@mui/material/Hidden'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import siteLogo from '../../assets/images/logo.png'
 import MobileDrawer from '../../components/drawers/mobile-drawer'
 import OutlinedBtn from '../../components/buttons/outlined-button'
 

@@ -47,7 +47,7 @@ const MobileDrawer = (props) => {
     },
     {
       text: "Promotions",
-      to: "/",
+      to: "/promotions",
       hasChildren: false,
     },
     {
@@ -57,7 +57,7 @@ const MobileDrawer = (props) => {
       children: [
         { title: "Why Choose Us", to: "/advantages" },
         { title: "Blog", to: "/blog" },
-        { title: "Sponsorship", to: "/" },
+        { title: "Privacy Policy", to: "/privacy-policy" },
         { title: "Gallery", to: "/gallery" },
         { title: "Help & FAQs", to: "/faqs" },
       ],
