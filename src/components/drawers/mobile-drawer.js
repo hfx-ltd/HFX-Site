@@ -89,8 +89,13 @@ const MobileDrawer = (props) => {
   const container =
     props.window !== undefined ? () => window().document.body : undefined;
 
-  const handleListItemClick = (to, index) => {
-    navigate(to);
+  const handleListItemClick = (to, index, title) => {
+    if (title) {
+      navigate(to, {state: title ?? ""});
+    }
+    else {
+      navigate(to);
+    }
     setSelectedIndex(index);
     setMobileOpen(!mobileOpen);
   };
@@ -152,7 +157,7 @@ const MobileDrawer = (props) => {
                           key={ke}
                           sx={{ pl: 4 }}
                           selected={selectedIndex === index}
-                          onClick={() => handleListItemClick(to, index)}
+                          onClick={() => handleListItemClick(to, index, title)}
                         >
                           <ListItemText primary={title} />
                         </ListItemButton>

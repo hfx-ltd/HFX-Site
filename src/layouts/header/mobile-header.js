@@ -27,7 +27,7 @@ const MobileHeader = props => {
   const smallScreen = useMediaQuery(theme.breakpoints.only('xs'))
   const tabletMini = useMediaQuery(theme.breakpoints.only('sm'))
 
-  const navRef = React.useRef()
+  // const navRef = React.useRef()
   // navRef.current = navBackground;
 
   const handleDrawerToggle = () => {
