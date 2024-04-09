@@ -26,18 +26,8 @@ const depositSchema = Yup.object().shape({
 })
 
 function DepositForm (props) {
-  const { crypto, loading, setLoading, setOpenModal } = props
-  const [banks, setBanks] = useState([])
-  // const { data: bankList } = useSWRFetch('/bank/list');
-  let bankList
-
-  useEffect(() => {
-    if (bankList?.length) {
-      const mappedBanks = bankList?.map(item => ({ label: item.name, value: item?.code }))
-      setBanks(mappedBanks)
-    }
-  }, [bankList])
-
+  const { crypto, loading, setLoading, setOpenModal, setOpenResponse } = props
+ 
   const formik = useFormik({
     initialValues: {
       amount: 0,
@@ -45,17 +35,25 @@ function DepositForm (props) {
       investmentPlan: '',
     },
     validationSchema: depositSchema,
-    onSubmit: async () => {
+    onSubmit: async (values) => {
       setLoading(true)
-      const bankName = banks?.filter(bank => bank.value === values.bankCode)[0]
-      const response = APIService.post('/bank/create', { ...values, bankName: bankName?.label })
+
+      const payload = {
+        ...values,
+        currency: crypto,
+        status: 'pending',
+        type: 'deposit'
+      }
+
+      const response = APIService.post('/request/create', payload)
 
       toast.promise(response, {
         loading: 'loading',
         success: res => {
           setLoading(false)
           setOpenModal(false)
-          return 'Bank Linked Successfully!'
+          setOpenResponse(true)
+          return `${res.data?.message || "Request submitted successfully"}`
         },
         error: err => {
           setLoading(false)
@@ -65,7 +63,7 @@ function DepositForm (props) {
     },
   })
 
-  const { errors, touched, values, handleSubmit, getFieldProps, setFieldValue } = formik
+  const { errors, touched, handleSubmit, getFieldProps } = formik
   return (
     <FormikProvider value={formik}>
       <Form autoComplete='off' noValidate onSubmit={handleSubmit}>

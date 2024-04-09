@@ -170,7 +170,7 @@ function App () {
           <Route path='/dashboard' element={<Navigate to='/dashboard/overview' />} />
           <Route path='/dashboard/overview' element={<Overview profile={profile} />} />
           <Route path='/dashboard/deposit' element={<Deposit profile={profile} />} />
-          <Route path='/dashboard/withdraw' element={<Withdraw />} />
+          <Route path='/dashboard/withdraw' element={<Withdraw profile={profile} />} />
           <Route path='/dashboard/investment-plans' element={<OurPlans />} />
           <Route path='/dashboard/transactions' element={<Transactions />} />
           <Route path='/dashboard/profile' element={<Profile profile={profile} />} />

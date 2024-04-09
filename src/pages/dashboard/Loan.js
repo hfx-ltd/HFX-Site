@@ -19,12 +19,12 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Page from '../../components/Page';
-import LoanCard from '../../components/cards/LoanCard';
+// import LoanCard from '../../components/cards/LoanCard';
 import formatDate from '../../utils/formatDate';
 import formatCurrency from '../../utils/formatCurrency';
 import Iconify from '../../components/Iconify';
 import colorVariant from '../../utils/colorVariant';
-import Advert from '../../components/advert';
+// import Advert from '../../components/advert';
 import APIService from '../../service';
 import { updateProfile } from '../../store/reducer/auth';
 
@@ -214,7 +214,7 @@ function Loan(props) {
         </ColoredTypography>
         <Grid container spacing={2}>
           <Grid item sm={8} xs={12}>
-            <LoanCard matches={matches} profile={profile} />
+            {/* <LoanCard matches={matches} profile={profile} /> */}
           </Grid>
           <Grid item sm={4} xs={12}>
             {loan && loan?.status !== 'settled' ? (
@@ -231,15 +231,16 @@ function Loan(props) {
                 </Button>
               </Paper>
             ) : (
-              <Advert
-                title={['Ran into an urgent need?', 'Request a salary advance.']}
-                featuredImage={'https://i.imgur.com/Rr9Sm6i.jpg'}
-                textColor="white"
-                buttonText="Advice Me"
-                buttonVariant="outlined"
-                buttonColor="white"
-                handleButtonClick={handleAdvert}
-              />
+              <br/>
+              // <Advert
+              //   title={['Ran into an urgent need?', 'Request a salary advance.']}
+              //   featuredImage={'https://i.imgur.com/Rr9Sm6i.jpg'}
+              //   textColor="white"
+              //   buttonText="Advice Me"
+              //   buttonVariant="outlined"
+              //   buttonColor="white"
+              //   handleButtonClick={handleAdvert}
+              // />
             )}
           </Grid>
         </Grid>

@@ -12,6 +12,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack, 
+  Avatar,
 } from '@mui/material'
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
@@ -20,6 +22,8 @@ import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import PropTypes from 'prop-types'
 import DepositForm from '../../components/forms/DepositForm'
+import CustomModal from '../../components/modal/CustomModal'
+import Spacer from '../../components/spacer';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction='up' ref={ref} {...props} />)
 
@@ -80,10 +84,12 @@ const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) 
 }))
 
 const Deposit = props => {
+  const { profile } = props;
   const [value, setValue] = React.useState(0)
   const [openDialog, setOpenDialog] = React.useState(false)
   const [openAdmin, setOpenAdmin] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [openResponse, setOpenResponse] = React.useState(false)
   const [selectedCrypto, setSelectedCrypto] = React.useState('')
 
   const handleChange = (event, newValue) => {
@@ -91,6 +97,40 @@ const Deposit = props => {
   }
   return (
     <Container maxWidth='lg'>
+       <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
+        <Box sx={{ textAlign: 'start' }}>
+          <Stack direction="row" alignItems="center">
+            <Avatar src="/static/images/logo.png" />
+            <div>
+              <Typography sx={{ fontWeight: 'bolder', marginLeft: 1 }}>
+                HFX Limited Support <br />
+                {/* <span style={{ fontWeight: 'lighter', color: 'rgb(33 43 54 / 40%)' }}>info@</span> */}
+              </Typography>
+            </div>
+          </Stack>
+          <Divider sx={{ marginTop: 2 }} />
+          <Spacer size={2} />
+          <Typography variant="body1" sx={{ textTransform: 'capitalize', fontWeight: 'bolder' }} gutterBottom>
+            Hi {profile?.fullName},
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Thank you for contacting HFX LTD, where you trade without barriers.
+            <br />
+            Your request is well received and currently been proccessed. 
+            <span style={{ textTransform: 'uppercase' }}>
+              <b> (Investment Deposit)</b>
+            </span>
+            <br /> Kindly expect a response via your email and within 24 hours.{' '}
+          </Typography>
+          <Spacer size={3} />
+          <Typography variant="body1" color="text.secondary">
+            Regards,
+            <br /> HFX LTD Customer Success Team.
+          </Typography>
+          <Spacer size={4} />
+        </Box>
+      </CustomModal>
+
       <Dialog
         open={openDialog}
         TransitionComponent={Transition}
@@ -119,7 +159,7 @@ const Deposit = props => {
         <DialogTitle>{'Contact Admin Deposit Form'}</DialogTitle>
         <DialogContent>
           <Box>
-            <DepositForm crypto={selectedCrypto} setOpenModal={setOpenAdmin}  loading={loading} setLoading={setLoading}  />
+            <DepositForm crypto={selectedCrypto} setOpenModal={setOpenAdmin}  loading={loading} setLoading={setLoading} setOpenResponse={setOpenResponse} />
           </Box>
         </DialogContent>
       </Dialog>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseURL =  "https://hfx-api.vercel.app"; // "http://192.168.1.22:8080"; //
+export const baseURL = "http://192.168.198.247:8080"; // "https://hfx-api.vercel.app"; // 
 
 const axiosInstance = axios.create({
   baseURL: `${baseURL}/api`,

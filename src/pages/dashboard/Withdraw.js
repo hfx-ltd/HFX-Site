@@ -9,6 +9,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import PropTypes from 'prop-types'
+import WithdrawForm from '../../components/forms/WithdrawForm'
 
 const Transition = React.forwardRef((props, ref) => <Slide direction='up' ref={ref} {...props} />)
 
@@ -69,15 +70,17 @@ const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) 
 }))
 
 const Withdraw = props => {
+  const { profile } = props;
   const [value, setValue] = React.useState(0)
+  const [openBalance, setOpenBalance] = React.useState(false)
   const [openDialog, setOpenDialog] = React.useState(false)
   const [openAdmin, setOpenAdmin] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
-  const [selectedCrypto, setSelectedCrypto] = React.useState('')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
   return (
     <Container maxWidth='lg' >
       <Dialog
@@ -99,6 +102,24 @@ const Withdraw = props => {
       </Dialog>
 
       <Dialog
+        open={openBalance}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenBalance(false)}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{'Important Notice!'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-slide-description'>
+            {`Low wallet balance! Please fund your account first to invest.`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenBalance(false)}>Done</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
         open={openAdmin}
         TransitionComponent={Transition}
         keepMounted
@@ -108,7 +129,7 @@ const Withdraw = props => {
         <DialogTitle>{'Contact Admin Withdrawal Form'}</DialogTitle>
         <DialogContent>
           <Box>
-            {/* <DepositForm crypto={selectedCrypto} setOpenModal={setOpenAdmin}  loading={loading} setLoading={setLoading}  /> */}
+            <WithdrawForm  setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading}  />
           </Box>
         </DialogContent>
       </Dialog>
@@ -212,7 +233,23 @@ const Withdraw = props => {
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Item Three
+            <Box p={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}  >
+              <Typography pt={4} gutterBottom fontWeight={600} variant='h5' >
+                Send Withdrawal Request
+              </Typography>
+              <Button variant='contained' sx={{px: 4, py: 2}} onClick={() => {
+                // console.log("PROFILE :::: ", profile);
+                if (!profile?.balance || profile?.balance < 10) {
+                  setOpenBalance(true)
+                }
+                else {
+                  setOpenAdmin(true);
+                }
+                // setOpenAdmin(true);
+              }} >
+                Request Withdrawal
+              </Button>
+            </Box>
           </TabPanel>
         </Box>
         <Toolbar />
