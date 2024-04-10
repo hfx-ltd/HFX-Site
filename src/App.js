@@ -36,6 +36,8 @@ import Blog from './pages/blog'
 import Promotions from './pages/promotions'
 import PrivacyPolicy from './pages/legal/policy'
 import TermsofService from './pages/legal/terms'
+import useNews from './hooks/useNews'
+import { setNews } from './store/reducer/misc'
 // theme
 
 function App () {
@@ -46,7 +48,7 @@ function App () {
   const { data, loggedOut, loading: dataLoading, mutate: profileMutate } = useProfile()
   const dispatch = useDispatch()
   const location = useLocation()
-  // const { data: settingsData } = useSettings()
+  const { data: newsData } = useNews(1)
 
   const xs = useMediaQuery(theme.breakpoints.only('xs'))
   const sm = useMediaQuery(theme.breakpoints.only('sm'))
@@ -122,8 +124,12 @@ function App () {
       dispatch(setAuth(false))
       dispatch(setProfile(null))
     }
+
+    if (newsData) {
+      dispatch(setNews(newsData))
+    }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading])
+  }, [data, loggedOut, dataLoading, dispatch, newsData])
 
   useEffect(() => {
     if (location.pathname.startsWith('/dashboard')) {
