@@ -52,13 +52,12 @@ function VerifyOTPForm(props) {
         loading: 'Loading',
         success: () => {
           if (location?.state?.emailAddress && location?.state?.accessToken) {
-            // //   login here
+
             localStorage.setItem('accessToken', location?.state?.accessToken);
             localStorage.setItem('refreshToken', location?.state?.refreshToken);
-            // //   fetch user here
-            mutate('/auth/profile');
-            
+            localStorage.setItem('loggedIn', 'yes')
 
+            mutate('/auth/profile');
             navigate('/dashboard/overview', { state: location?.state?.emailAddress, replace: true });
 
           } else if (location?.state?.emailAddress) {

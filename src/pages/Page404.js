@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 const ContentStyle = styled('div')(({ theme }) => ({
   margin: 'auto',
   textAlign: 'center',
+  marginTop: theme.spacing(5)
 }));
 
 // ----------------------------------------------------------------------

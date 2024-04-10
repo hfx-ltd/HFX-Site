@@ -55,6 +55,7 @@ const LoginForm = ({ theme, deviceType }) => {
             if (res.data?.user?.isEmailVerified) {
               localStorage.setItem('accessToken', res.data?.accessToken);
               localStorage.setItem('refreshToken', res.data?.refreshToken);
+              localStorage.setItem('loggedIn', 'yes')
               dispatch(setProfile(res.data?.user))
               dispatch(setAuth(true))
 

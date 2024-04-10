@@ -8,8 +8,8 @@ const formatCurrency = (value, currency = '') => {
   }
 
   amount = `${currency || '$'}${parseFloat(value)
-    .toFixed(0)
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
+    ?.toFixed(0)
+    ?.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}`;
   return amount;
 };
 
