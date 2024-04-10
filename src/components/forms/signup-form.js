@@ -55,7 +55,7 @@ const SignupForm = ({ theme, deviceType }) => {
       middleName: '',
       lastName: '',
       phoneNumber: '',
-      gender: ''
+      gender: '',
     },
     validationSchema,
     onSubmit: async values => {
@@ -64,7 +64,7 @@ const SignupForm = ({ theme, deviceType }) => {
         ...values,
       }
 
-      console.log("PAYLOADS :::: ", payload);
+      console.log('PAYLOADS :::: ', payload)
 
       const response = APIService.post('/auth/create', payload)
       toast.promise(response, {
@@ -170,6 +170,7 @@ const SignupForm = ({ theme, deviceType }) => {
               input={<OutlinedInput variant='outlined' {...getFieldProps('gender')} id='gender' />}
               id='gender'
             >
+              <option disabled value={null}>Select your gender</option>
               {sex.map(gender => (
                 <option key={gender.value} value={gender.value}>
                   {gender.label}
