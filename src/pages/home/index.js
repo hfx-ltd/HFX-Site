@@ -1,5 +1,6 @@
 import React from 'react';
 import { Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { useSelector } from 'react-redux';
 import HomeHero from '../../components/heros/home-hero';
 import AboutExcerpt from '../../layouts/sections/home/about-excerpt';
 import OptimalOpportunity from '../../layouts/sections/home/opportunites';
@@ -34,6 +35,8 @@ const Home = () => {
   const xs = useMediaQuery(theme.breakpoints.only('xs'))
   const sm = useMediaQuery(theme.breakpoints.only('sm'))
 
+  const { profile } = useSelector((state) => state.auth)
+
   React.useEffect(() => {
     if (xs) {
       setDeviceType('mobile');
@@ -50,7 +53,7 @@ const Home = () => {
   return (
     <div>
       <Toolbar />
-      <HomeHero theme={theme} deviceType={deviceType} />
+      <HomeHero theme={theme} deviceType={deviceType} profile={profile} />
       <Toolbar />
       <AboutExcerpt theme={theme} deviceType={deviceType} />
       <Toolbar />

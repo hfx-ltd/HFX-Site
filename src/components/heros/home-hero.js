@@ -2,7 +2,7 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 
-const HomeHero = ({deviceType, theme}) => (
+const HomeHero = ({deviceType, theme, profile}) => (
     <div
       style={{
         height: deviceType !== "tablet" ? '86vh' : '60vh',
@@ -32,9 +32,12 @@ const HomeHero = ({deviceType, theme}) => (
                 success in the market.
               </Typography>
               <br />
-              <Button variant='contained' sx={{ px: 4, py: 2 }}>
+              {
+                !profile && <Button variant='contained' sx={{ px: 4, py: 2 }}>
                 Register Today
               </Button>
+              }
+              
             </Box>
           </Grid>
           <Grid xs={12} sm={12} md={6} item >
