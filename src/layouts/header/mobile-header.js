@@ -61,7 +61,7 @@ const MobileHeader = props => {
             </Typography>
             <Box display={'flex'} flexDirection={'row'}>
               {isAuth ? (
-                <IconButton>
+                <IconButton onClick={() => navigate('/dashboard')} >
                   <Avatar src={profile?.photoUrl} />
                 </IconButton>
               ) : (
