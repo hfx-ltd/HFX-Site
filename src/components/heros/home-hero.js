@@ -1,8 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const HomeHero = ({deviceType, theme, profile}) => (
+const HomeHero = ({deviceType, theme, profile}) => {
+
+  const navigate = useNavigate();
+
+  return (
     <div
       style={{
         height: deviceType !== "tablet" ? '86vh' : '60vh',
@@ -17,7 +22,7 @@ const HomeHero = ({deviceType, theme, profile}) => (
         <Grid container spacing={2}>
           <Grid xs={12} sm={12} md={6} item>
             <Box width={deviceType === "mobile" ? '99%' : "86%"} >
-              <Typography fontSize={deviceType !== "pc" ? 13 : 16}>INVESTMENT HEDGE</Typography>
+              <Typography fontSize={deviceType !== "pc" ? 12 : 14}>INVESTMENT HEDGE</Typography>
               <Typography fontSize={deviceType !== "pc" ? 32 : 48} lineHeight={1.1} gutterBottom>
                 Innovative{' '}
                 <span style={{ color: theme.palette.secondary.main }}>
@@ -33,7 +38,7 @@ const HomeHero = ({deviceType, theme, profile}) => (
               </Typography>
               <br />
               {
-                !profile && <Button variant='contained' sx={{ px: 4, py: 2 }}>
+                !profile && <Button variant='contained' sx={{ px: 4, py: 2 }} onClick={() => navigate('/signup')} >
                 Register Today
               </Button>
               }
@@ -47,4 +52,5 @@ const HomeHero = ({deviceType, theme, profile}) => (
       </Container>
     </div>
   )
+}
 export default HomeHero
