@@ -46,11 +46,11 @@ const Blog = () => {
         <Grid container spacing={4}>
           {loading
             ? [1, 2, 3].map(ite => (
-                <Grid key={ite} item xs={12} sm={6} md={4}>
+                <Grid key={ite} item xs={12} sm={6} md={4} minHeight={156} >
                   <Skeleton variant='rectangular' height={200} width={200} animation="wave"  />
                 </Grid>
               ))
-            : news &&
+            : 
               news?.docs?.map((item, index) => (
                 <Grid key={index} item xs={12} sm={6} md={4}>
                   <Box display='flex' p={3} component={Card} flexDirection='column' justifyContent='start'>
