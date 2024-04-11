@@ -184,7 +184,6 @@ const Deposit = props => {
         <Box sx={{ bgcolor: '#fefefe' }}>
           <StyledTabs value={value} onChange={handleChange} aria-label='styled tabs example'>
             <StyledTab label='Credit/Debit Cards' />
-            <StyledTab label='Bank Transfers' />
             <StyledTab label='Cryptocurrency' />
           </StyledTabs>
           <Box sx={{ p: 1 }} />
@@ -218,74 +217,6 @@ const Deposit = props => {
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
-              <Typography gutterBottom>Bank Transfer</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={6}>
-                  <Box display='flex' flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
-                    <Box
-                      component={Button}
-                      variant='outlined'
-                      width={'100%'}
-                      display='flex'
-                      sx={{ p: 2, textTransform: 'capitalize' }}
-                      flexDirection={'row'}
-                      justifyContent={'space-between'}
-                      alignItems={'center'}
-                      onClick={() => setOpenDialog(true)}
-                    >
-                      <Typography>Direct Online Banking</Typography>
-                      <img
-                        src='https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg'
-                        alt=''
-                        width={48}
-                      />
-                    </Box>
-                    <br />
-                    <Box
-                      component={Button}
-                      variant='outlined'
-                      width={'100%'}
-                      display='flex'
-                      sx={{ p: 2, textTransform: 'capitalize' }}
-                      flexDirection={'row'}
-                      justifyContent={'space-between'}
-                      alignItems={'center'}
-                      onClick={() => setOpenDialog(true)}
-                    >
-                      <Typography>Wire Transfer</Typography>
-                      <img
-                        src='https://www.officialjackfx.com/trade.invest/assets/logos/wire_transfer.svg'
-                        alt=''
-                        width={76}
-                      />
-                    </Box>
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6} md={6}>
-                  <Box
-                    component={Button}
-                    variant='outlined'
-                    width={'100%'}
-                    display='flex'
-                    sx={{ p: 2, textTransform: 'capitalize' }}
-                    flexDirection={'row'}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    onClick={() => setOpenDialog(true)}
-                  >
-                    <Typography>Local Banks Transfer</Typography>
-                    <img
-                      src='https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg'
-                      alt=''
-                      width={48}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-          </TabPanel>
-          <TabPanel value={value} index={2}>
             <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
               <Typography gutterBottom>Cryptocurrency</Typography>
               <Grid container spacing={2}>
