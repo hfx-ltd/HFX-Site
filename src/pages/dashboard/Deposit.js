@@ -12,27 +12,27 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Stack, 
+  Stack,
   Avatar,
-} from '@mui/material'
-import * as React from 'react'
-import { styled } from '@mui/material/styles'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
-import PropTypes from 'prop-types'
-import DepositForm from '../../components/forms/DepositForm'
-import CustomModal from '../../components/modal/CustomModal'
+} from '@mui/material';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+import DepositForm from '../../components/forms/DepositForm';
+import CustomModal from '../../components/modal/CustomModal';
 import Spacer from '../../components/spacer';
 
-const Transition = React.forwardRef((props, ref) => <Slide direction='up' ref={ref} {...props} />)
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-function TabPanel (props) {
-  const { children, value, index, ...other } = props
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
@@ -44,17 +44,17 @@ function TabPanel (props) {
         </Box>
       )}
     </div>
-  )
+  );
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-}
+};
 
-const StyledTabs = styled(props => (
-  <Tabs {...props} TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }} />
+const StyledTabs = styled((props) => (
+  <Tabs {...props} TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }} />
 ))(({ theme }) => ({
   '& .MuiTabs-indicator': {
     display: 'flex',
@@ -66,9 +66,9 @@ const StyledTabs = styled(props => (
     width: '100%',
     backgroundColor: theme.palette.secondary.main,
   },
-}))
+}));
 
-const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) => ({
+const StyledTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) => ({
   textTransform: 'none',
   fontWeight: theme.typography.fontWeightRegular,
   fontSize: theme.typography.pxToRem(15),
@@ -81,23 +81,23 @@ const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) 
   '&.Mui-focusVisible': {
     backgroundColor: 'rgba(100, 95, 228, 0.32)',
   },
-}))
+}));
 
-const Deposit = props => {
+const Deposit = (props) => {
   const { profile } = props;
-  const [value, setValue] = React.useState(0)
-  const [openDialog, setOpenDialog] = React.useState(false)
-  const [openAdmin, setOpenAdmin] = React.useState(false)
-  const [loading, setLoading] = React.useState(false)
-  const [openResponse, setOpenResponse] = React.useState(false)
-  const [selectedCrypto, setSelectedCrypto] = React.useState('')
+  const [value, setValue] = React.useState(0);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAdmin, setOpenAdmin] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [openResponse, setOpenResponse] = React.useState(false);
+  const [selectedCrypto, setSelectedCrypto] = React.useState('');
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
   return (
-    <Container maxWidth='lg'>
-       <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
+    <Container maxWidth="lg">
+      <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
         <Box sx={{ textAlign: 'start' }}>
           <Stack direction="row" alignItems="center">
             <Avatar src="/static/images/logo.png" />
@@ -116,7 +116,7 @@ const Deposit = props => {
           <Typography variant="body1" color="text.secondary" gutterBottom>
             Thank you for contacting HFX LTD, where you trade without barriers.
             <br />
-            Your request is well received and currently been proccessed. 
+            Your request is well received and currently been proccessed.
             <span style={{ textTransform: 'uppercase' }}>
               <b> (Investment Deposit)</b>
             </span>
@@ -136,11 +136,11 @@ const Deposit = props => {
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenDialog(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Important Notice!'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-slide-description'>
+          <DialogContentText id="alert-dialog-slide-description">
             {`This feature is currently not available. Please use crypto deposit option.`}
           </DialogContentText>
         </DialogContent>
@@ -154,12 +154,18 @@ const Deposit = props => {
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenAdmin(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Contact Admin Deposit Form'}</DialogTitle>
         <DialogContent>
           <Box>
-            <DepositForm crypto={selectedCrypto} setOpenModal={setOpenAdmin}  loading={loading} setLoading={setLoading} setOpenResponse={setOpenResponse} />
+            <DepositForm
+              crypto={selectedCrypto}
+              setOpenModal={setOpenAdmin}
+              loading={loading}
+              setLoading={setLoading}
+              setOpenResponse={setOpenResponse}
+            />
           </Box>
         </DialogContent>
       </Dialog>
@@ -170,35 +176,35 @@ const Deposit = props => {
         component={Box}
         bgcolor={'white'}
         p={4}
-        display='flex'
+        display="flex"
         flexDirection={'column'}
         justifyContent={'start'}
       >
-        <Box display='flex' flexDirection={'row'}>
-          <Typography gutterBottom variant='h6'>
+        <Box display="flex" flexDirection={'row'}>
+          <Typography gutterBottom variant="h6">
             Deposit to:{' '}
           </Typography>
         </Box>
         <Divider />
         <br />
         <Box sx={{ bgcolor: '#fefefe' }}>
-          <StyledTabs value={value} onChange={handleChange} aria-label='styled tabs example'>
-            <StyledTab label='Credit/Debit Cards' />
-            <StyledTab label='Cryptocurrency' />
+          <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
+            <StyledTab label="Credit/Debit Cards" />
+            <StyledTab label="Cryptocurrency" />
           </StyledTabs>
           <Box sx={{ p: 1 }} />
         </Box>
         <Box>
           <TabPanel value={value} index={0}>
-            <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
+            <Box display="flex" flexDirection={'column'} justifyContent={'start'}>
               <Typography gutterBottom>Credit Card Deposit</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={8} md={7}>
                   <Box
                     component={Button}
-                    variant='outlined'
+                    variant="outlined"
                     width={'100%'}
-                    display='flex'
+                    display="flex"
                     sx={{ px: 4, py: 2 }}
                     flexDirection={'row'}
                     justifyContent={'space-between'}
@@ -207,8 +213,8 @@ const Deposit = props => {
                   >
                     <Typography>E-commpay</Typography>
                     <img
-                      src='https://www.officialjackfx.com/trade.invest/assets/logos/mastercard_visa.svg'
-                      alt=''
+                      src="https://www.officialjackfx.com/trade.invest/assets/logos/mastercard_visa.svg"
+                      alt=""
                       width={75}
                     />
                   </Box>
@@ -217,77 +223,97 @@ const Deposit = props => {
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
+            <Box display="flex" flexDirection={'column'} justifyContent={'start'}>
               <Typography gutterBottom>Cryptocurrency</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={6}>
-                  <Box display='flex' flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
+                  <Box display="flex" flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
                     <Box
                       component={Button}
-                      variant='outlined'
+                      variant="outlined"
                       width={'100%'}
-                      display='flex'
+                      display="flex"
                       sx={{ px: 2, py: 0.5, textTransform: 'capitalize' }}
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
                       onClick={() => {
-                        setSelectedCrypto('btc')
+                        setSelectedCrypto('btc');
                         setTimeout(() => {
-                          setOpenAdmin(true)
+                          setOpenAdmin(true);
                         }, 500);
                       }}
                     >
                       <Typography>Bitcoin (BTC)</Typography>
-                      <img src='/btc-logo.png' alt='' width={56} />
+                      <img src="/btc-logo.png" alt="" width={56} />
                     </Box>
                     <br />
                     <Box
                       component={Button}
-                      variant='outlined'
+                      variant="outlined"
                       width={'100%'}
-                      display='flex'
+                      display="flex"
                       sx={{ px: 2, textTransform: 'capitalize' }}
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
                       onClick={() => {
-                        setSelectedCrypto('eth')
+                        setSelectedCrypto('eth');
                         setTimeout(() => {
-                          setOpenAdmin(true)
+                          setOpenAdmin(true);
                         }, 500);
                       }}
                     >
                       <Typography>Ethereum (ETH)</Typography>
-                      <img src='/eth-logo.png' alt='' width={48} />
+                      <img src="/eth-logo.png" alt="" width={48} />
                     </Box>
                   </Box>
                 </Grid>
+
                 <Grid item xs={12} sm={6} md={6}>
-                  <Box
-                    component={Button}
-                    variant='outlined'
-                    width={'100%'}
-                    display='flex'
-                    sx={{ p: 2, textTransform: 'capitalize' }}
-                    flexDirection={'row'}
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    onClick={() => {
-                      setSelectedCrypto('bnb')
-                      setTimeout(() => {
-                        setOpenAdmin(true)
-                      }, 500);
-                    }}
-                  >
-                    <Typography>Binance Cash</Typography>
-                    <img
-                      src='https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg'
-                      alt=''
-                      width={48}
-                    />
+                  <Box display="flex" flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
+                    <Box
+                      component={Button}
+                      variant="outlined"
+                      width={'100%'}
+                      display="flex"
+                      sx={{ px: 2, py: 2, textTransform: 'capitalize' }}
+                      flexDirection={'row'}
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
+                      onClick={() => {
+                        setSelectedCrypto('usdt');
+                        setTimeout(() => {
+                          setOpenAdmin(true);
+                        }, 500);
+                      }}
+                    >
+                      <Typography>Tether (USDT)</Typography>
+                      <img src="/usdt-logo.png" alt="" width={32} />
+                    </Box>
+                    <br />
+                    <Box
+                      component={Button}
+                      variant="outlined"
+                      width={'100%'}
+                      display="flex"
+                      sx={{ px: 2, py: 1.3, textTransform: 'capitalize' }}
+                      flexDirection={'row'}
+                      justifyContent={'space-between'}
+                      alignItems={'center'}
+                      onClick={() => {
+                        setSelectedCrypto('sol');
+                        setTimeout(() => {
+                          setOpenAdmin(true);
+                        }, 500);
+                      }}
+                    >
+                      <Typography>Solana (SOL)</Typography>
+                      <img src="/solana-logo.png" alt="" width={40} />
+                    </Box>
                   </Box>
                 </Grid>
+                
               </Grid>
             </Box>
           </TabPanel>
@@ -296,7 +322,7 @@ const Deposit = props => {
         <Toolbar />
       </Card>
     </Container>
-  )
-}
+  );
+};
 
-export default Deposit
+export default Deposit;

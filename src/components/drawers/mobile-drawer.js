@@ -75,7 +75,7 @@ const MobileDrawer = (props) => {
   const [openAbout, setOpenAbout] = React.useState(false);
   const [openResources, setOpenResources] = React.useState(false);
 
-  const { isAuth } = useSelector(state => state.auth)
+  const { profile } = useSelector(state => state.auth)
   const navigate = useNavigate()
 
   const handleClick1 = () => {
@@ -182,7 +182,7 @@ const MobileDrawer = (props) => {
       </div>
 
       {
-        !isAuth &&  <div
+        !profile &&  <div
         style={{
           display: "flex",
           flexDirection: "column",

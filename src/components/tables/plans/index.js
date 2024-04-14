@@ -13,12 +13,27 @@ import {
 // import formatCurrency from "utils/formatCurrency";
 // import xlsx from "json-as-xlsx";
 import { toast } from 'react-hot-toast'
-import { Button, Chip } from '@mui/material'
+import { Button, Chip,  Slide,
+  Toolbar,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack, } from '@mui/material'
 import { tempPlans } from '../../../data/plans'
 import ActionButton from './action'
 import CustomNoRowsOverlay from '../../no-data'
 
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+
+
 export default function PlansTable () {
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [selectedRisk, setSelectedRisk] = React.useState();
+  const [selectedROI, setSelectedROI] = React.useState();
+
   const columns = [
     {
       field: 'name',
@@ -116,7 +131,12 @@ export default function PlansTable () {
       field: 'id',
       headerName: 'Action',
       width: 90,
-      renderCell: params => <Button size='small' variant='contained' sx={{textTransform: 'capitalize'}} >Trade</Button>,
+      renderCell: params => <Button size='small' variant='contained' sx={{textTransform: 'capitalize'}} onClick={() => {
+        setSelectedRisk(params?.row?.risk)
+        setSelectedROI(params?.row?.roi)
+
+        setOpenConfirm(true)
+      }} >Trade</Button>,
     },
   ]
 
@@ -131,8 +151,27 @@ export default function PlansTable () {
     )
   }
 
+
   return (
     <div style={{ height: '60vh', width: '100%' }}>
+      <Dialog
+        open={openConfirm}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenConfirm(false)}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{'Important Notice!'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {`Are you sure you want to proceed with this investment? Risk level is ${selectedRisk} and Return On Investment (ROI) is ${selectedROI}`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
+          <Button onClick={() => setOpenConfirm(false)}>Proceed</Button>
+        </DialogActions>
+      </Dialog>
       {tempPlans && (
         <DataGrid
           rows={tempPlans}

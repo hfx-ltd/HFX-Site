@@ -60,7 +60,7 @@ const MobileHeader = props => {
               HFX <span style={{color: theme.palette.secondary.main, textStyle: 'italic'}} >Limited</span>
             </Typography>
             <Box display={'flex'} flexDirection={'row'}>
-              {isAuth ? (
+              {profile ? (
                 <IconButton onClick={() => navigate('/dashboard')} >
                   <Avatar src={profile?.photoUrl} />
                 </IconButton>

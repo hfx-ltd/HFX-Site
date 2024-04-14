@@ -22,7 +22,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 const depositSchema = Yup.object().shape({
   amount: Yup.number().required('Enter deposit amount in USD'),
   comment: Yup.string().nullable(),
-  investmentPlan: Yup.number().required('Select an investment plan'),
 })
 
 function DepositForm (props) {
@@ -86,7 +85,7 @@ function DepositForm (props) {
             helperText={touched.amount && errors.amount}
           />
 
-          <FormControl fullWidth error={Boolean(touched.investmentPlan && errors.investmentPlan)}>
+          {/* <FormControl fullWidth error={Boolean(touched.investmentPlan && errors.investmentPlan)}>
             <InputLabel htmlFor='investmentPlan' sx={{ bgcolor: 'background.paper' }}>
               <em>Select investment plan</em>
             </InputLabel>
@@ -100,7 +99,7 @@ function DepositForm (props) {
                 </option>
               ))}
             </NativeSelect>
-          </FormControl>
+          </FormControl> */}
 
           <StyledTextField
             fullWidth

@@ -65,6 +65,7 @@ const Home = () => {
       <Toolbar/>
       <FriendlyProfessional theme={theme} deviceType={deviceType} />
       <Toolbar/>
+      
       <StartInvesting theme={theme} deviceType={deviceType} />
       <FAQs theme={theme} deviceType={deviceType}  data={demoFAQs} />
     </div>

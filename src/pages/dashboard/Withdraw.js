@@ -73,6 +73,7 @@ const Withdraw = props => {
   const { profile } = props;
   const [value, setValue] = React.useState(0)
   const [openBalance, setOpenBalance] = React.useState(false)
+  const [openChooser, setOpenChooser] = React.useState(false)
   const [openDialog, setOpenDialog] = React.useState(false)
   const [openAdmin, setOpenAdmin] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
@@ -130,6 +131,34 @@ const Withdraw = props => {
         <DialogContent>
           <Box>
             <WithdrawForm  setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading}  />
+          </Box>
+        </DialogContent>
+      </Dialog>
+
+
+      <Dialog
+        open={openChooser}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenChooser(false)}
+        aria-describedby='alert-dialog-slide-description'
+      >
+        <DialogTitle>{'Choose Communication Channel'}</DialogTitle>
+        <DialogContent>
+          <Box width={'100%'} minHeight={300} display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'stretch'} >
+            <Typography gutterBottom  >
+              How do you want to contact admin for your withdrawal request?
+            </Typography>
+            <Toolbar />
+            <Box width={'100%'} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+              <Button sx={{px: 4, py: 1, borderRadius: 12, textTransform: 'capitalize'}}  variant='contained' onClick={() => {
+                setOpenChooser(false);
+                setOpenAdmin(true);
+              }} >
+                Send Message
+              </Button>
+              <div  className="elfsight-app-2ebd8a0e-83d2-4801-ada1-a0fe53a6841a" data-elfsight-app-lazy />
+            </Box>
           </Box>
         </DialogContent>
       </Dialog>
@@ -243,7 +272,7 @@ const Withdraw = props => {
                   setOpenBalance(true)
                 }
                 else {
-                  setOpenAdmin(true);
+                  setOpenChooser(true);
                 }
                 // setOpenAdmin(true);
               }} >
