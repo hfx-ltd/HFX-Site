@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet , useLocation } from 'react-router-dom'
 // material
 import { styled } from '@mui/material/styles'
 //
@@ -45,6 +45,7 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout ({ loading, profile }) {
   const [open, setOpen] = useState(false)
+  const [hide, setHide] = useState(false)
   const { data } = useRequest(profile?.id)
   const { data: depositsData } = useRequestUsecaseUser(1, 'deposit', profile?.id)
   const { data: withdrawsData } = useRequestUsecaseUser(1, 'withdrawal', profile?.id)
@@ -53,6 +54,7 @@ export default function DashboardLayout ({ loading, profile }) {
   const { data: withdrawTransactionData } = useTransactionUsecaseUser(1, 'withdrawal', profile?.id)
 
   const dispatch = useDispatch()
+  const location = useLocation();
 
   useEffect(() => {
     if (data) {
@@ -75,6 +77,12 @@ export default function DashboardLayout ({ loading, profile }) {
     }
   }, [data, depositTransactionData, depositsData, dispatch, transactionData, withdrawTransactionData, withdrawsData])
 
+  useEffect(() => {
+    if (!location.pathname.includes('dashboard')) {
+      setHide(true)
+    }
+  }, [location])
+
   if (loading) {
     return <Preloader />
   }
@@ -87,6 +95,7 @@ export default function DashboardLayout ({ loading, profile }) {
         <Box flex={1}>
           <Outlet />
         </Box>
+        
         <MiniFooter />
       </MainStyle>
     </RootStyle>
