@@ -92,10 +92,9 @@ export default function DashboardLayout ({ loading, profile }) {
       <DashboardNavbar profile={profile} onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar profile={profile} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle>
-        <Box flex={1}>
+        <Box flex={1} >
           <Outlet />
         </Box>
-        
         <MiniFooter />
       </MainStyle>
     </RootStyle>

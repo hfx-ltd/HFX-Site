@@ -1,24 +1,35 @@
-import { Button, Card, Container, Divider, Grid, Toolbar, Typography , Dialog,
+import {
+  Button,
+  Card,
+  Container,
+  Divider,
+  Grid,
+  Toolbar,
+  Typography,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle, Slide} from '@mui/material'
-import * as React from 'react'
-import { styled } from '@mui/material/styles'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
-import PropTypes from 'prop-types'
-import WithdrawForm from '../../components/forms/WithdrawForm'
+  DialogTitle,
+  Slide,
+  useMediaQuery,
+} from '@mui/material';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import PropTypes from 'prop-types';
+import WithdrawForm from '../../components/forms/WithdrawForm';
 
-const Transition = React.forwardRef((props, ref) => <Slide direction='up' ref={ref} {...props} />)
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-function TabPanel (props) {
-  const { children, value, index, ...other } = props
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`full-width-tabpanel-${index}`}
       aria-labelledby={`full-width-tab-${index}`}
@@ -30,17 +41,17 @@ function TabPanel (props) {
         </Box>
       )}
     </div>
-  )
+  );
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-}
+};
 
-const StyledTabs = styled(props => (
-  <Tabs {...props} TabIndicatorProps={{ children: <span className='MuiTabs-indicatorSpan' /> }} />
+const StyledTabs = styled((props) => (
+  <Tabs {...props} TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }} />
 ))(({ theme }) => ({
   '& .MuiTabs-indicator': {
     display: 'flex',
@@ -52,9 +63,9 @@ const StyledTabs = styled(props => (
     width: '100%',
     backgroundColor: theme.palette.secondary.main,
   },
-}))
+}));
 
-const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) => ({
+const StyledTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) => ({
   textTransform: 'none',
   fontWeight: theme.typography.fontWeightRegular,
   fontSize: theme.typography.pxToRem(15),
@@ -67,33 +78,34 @@ const StyledTab = styled(props => <Tab disableRipple {...props} />)(({ theme }) 
   '&.Mui-focusVisible': {
     backgroundColor: 'rgba(100, 95, 228, 0.32)',
   },
-}))
+}));
 
-const Withdraw = props => {
+const Withdraw = (props) => {
   const { profile } = props;
-  const [value, setValue] = React.useState(0)
-  const [openBalance, setOpenBalance] = React.useState(false)
-  const [openChooser, setOpenChooser] = React.useState(false)
-  const [openDialog, setOpenDialog] = React.useState(false)
-  const [openAdmin, setOpenAdmin] = React.useState(false)
-  const [loading, setLoading] = React.useState(false)
+  const [value, setValue] = React.useState(0);
+  const [openBalance, setOpenBalance] = React.useState(false);
+  const [openChooser, setOpenChooser] = React.useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openAdmin, setOpenAdmin] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   const handleChange = (event, newValue) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
 
   return (
-    <Container maxWidth='lg' >
+    <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
       <Dialog
         open={openDialog}
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenDialog(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Important Notice!'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-slide-description'>
+          <DialogContentText id="alert-dialog-slide-description">
             {`This feature is currently not available. Please use cryptocurrecny withdrawal option or contact admin for help.`}
           </DialogContentText>
         </DialogContent>
@@ -107,11 +119,11 @@ const Withdraw = props => {
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenBalance(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Important Notice!'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-slide-description'>
+          <DialogContentText id="alert-dialog-slide-description">
             {`Low wallet balance! Please fund your account first to invest.`}
           </DialogContentText>
         </DialogContent>
@@ -125,39 +137,53 @@ const Withdraw = props => {
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenAdmin(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Contact Admin Withdrawal Form'}</DialogTitle>
         <DialogContent>
           <Box>
-            <WithdrawForm  setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading}  />
+            <WithdrawForm setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading} />
           </Box>
         </DialogContent>
       </Dialog>
-
 
       <Dialog
         open={openChooser}
         TransitionComponent={Transition}
         keepMounted
         onClose={() => setOpenChooser(false)}
-        aria-describedby='alert-dialog-slide-description'
+        aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{'Choose Communication Channel'}</DialogTitle>
         <DialogContent>
-          <Box width={'100%'} minHeight={300} display={'flex'} flexDirection={'column'} justifyContent={'space-between'} alignItems={'stretch'} >
-            <Typography gutterBottom  >
-              How do you want to contact admin for your withdrawal request?
-            </Typography>
+          <Box
+            width={'100%'}
+            minHeight={300}
+            display={'flex'}
+            flexDirection={'column'}
+            justifyContent={'space-between'}
+            alignItems={'stretch'}
+          >
+            <Typography gutterBottom>How do you want to contact admin for your withdrawal request?</Typography>
             <Toolbar />
-            <Box width={'100%'} display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
-              <Button sx={{px: 4, py: 1, borderRadius: 12, textTransform: 'capitalize'}}  variant='contained' onClick={() => {
-                setOpenChooser(false);
-                setOpenAdmin(true);
-              }} >
+            <Box
+              width={'100%'}
+              display={'flex'}
+              flexDirection={'row'}
+              justifyContent={'space-between'}
+              alignItems={'center'}
+            >
+              <Button
+                sx={{ px: 4, py: 1, borderRadius: 12, textTransform: 'capitalize' }}
+                variant="contained"
+                onClick={() => {
+                  setOpenChooser(false);
+                  setOpenAdmin(true);
+                }}
+              >
                 Send Message
               </Button>
-              <div  className="elfsight-app-2ebd8a0e-83d2-4801-ada1-a0fe53a6841a" data-elfsight-app-lazy />
+              <div className="elfsight-app-2ebd8a0e-83d2-4801-ada1-a0fe53a6841a" data-elfsight-app-lazy />
             </Box>
           </Box>
         </DialogContent>
@@ -169,42 +195,37 @@ const Withdraw = props => {
         component={Box}
         bgcolor={'white'}
         p={4}
-        display='flex'
+        display="flex"
         flexDirection={'column'}
         justifyContent={'start'}
       >
-        <Box display='flex' flexDirection={'row'}>
-          <Typography gutterBottom variant='h6'>
+        <Box display="flex" flexDirection={'row'}>
+          <Typography gutterBottom variant="h6">
             Withdraw via:{' '}
           </Typography>
         </Box>
         <Divider />
         <br />
         <Box sx={{ bgcolor: '#fefefe' }}>
-          <StyledTabs value={value} onChange={handleChange} aria-label='styled tabs example'>
-            <StyledTab label='Internet Banking/Mobile Wallets' />
-            <StyledTab label='Crypto Wallet' />
+          <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
+            <StyledTab label={matches ? "Internet Banking/Mobile Wallets" : "Online Banking"} />
+            <StyledTab label="Crypto Wallet" />
           </StyledTabs>
           <Box sx={{ p: 1 }} />
         </Box>
         <Box>
           <TabPanel value={value} index={0}>
-            <Box display='flex' flexDirection={'column'} justifyContent={'start'}>
+            <Box display="flex" flexDirection={'column'} justifyContent={'start'}>
               <Typography gutterBottom>Bank/Wallets</Typography>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6} md={6}>
-                  <Box
-                    display='flex'
-                    flexDirection={'column'}
-                    justifyContent={'start'}
-                    alignItems={'start'}
-                  >
+                  <Box display="flex" flexDirection={'column'} justifyContent={'start'} alignItems={'start'}>
                     <Box
                       component={Button}
-                      variant='outlined'
+                      variant="outlined"
                       width={'100%'}
-                      display='flex'
-                      sx={{ p:2, textTransform: 'capitalize' }}
+                      display="flex"
+                      sx={{ p: 2, textTransform: 'capitalize' }}
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
@@ -212,18 +233,18 @@ const Withdraw = props => {
                     >
                       <Typography>Direct Online Banking</Typography>
                       <img
-                        src='https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg'
-                        alt=''
+                        src="https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg"
+                        alt=""
                         width={48}
                       />
                     </Box>
                     <br />
                     <Box
                       component={Button}
-                      variant='outlined'
+                      variant="outlined"
                       width={'100%'}
-                      display='flex'
-                      sx={{ p:2, textTransform: 'capitalize'}}
+                      display="flex"
+                      sx={{ p: 2, textTransform: 'capitalize' }}
                       flexDirection={'row'}
                       justifyContent={'space-between'}
                       alignItems={'center'}
@@ -231,8 +252,8 @@ const Withdraw = props => {
                     >
                       <Typography>Withdraw to Paypal</Typography>
                       <img
-                        src='https://www.officialjackfx.com/trade.invest/assets/logos/wire_transfer.svg'
-                        alt=''
+                        src="https://www.officialjackfx.com/trade.invest/assets/logos/wire_transfer.svg"
+                        alt=""
                         width={76}
                       />
                     </Box>
@@ -241,10 +262,10 @@ const Withdraw = props => {
                 <Grid item xs={12} sm={6} md={6}>
                   <Box
                     component={Button}
-                    variant='outlined'
+                    variant="outlined"
                     width={'100%'}
-                    display='flex'
-                    sx={{ p:2, textTransform: 'capitalize'}}
+                    display="flex"
+                    sx={{ p: 2, textTransform: 'capitalize' }}
                     flexDirection={'row'}
                     justifyContent={'space-between'}
                     alignItems={'center'}
@@ -252,8 +273,8 @@ const Withdraw = props => {
                   >
                     <Typography>Local Banks Transfer</Typography>
                     <img
-                      src='https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg'
-                      alt=''
+                      src="https://www.officialjackfx.com/trade.invest/assets/logos/local_banks.svg"
+                      alt=""
                       width={48}
                     />
                   </Box>
@@ -262,20 +283,23 @@ const Withdraw = props => {
             </Box>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <Box p={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}  >
-              <Typography pt={4} gutterBottom fontWeight={600} variant='h5' >
+            <Box p={4} display={'flex'} flexDirection={'column'} justifyContent={'center'} alignItems={'center'}>
+              <Typography pt={4} gutterBottom fontWeight={600} variant="h5">
                 Send Withdrawal Request
               </Typography>
-              <Button variant='contained' sx={{px: 4, py: 2}} onClick={() => {
-                // console.log("PROFILE :::: ", profile);
-                if (!profile?.balance || profile?.balance < 10) {
-                  setOpenBalance(true)
-                }
-                else {
-                  setOpenChooser(true);
-                }
-                // setOpenAdmin(true);
-              }} >
+              <Button
+                variant="contained"
+                sx={{ px: 4, py: 2 }}
+                onClick={() => {
+                  // console.log("PROFILE :::: ", profile);
+                  if (!profile?.balance || profile?.balance < 10) {
+                    setOpenBalance(true);
+                  } else {
+                    setOpenChooser(true);
+                  }
+                  // setOpenAdmin(true);
+                }}
+              >
                 Request Withdrawal
               </Button>
             </Box>
@@ -284,8 +308,8 @@ const Withdraw = props => {
         <Toolbar />
         <Toolbar />
       </Card>
-    </Container>
-  )
-}
+    </Box>
+  );
+};
 
-export default Withdraw
+export default Withdraw;

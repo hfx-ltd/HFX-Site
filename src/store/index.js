@@ -6,6 +6,7 @@ import settingReducer from './reducer/settings';
 import miscReducer from "./reducer/misc"
 import requestReducer from "./reducer/request"
 import transactionReducer from './reducer/transaction';
+import investmentReducer from './reducer/investments';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     setting: settingReducer,
     misc: miscReducer,
     request: requestReducer,
-    transaction: transactionReducer
+    transaction: transactionReducer,
+    investment: investmentReducer,
   },
 });

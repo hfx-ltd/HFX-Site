@@ -43,16 +43,11 @@ function InvestmentForm(props) {
       setLoading(true);
 
       const payload = {
-        name: data?.name,
-        roi: data?.roi,
-        minAmount: data?.minAmount,
-        maxAmount: data?.maxAmount,
-        holdDuration: data?.duration,
-        riskLevel: data?.risk,
+        investmentPlan: data?.id,
         amountInvested: values.amount,
       };
 
-      console.log('PAYLOAD ::: ', payload);
+      console.log('PAYLOAD ::: ', data);
 
       const response = APIService.post('/request/investment/create', payload);
 
@@ -62,10 +57,14 @@ function InvestmentForm(props) {
           setLoading(false);
           setOpenModal(false);
           setOpenResponse(true);
+          
           return `${res.data?.message || 'Request submitted successfully'}`;
         },
         error: (err) => {
           setLoading(false);
+          if (err?.message?.includes('active investment') || err?.response?.data?.message?.includes('active investment')) {
+            setOpenModal(false);
+          }
           return err?.response?.data?.message || err?.message || 'Something went wrong, try again.';
         },
       });
@@ -99,37 +98,37 @@ function InvestmentForm(props) {
                   textTransform: 'capitalize',
                   fontSize: 14,
                   borderColor:
-                    data?.risk.toLowerCase() === 'higher'
+                    data?.riskLevel.toLowerCase() === 'higher'
                       ? '#c1121f'
-                      : data?.risk.toLowerCase() === 'high'
+                      : data?.riskLevel.toLowerCase() === 'high'
                       ? '#e5383b'
-                      : data?.risk.toLowerCase() === 'medium'
+                      : data?.riskLevel.toLowerCase() === 'medium'
                       ? '#f77f00'
-                      : data?.risk.toLowerCase() === 'low'
+                      : data?.riskLevel.toLowerCase() === 'low'
                       ? '#5fad56'
                       : 'transparent',
                   color:
-                    data?.risk.toLowerCase() === 'higher'
+                    data?.riskLevel.toLowerCase() === 'higher'
                       ? '#c1121f'
-                      : data?.risk.toLowerCase() === 'high'
+                      : data?.riskLevel.toLowerCase() === 'high'
                       ? '#e5383b'
-                      : data?.risk.toLowerCase() === 'medium'
+                      : data?.riskLevel.toLowerCase() === 'medium'
                       ? '#f77f00'
-                      : data?.risk.toLowerCase() === 'low'
+                      : data?.riskLevel.toLowerCase() === 'low'
                       ? '#5fad56'
                       : 'transparent',
                   backgroundColor:
-                    data?.risk.toLowerCase() === 'higher'
+                    data?.riskLevel.toLowerCase() === 'higher'
                       ? '#c1121f35'
-                      : data?.risk.toLowerCase() === 'high'
+                      : data?.riskLevel.toLowerCase() === 'high'
                       ? '#e5383b18'
-                      : data?.risk.toLowerCase() === 'medium'
+                      : data?.riskLevel.toLowerCase() === 'medium'
                       ? '#f77f0018'
-                      : data?.risk.toLowerCase() === 'low'
+                      : data?.riskLevel.toLowerCase() === 'low'
                       ? '#5fad5615'
                       : 'transparent',
                 }}
-                label={data?.risk}
+                label={data?.riskLevel}
               />
             </Grid>
 

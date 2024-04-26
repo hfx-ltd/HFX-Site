@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import * as React from 'react';
+import * as React from "react";
 import {
   DataGrid,
   GridToolbarContainer,
@@ -7,64 +7,93 @@ import {
   GridToolbarFilterButton,
   GridToolbarExport,
   GridToolbarDensitySelector,
-} from '@mui/x-data-grid';
+} from "@mui/x-data-grid";
 
-// import SoftTypography from "components/SoftTypography";
-// import formatCurrency from "utils/formatCurrency";
-// import xlsx from "json-as-xlsx";
-import {
-  Button,
-  Chip,
-  Slide,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
-import { useSelector } from 'react-redux';
-import { tempPlans } from '../../../data/plans';
-import CustomNoRowsOverlay from '../../no-data';
-import InvestmentForm from '../../forms/InvestmentForm';
+import { useSelector } from "react-redux";
+import { Chip, Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Slide } from '@mui/material';
+import usePlans from "../../../hooks/usePlans";
+import CustomNoRowsOverlay from "../../no-data";
+import InvestmentForm from "../../forms/InvestmentForm";
+
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export default function PlansTable() {
+  const { plans } = useSelector((state) => state.investment);
+  const {profile } = useSelector((state) => state.auth);
+  const [loading, setLoading] = React.useState(false);
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [openForm, setOpenForm] = React.useState(false);
   const [selected, setSelected] = React.useState();
-  const [loading, setLoading] = React.useState(false);
+  const [filteredPlans, setFilteredPlans] = React.useState(plans?.docs ?? []);
 
-  const {profile } = useSelector((state) => state.auth);
+  const [paginationModel, setPaginationModel] = React.useState({
+    page: 0,
+    pageSize: 25,
+  });
+
+  const { data: planData, mutate } = usePlans(paginationModel.page + 1);
+
+  function CustomToolbar() {
+    return (
+      <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarDensitySelector />
+        <GridToolbarExport />
+       
+      </GridToolbarContainer>
+    );
+  }
+
+  React.useEffect(() => {
+    if (plans) {
+      setFilteredPlans(plans?.docs);
+    }
+  }, [plans]);
 
   const columns = [
     {
-      field: 'name',
-      headerName: 'Plan Name',
-      width: 200,
-      renderCell: (params) => <p style={{ textTransform: 'capitalize', fontSize: 14 }}>{params?.row?.name}</p>,
+      field: "name",
+      headerName: "Plan",
+      width: 130,
+      flex: 1,
+      renderCell: (params) => (
+        <p style={{ fontSize: 14 }} > {params?.row?.name } </p>
+      ),
     },
     {
-      field: 'duration',
-      headerName: 'Hold Duration',
-      width: 156,
-      renderCell: (params) => <p style={{ textTransform: 'capitalize', fontSize: 14 }}>{params?.row?.duration}</p>,
+      field: "holdDuration",
+      headerName: "Hold Duration",
+      width: 140,
+      flex: 1,
+      renderCell: (params) => (
+        <p style={{ textTransform: "capitalize", fontSize: 14 }} > {`${params?.row?.holdDuration} hrs`} </p>
+      ),
     },
     {
-      field: 'minAmount',
-      headerName: 'Min Amount',
-      width: 156,
-      renderCell: (params) => <p style={{ textTransform: 'capitalize', fontSize: 14 }}>{params?.row?.minAmount}</p>,
+      field: "minAmount",
+      headerName: "Min Amount",
+      width: 450,
+      flex: 1,
+      renderCell: (params) => (
+        <p style={{ textTransform: "capitalize", fontSize: 14 }} > {`$${params?.row?.minAmount}`} </p>
+      ),
     },
     {
-      field: 'maxAmount',
-      headerName: 'Max Amount',
-      renderCell: (params) => <p style={{ textTransform: 'capitalize', fontSize: 14 }}>{params?.row?.maxAmount}</p>,
-      width: 110,
+      field: "maxAmount",
+      headerName: "Max Amount",
+      width: 175,
+      flex: 1,
+      renderCell: (params) => (
+        <p style={{ textTransform: "lowercase", fontSize: 14 }} > {`$${params?.row?.maxAmount}`} </p>
+      ),
     },
     {
-      field: 'risk',
-      headerName: 'Risk Level',
+      field: "riskLevel",
+      headerName: "Risk Level",
+      width: 175,
+      flex: 1,
       renderCell: (params) => (
         <Chip
           size="medium"
@@ -74,96 +103,107 @@ export default function PlansTable() {
             textTransform: 'capitalize',
             fontSize: 14,
             borderColor:
-              params?.row?.risk.toLowerCase() === 'higher'
+              params?.row?.riskLevel?.toLowerCase() === 'higher'
                 ? '#c1121f'
-                : params?.row?.risk.toLowerCase() === 'high'
+                : params?.row?.riskLevel?.toLowerCase() === 'high'
                 ? '#e5383b'
-                : params?.row?.risk.toLowerCase() === 'medium'
+                : params?.row?.riskLevel?.toLowerCase() === 'medium'
                 ? '#f77f00'
-                : params?.row?.risk.toLowerCase() === 'low'
+                : params?.row?.riskLevel?.toLowerCase() === 'low'
                 ? '#5fad56'
                 : 'transparent',
             color:
-              params?.row?.risk.toLowerCase() === 'higher'
+              params?.row?.riskLevel?.toLowerCase() === 'higher'
                 ? '#c1121f'
-                : params?.row?.risk.toLowerCase() === 'high'
+                : params?.row?.riskLevel?.toLowerCase() === 'high'
                 ? '#e5383b'
-                : params?.row?.risk.toLowerCase() === 'medium'
+                : params?.row?.riskLevel?.toLowerCase() === 'medium'
                 ? '#f77f00'
-                : params?.row?.risk.toLowerCase() === 'low'
+                : params?.row?.riskLevel?.toLowerCase() === 'low'
                 ? '#5fad56'
                 : 'transparent',
             backgroundColor:
-              params?.row?.risk.toLowerCase() === 'higher'
+              params?.row?.riskLevel?.toLowerCase() === 'higher'
                 ? '#c1121f35'
-                : params?.row?.risk.toLowerCase() === 'high'
+                : params?.row?.riskLevel?.toLowerCase() === 'high'
                 ? '#e5383b18'
-                : params?.row?.risk.toLowerCase() === 'medium'
+                : params?.row?.riskLevel?.toLowerCase() === 'medium'
                 ? '#f77f0018'
-                : params?.row?.risk.toLowerCase() === 'low'
+                : params?.row?.riskLevel?.toLowerCase() === 'low'
                 ? '#5fad5615'
                 : 'transparent',
           }}
-          label={params?.row?.risk}
+          label={params?.row?.riskLevel}
         />
       ),
-      width: 200,
     },
     {
-      field: 'roi',
-      headerName: 'ROI',
-      width: 125,
-      renderCell: (params) => <p style={{ textTransform: 'capitalize', fontSize: 14 }}>{params?.row?.roi}</p>,
-    },
-    // {
-    //   field: "createdAt",
-    //   headerName: "Created On",
-    //   width: 150,
-    //   renderCell: (params) => (
-    //     <p style={{ textTransform: "capitalize", fontSize: 14 }}>{`${new Date(
-    //       params?.row?.createdAt
-    //     ).toLocaleString("en-US", {
-    //       weekday: "short",
-    //       day: "numeric",
-    //       month: "short",
-    //       year: "numeric",
-    //     })}`}</p>
-    //   ),
-    // },
-    {
-      field: 'id',
-      headerName: 'Action',
-      width: 90,
+      field: "roi",
+      headerName: "ROI",
+      width: 175,
+      flex: 1,
       renderCell: (params) => (
-        <Button
-          size="small"
-          variant="contained"
-          sx={{ textTransform: 'capitalize' }}
-          onClick={() => {
-            setSelected(params?.row);
-            setOpenConfirm(true);
-          }}
-        >
-          Trade
-        </Button>
+        <p style={{ textTransform: "lowercase", fontSize: 14 }} >{`${params?.row?.roi}%`}</p>
       ),
+    },
+    {
+      field: "createAt",
+      headerName: "Created On",
+      width: 175,
+      flex: 1,
+      renderCell: (params) => (
+        <p style={{ textTransform: "capitalize", fontSize: 14 }}>{`${new Date(
+          params?.row?.createdAt
+        ).toLocaleString("en-US", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        })}`}</p>
+      ),
+    },
+    {
+      field: "id",
+      headerName: "ACTIONS",
+      width: 90,
+      renderCell: (params) => <Button
+      size="small"
+      variant="contained"
+      sx={{ textTransform: 'capitalize' }}
+      onClick={() => {
+        setSelected(params?.row);
+        setOpenConfirm(true);
+      }}
+    >
+      Trade
+    </Button>,
     },
   ];
 
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    );
-  }
+  React.useEffect(() => {
+    let active = true;
+
+    (async () => {
+      setLoading(true);
+      if (planData) {
+        setFilteredPlans(planData?.docs);
+      }
+
+      if (!active) {
+        return;
+      }
+
+      setLoading(false);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [paginationModel.page, planData]);
 
   return (
-    <div style={{ height: '60vh', width: '100%' }}>
-      <Dialog
+    <div style={{ height: "80vh", width: "100%" }}>
+       <Dialog
         open={openConfirm}
         TransitionComponent={Transition}
         keepMounted
@@ -173,7 +213,7 @@ export default function PlansTable() {
         <DialogTitle>{'Important Notice!'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {`Are you sure you want to proceed with this investment? Risk level is ${selected?.risk} and Return On Investment (ROI) is ${selected?.roi}`}
+            {`Are you sure you want to proceed with this investment? Risk level is ${selected?.riskLevel} and Return On Investment (ROI) is ${selected?.roi}%`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -206,12 +246,17 @@ export default function PlansTable() {
           <InvestmentForm setOpenModal={setOpenForm} data={selected} loading={loading} setLoading={setLoading} profile={profile} />
         </DialogContent>
       </Dialog>
-
-      {tempPlans && profile && (
+      {plans && plans?.docs && filteredPlans && (
         <DataGrid
-          rows={tempPlans}
+          sx={{ padding: 1 }}
+          rows={filteredPlans}
           columns={columns}
-          //   autoHeight
+          paginationMode="server"
+          pageSizeOptions={[25]}
+          rowCount={plans?.totalDocs}
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          loading={loading}
           components={{
             Toolbar: CustomToolbar,
             NoRowsOverlay: CustomNoRowsOverlay,

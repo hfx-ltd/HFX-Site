@@ -159,13 +159,13 @@ function Overview (props) {
   return (
     <Box>
       {profile && (
-        <Container maxWidth='lg'>
+        <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
           <ColoredTypography variant='h4' sx={{ mb: 3 }}>
             Hello {sentenceCase(profile?.firstName)},
           </ColoredTypography>
           <Grid
             container
-            spacing={2}
+            spacing={matches ? 2 : 1}
             display={'flex'}
             flexDirection={'row'}
             justifyContent={'start'}
@@ -241,7 +241,7 @@ function Overview (props) {
             </Grid>
           </Grid>
           <Toolbar />
-        </Container>
+        </Box>
       )}
     </Box>
   )

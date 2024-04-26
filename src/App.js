@@ -40,6 +40,8 @@ import useNews from './hooks/useNews';
 import { setNews } from './store/reducer/misc';
 import Page404 from './pages/Page404';
 import Loader from './pages/Loader';
+import usePlans from './hooks/usePlans';
+import { setPlans } from './store/reducer/investments';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
@@ -51,6 +53,7 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { data: newsData } = useNews(1);
+  const { data: plansData } = usePlans(1);
 
   const xs = useMediaQuery(theme.breakpoints.only('xs'));
   const sm = useMediaQuery(theme.breakpoints.only('sm'));
@@ -130,8 +133,12 @@ function App() {
     if (newsData) {
       dispatch(setNews(newsData));
     }
+
+    if (plansData) {
+      dispatch(setPlans(plansData));
+    }
     // console.log(loggedOut);
-  }, [data, loggedOut, dataLoading, dispatch, newsData]);
+  }, [data, loggedOut, dataLoading, dispatch, newsData, plansData]);
 
   useEffect(() => {
     if (location.pathname.startsWith('/dashboard')) {

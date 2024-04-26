@@ -79,8 +79,8 @@ function Profile(props) {
 
   return (
     <Page title="Profile">
-      <Container maxWidth="xl">
-        <ProfileCard profile={profile} mutate={mutate} />
+      <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
+        <ProfileCard profile={profile} mutate={mutate} matches={matches} />
         <Spacer size={4} />
         <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper', borderRadius: 1 }}>
           <Tabs value={tab} onChange={handleChange} aria-label="tab">
@@ -94,7 +94,7 @@ function Profile(props) {
             {tabComponent(item, profile, mutate, matches)}
           </TabPanel>
         ))}
-      </Container>
+      </Box>
     </Page>
   );
 }

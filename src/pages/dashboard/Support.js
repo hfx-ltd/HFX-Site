@@ -67,7 +67,7 @@ function Support(props) {
           <Spacer size={4} />
         </Box>
       </CustomModal>
-      <Container maxWidth="xl">
+      <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
         <ColoredTypography variant="h4" sx={{ mb: 5 }}>
           Support
         </ColoredTypography>
@@ -89,7 +89,7 @@ function Support(props) {
             <SupportForm matches={matches} setTicket={setTicket} openResponseModal={setOpen} />
           </Grid>
         </StyledGrid>
-      </Container>
+      </Box>
     </Page>
   );
 }

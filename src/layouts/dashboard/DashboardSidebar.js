@@ -23,7 +23,7 @@ import { logOut } from '../../store/reducer/auth';
 
 // ----------------------------------------------------------------------
 
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 284;
 
 const RootStyle = styled('div')(({ theme }) => ({
   backgroundColor: alpha(theme.palette.primary.main, 0.72),

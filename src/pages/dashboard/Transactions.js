@@ -62,7 +62,7 @@ function Transactions(props) {
 
   return (
     <Page title="Transactions">
-      <Container maxWidth="xl">
+      <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
         <ColoredTypography variant="h4" sx={{ mb: 5 }}>
           Transactions
         </ColoredTypography>
@@ -82,7 +82,7 @@ function Transactions(props) {
           <TabPanel key={2} value={tab} index={2}>
             <TransactionList matches={matches} data={myWithdrawsTransaction?.docs} full />
           </TabPanel>
-      </Container>
+      </Box>
     </Page>
   );
 }

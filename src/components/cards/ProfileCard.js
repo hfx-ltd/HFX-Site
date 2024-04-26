@@ -44,7 +44,7 @@ const HiddenInput = styled('input')(({ theme }) => ({
 }));
 
 function ProfileCard(props) {
-  const { profile, mutate } = props;
+  const { profile, mutate, matches } = props;
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(0);
   const [selectedFile, setSelectedFile] = useState(profile?.photoUrl);
@@ -103,13 +103,13 @@ function ProfileCard(props) {
                   />
                 </label>
               </div>
-              <ColoredTypography variant="h4" sx={{ marginLeft: 1 }}>
+              <ColoredTypography variant={matches ?"h4" : 'h6'} sx={{ marginLeft: 1 }}>
                 {profile?.fullName}
               </ColoredTypography>
             </Box>
             <label htmlFor="profile-image-file">
               <Button variant="contained" component="span">
-                Change Profile Photo
+                {matches ? "Change Profile Photo" : "Change Photo"}
               </Button>
             </label>
           </Stack>

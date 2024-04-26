@@ -14,6 +14,7 @@ import {
   DialogTitle,
   Stack,
   Avatar,
+  useMediaQuery,
 } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -91,12 +92,13 @@ const Deposit = (props) => {
   const [loading, setLoading] = React.useState(false);
   const [openResponse, setOpenResponse] = React.useState(false);
   const [selectedCrypto, setSelectedCrypto] = React.useState('');
+  const matches = useMediaQuery(theme => theme.breakpoints.up('sm'))
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   return (
-    <Container maxWidth="lg">
+    <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
       <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
         <Box sx={{ textAlign: 'start' }}>
           <Stack direction="row" alignItems="center">
@@ -321,7 +323,7 @@ const Deposit = (props) => {
         <Toolbar />
         <Toolbar />
       </Card>
-    </Container>
+    </Box>
   );
 };
 
