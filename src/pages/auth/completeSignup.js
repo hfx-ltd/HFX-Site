@@ -6,9 +6,9 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
-// sections
 import CompleteRegisterForm from '../../components/forms/CompleteRegisterForm';
-import { RegisterForm } from '../../components/forms';
+// sections
+// import { RegisterForm } from '../../components/forms';
 // ---------------------------------------------------------------------- 
 
 const ContentStyle = styled('div')(({ theme }) => ({

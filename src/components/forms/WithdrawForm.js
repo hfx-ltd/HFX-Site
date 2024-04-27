@@ -42,7 +42,6 @@ function WithdrawForm (props) {
         success: res => {
           setLoading(false)
           setOpenModal(false)
-          setOpenResponse(true)
           return `${res.data?.message || "Request submitted successfully"}`
         },
         error: err => {

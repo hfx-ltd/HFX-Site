@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Backdrop, CircularProgress, ThemeProvider, useMediaQuery } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
+import Box from '@mui/material/Box';
 import Home from './pages/home';
 import Header from './layouts/header';
 import theme from './theme';
@@ -42,12 +43,14 @@ import Page404 from './pages/Page404';
 import Loader from './pages/Loader';
 import usePlans from './hooks/usePlans';
 import { setPlans } from './store/reducer/investments';
+import CompleteSignup from './pages/auth/completeSignup';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
   const { loading } = useSelector((state) => state.lifeCycle);
   const [deviceType, setDeviceType] = React.useState('mobile');
   const [show, setShow] = React.useState(true);
+  const [initializing, setInitializing] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(true)
   const { data, loggedOut, loading: dataLoading } = useProfile();
   const dispatch = useDispatch();
@@ -161,6 +164,17 @@ function App() {
     setRefreshing(false);
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setInitializing(false)
+    }, 2000);
+    setRefreshing(false);
+  }, []);
+
+  if (initializing) return <Box height={'100vh'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'} >
+    <img src='/loader.webp' alt='' width={156} />
+  </Box>
+
   return (
     <div style={{ height: '100vh' }}>
       {
@@ -185,6 +199,7 @@ function App() {
           <Route path="/promotions" element={<Promotions />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-service" element={<TermsofService />} />
+          <Route path='/complete_signup' element={<CompleteSignup />} />
           <Route path="*" element={<Page404 />} />
           {profile && (
             <Route

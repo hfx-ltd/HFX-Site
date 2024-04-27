@@ -24,7 +24,7 @@ const OurPlans = () => {
         </Box>
         <Divider />
         <br />
-        <PlansTable />
+        <PlansTable  />
       </Card>
     </Box>
   );

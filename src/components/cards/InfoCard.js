@@ -58,7 +58,7 @@ const Item = ({ keyName, value, alignLeft = false }) => (
   </Box>
 );
 
-const LoanCard = (props) => {
+const InfoCard = (props) => {
   const { matches, profile, request, depositCount, withdrawCount, deviceType } = props;
   const [viewBalance, setViewBalance] = useState(true);
 
@@ -92,12 +92,12 @@ const LoanCard = (props) => {
               </ColoredTypography>
             </div>
           ) : (
-            <>
+            <div>
               <Typography>Total Balance</Typography>
               <ColoredTypography sx={{ color: 'white' }} color={'white'} variant="h3" gutterBottom>
                 {formatCurrency(0)}
               </ColoredTypography>
-            </>
+            </div>
           )}
 
           {profile?.investmentBalance > 0 ? (
@@ -184,9 +184,9 @@ const LoanCard = (props) => {
   );
 };
 
-export default LoanCard;
+export default InfoCard;
 
-LoanCard.propTypes = {
+InfoCard.propTypes = {
   matches: PropType.bool.isRequired,
   profile: PropType.object,
 };

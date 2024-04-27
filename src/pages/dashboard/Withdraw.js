@@ -269,7 +269,7 @@ const Withdraw = (props) => {
                     flexDirection={'row'}
                     justifyContent={'space-between'}
                     alignItems={'center'}
-                    onClick={() => {}}
+                    onClick={() => setOpenDialog(true)}
                   >
                     <Typography>Local Banks Transfer</Typography>
                     <img

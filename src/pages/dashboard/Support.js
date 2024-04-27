@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
@@ -9,6 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { useLocation } from 'react-router-dom';
 import Page from '../../components/Page';
 import SupportForm from '../../components/forms/SupportForm';
 import CustomModal from '../../components/modal/CustomModal';
@@ -28,9 +29,19 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 
 function Support(props) {
   const { profile } = props;
+  const location = useLocation();
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
   const [ticket, setTicket] = useState(null);
   const [open, setOpen] = useState(false);
+  const [hide, setHide] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname.includes('support')) {
+      setHide(false);
+    } else {
+      setHide(true);
+    }
+  }, [location]);
 
   return (
     <Page title="Support">
@@ -67,7 +78,7 @@ function Support(props) {
           <Spacer size={4} />
         </Box>
       </CustomModal>
-      <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
+      <Box component={matches ? Container : Box} p={2} maxWidth="lg">
         <ColoredTypography variant="h4" sx={{ mb: 5 }}>
           Support
         </ColoredTypography>
@@ -79,7 +90,7 @@ function Support(props) {
           justifyContent={'space-between'}
           alignItems={!matches && 'center'}
         >
-          <Grid item sm={4} xs={12} padding={2} width={"100%"} >
+          <Grid item sm={4} xs={12} padding={2} width={'100%'}>
             <Typography variant="h4">HFX Limited Support</Typography>
             <Typography variant="body2" color="text.secondary">
               Talk to us about your complaint
@@ -90,6 +101,7 @@ function Support(props) {
           </Grid>
         </StyledGrid>
       </Box>
+      {/* {hide ? <div /> : <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy />} */}
     </Page>
   );
 }
