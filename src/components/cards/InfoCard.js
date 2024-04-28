@@ -12,17 +12,19 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material';
 import Iconify from '../Iconify';
 import formatCurrency from '../../utils/formatCurrency';
 // import { setLoading } from "../../store/reducer/lifeCycle"
 
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
+  width: '100%',
   padding: theme.spacing(1),
   borderRadius: 10,
   backgroundColor: theme.palette.background.paper,
   border: 'none',
-  color: 'black'
+  color: 'black',
 }));
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
@@ -66,7 +68,7 @@ const InfoCard = (props) => {
 
   const handleViewBalance = () => setViewBalance(!viewBalance);
 
-  console.log("ACTIVE INVES ::: ", activeInvestment);
+  console.log('ACTIVE INVES ::: ', activeInvestment);
 
   return (
     <StyledCard variant="outlined">
@@ -90,7 +92,7 @@ const InfoCard = (props) => {
         >
           {profile?.balance > 0 ? (
             <div>
-              <Typography textAlign={matches ? 'left' : 'center'} >Total Balance</Typography>
+              <Typography textAlign={matches ? 'left' : 'center'}>Total Balance</Typography>
               <ColoredTypography sx={{ color: 'black' }} color={'black'} variant="h3" gutterBottom>
                 {viewBalance ? formatCurrency(profile?.balance) : '******'}
               </ColoredTypography>
@@ -98,7 +100,7 @@ const InfoCard = (props) => {
           ) : (
             <div>
               <Typography textAlign={matches ? 'left' : 'center'}>Total Balance</Typography>
-              <ColoredTypography  color={'black'} variant="h3" gutterBottom>
+              <ColoredTypography color={'black'} variant="h3" gutterBottom>
                 {formatCurrency(0)}
               </ColoredTypography>
             </div>
@@ -107,7 +109,7 @@ const InfoCard = (props) => {
           {profile?.investmentBalance > 0 ? (
             <div>
               <Typography textAlign={matches ? 'left' : 'center'}>Investment</Typography>
-              <ColoredTypography  textAlign={'center'} color={'black'} variant="h3" gutterBottom>
+              <ColoredTypography textAlign={'center'} color={'black'} variant="h3" gutterBottom>
                 {viewBalance ? formatCurrency(profile?.investmentBalance) : '******'}
               </ColoredTypography>
             </div>
@@ -131,7 +133,7 @@ const InfoCard = (props) => {
           ) : (
             <div>
               <Typography textAlign={matches ? 'left' : 'center'}>ROI</Typography>
-              <ColoredTypography sx={{  textAlign: 'center' }} color={'black'} variant="h3" gutterBottom>
+              <ColoredTypography sx={{ textAlign: 'center' }} color={'black'} variant="h3" gutterBottom>
                 {'0%'}
               </ColoredTypography>
             </div>
@@ -182,6 +184,118 @@ const InfoCard = (props) => {
           </Stack>
         }
       </CardContent>
+      <Toaster />
+    </StyledCard>
+  );
+};
+
+export const MobileInfoCard = (props) => {
+  const { matches, profile,  deviceType, chartComponent, barComponent } =
+    props;
+  const [viewBalance, setViewBalance] = useState(true);
+  const theme = useTheme();
+
+
+  return (
+    <StyledCard variant="outlined">
+      <Box px={0.75} py={1} >
+        
+        <Stack
+          direction={'row'}
+          sx={{ color: 'black' }}
+          justifyContent="space-between"
+          alignItems={deviceType === 'pc' ? 'center' : 'start'}
+        >
+          {profile?.balance > 0 ? (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Total Balance
+              </Typography>
+              <ColoredTypography color={'black'} variant="h5" lineHeight={1.0}>
+                {viewBalance ? formatCurrency(profile?.balance) : '******'}
+              </ColoredTypography>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Available
+              </Typography>
+            </div>
+          ) : (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Total Balance
+              </Typography>
+              <ColoredTypography color={'black'} variant="h5" lineHeight={1.0}>
+                {formatCurrency(0)}
+              </ColoredTypography>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Available
+              </Typography>
+            </div>
+          )}
+
+          <div>
+            <Typography
+              textAlign={'end'}
+              fontWeight={600}
+              textTransform={'uppercase'}
+              color={theme.palette.secondary.main}
+            >
+              {`${profile?.id}`.substring(0, 13)}
+            </Typography>
+            <ColoredTypography sx={{ textAlign: 'center' }} color={'black'} variant="h5" gutterBottom>
+              {' '}
+            </ColoredTypography>
+          </div>
+        </Stack>
+
+        <br />
+        <Stack
+          direction={'row'}
+          sx={{ color: 'black' }}
+          justifyContent="space-between"
+          alignItems={deviceType === 'pc' ? 'center' : 'start'}
+        >
+          {profile?.investmentBalance > 0 ? (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Your Investment
+              </Typography>
+              <ColoredTypography textAlign={'center'} color={'black'} variant="h5" gutterBottom>
+                {viewBalance ? formatCurrency(profile?.investmentBalance) : '******'}
+              </ColoredTypography>
+            </div>
+          ) : (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Your Investment
+              </Typography>
+              <ColoredTypography textAlign={'left'} color={'black'} variant="h5" gutterBottom>
+                {' '}
+                {formatCurrency(0)}{' '}
+              </ColoredTypography>
+            </div>
+          )}
+
+          {parseInt(`${profile?.roi}`, 10) > 0 ? (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>ROI</Typography>
+              <Typography sx={{ textAlign: 'center', color: theme.palette.secondary.main }} variant="h5" gutterBottom>
+                {viewBalance ? `${profile?.roi}%` : '******'}
+              </Typography>
+            </div>
+          ) : (
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>ROI</Typography>
+              <Typography sx={{ textAlign: 'center' }} color={theme.palette.secondary.main} variant="h5" gutterBottom>
+                {'0%'}
+              </Typography>
+            </div>
+          )}
+        </Stack>
+      </Box>
+      {chartComponent}
+      <br/>
+      {barComponent}
+      <br/>
       <Toaster />
     </StyledCard>
   );

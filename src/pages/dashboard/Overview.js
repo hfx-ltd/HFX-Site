@@ -1,18 +1,18 @@
-import PropType from 'prop-types'
-import { useEffect, useState } from 'react'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { styled } from '@mui/material/styles'
-import { sentenceCase } from 'change-case'
-import Container from '@mui/material/Container'
+import PropType from 'prop-types';
+import { useEffect, useState } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled } from '@mui/material/styles';
+import { sentenceCase } from 'change-case';
+import Container from '@mui/material/Container';
 // import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 // components
 // import useSWR from 'swr'
-import { Box, Card, Toolbar, useTheme } from '@mui/material'
-import { useSelector } from 'react-redux'
-import { Chart, Line, Doughnut } from 'react-chartjs-2'
-import  {  
+import { Box, Card, Toolbar, useTheme } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { Chart, Line, Doughnut } from 'react-chartjs-2';
+import {
   Chart as ChartJS,
   ArcElement,
   Tooltip,
@@ -23,52 +23,51 @@ import  {
   LineElement,
   Title,
   Filler,
-  
-} from "chart.js"
+} from 'chart.js';
 // import faker from "faker"
 // import faker from 'faker';
-import InfoCard from '../../components/cards/InfoCard'
-import Advert from '../../components/advert'
+import InfoCard, { MobileInfoCard } from '../../components/cards/InfoCard';
+import Advert from '../../components/advert';
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
   color: theme.palette.mode === 'light' ? theme.palette.primary.darker : theme.palette.primary.lighter,
-}))
+}));
 
-ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend)
+ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
-function Overview (props) {
-  const { profile } = props
-  const matches = useMediaQuery(theme => theme.breakpoints.up('sm'))
-  const theme = useTheme()
-  const [deviceType, setDeviceType] = useState('mobile')
-  const { myRequest, myDeposits, myWithdraws } = useSelector(state => state.request)
-  const { activeInvestment  } = useSelector(state => state.investment)
-  const [latestRequest, setLatestRequest] = useState()
-  const [chartData, setChartData] = useState({})
+function Overview(props) {
+  const { profile } = props;
+  const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
+  const theme = useTheme();
+  const [deviceType, setDeviceType] = useState('mobile');
+  const { myRequest, myDeposits, myWithdraws } = useSelector((state) => state.request);
+  const { activeInvestment } = useSelector((state) => state.investment);
+  const [latestRequest, setLatestRequest] = useState();
+  const [chartData, setChartData] = useState({});
 
-  const xs = useMediaQuery(theme.breakpoints.only('xs'))
-  const sm = useMediaQuery(theme.breakpoints.only('sm'))
+  const xs = useMediaQuery(theme.breakpoints.only('xs'));
+  const sm = useMediaQuery(theme.breakpoints.only('sm'));
 
-  console.log('REQUES :: ', myRequest)
+  console.log('REQUES :: ', myRequest);
 
   useEffect(() => {
     if (xs) {
-      setDeviceType('mobile')
+      setDeviceType('mobile');
     } else if (sm) {
-      setDeviceType('tablet')
+      setDeviceType('tablet');
     } else {
-      setDeviceType('pc')
+      setDeviceType('pc');
     }
-  }, [sm, xs])
+  }, [sm, xs]);
 
   useEffect(() => {
     if (myRequest) {
-      setLatestRequest(myRequest?.docs[0])
+      setLatestRequest(myRequest?.docs[0]);
     }
     // if (activeInvestment) {
 
     // }
-  }, [myRequest, activeInvestment])
+  }, [myRequest, activeInvestment]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +75,7 @@ function Overview (props) {
         // const response = await axios.get('https://api.example.com/data'); // Replace with your API endpoint
         // const data = response.data;
 
-        console.log('IOJ ::SKLK ', myRequest?.docs)
+        console.log('IOJ ::SKLK ', myRequest?.docs);
 
         // Process your API data here
         // const labels = (myRequest?.docs ?? [])?.map((item) => item.id);
@@ -84,16 +83,16 @@ function Overview (props) {
 
         // console.log("VALUESS ::: ", values);
 
-        setChartData()
+        setChartData();
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching data:', error);
       }
-    }
+    };
 
     if (myRequest?.docs) {
-      fetchData()
+      fetchData();
     }
-  }, [myRequest?.docs])
+  }, [myRequest?.docs]);
 
   // const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   const data = {
@@ -121,8 +120,7 @@ function Overview (props) {
         borderWidth: 1,
       },
     ],
-  }
-
+  };
 
   const options2 = {
     responsive: true,
@@ -132,16 +130,14 @@ function Overview (props) {
         text: 'Transaction stats',
       },
     },
-  }
+  };
 
   const dataZee = {
-    labels: [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    ],
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     // Information about the dataset
     datasets: [
       {
-        label: "Investment Growth",
+        label: 'Investment Growth',
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -176,22 +172,22 @@ function Overview (props) {
         {
           scaleLabel: {
             display: true,
-            labelString: "Month of the Year",
+            labelString: 'Month of the Year',
           },
         },
       ],
     },
-  }
-
-  
+  };
 
   return (
     <Box>
       {profile && (
-        <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
-          <ColoredTypography variant='h4' sx={{ mb: 3 }}>
-            Hello {sentenceCase(profile?.firstName)},
-          </ColoredTypography>
+        <Box component={matches ? Container : Box} p={2} maxWidth="lg">
+          {matches && (
+            <ColoredTypography variant="h4" sx={{ mb: 3 }}>
+              Hello {sentenceCase(profile?.firstName)},
+            </ColoredTypography>
+          )}
           <Grid
             container
             spacing={matches ? 2 : 1}
@@ -201,14 +197,27 @@ function Overview (props) {
             alignItems={'stretch'}
           >
             <Grid item sm={6} md={8} xs={12} height={'100%'} p={2}>
-              <InfoCard
-                profile={profile}
-                activeInvestment={activeInvestment}
-                request={myRequest}
-                deviceType={deviceType}
-                depositCount={myDeposits?.docs?.length}
-                withdrawCount={myWithdraws?.docs?.length}
-              />
+              {matches ? (
+                <InfoCard
+                  profile={profile}
+                  activeInvestment={activeInvestment}
+                  request={myRequest}
+                  deviceType={deviceType}
+                  depositCount={myDeposits?.docs?.length}
+                  withdrawCount={myWithdraws?.docs?.length}
+                />
+              ) : (
+                <MobileInfoCard
+                  profile={profile}
+                  activeInvestment={activeInvestment}
+                  request={myRequest}
+                  deviceType={deviceType}
+                  depositCount={myDeposits?.docs?.length}
+                  withdrawCount={myWithdraws?.docs?.length}
+                  chartComponent={<Line options={optionsZee} data={dataZee} />}
+                  barComponent={<Doughnut data={data} options={options2} />}
+                />
+              )}
             </Grid>
 
             <Grid item sm={6} md={4} xs={12} sx={{ height: '100%', display: !matches ? 'none' : 'flex' }}>
@@ -223,7 +232,7 @@ function Overview (props) {
                 <Advert
                   title={['HFX LIMITED', '']}
                   featuredImage={'/static/images/tsakeoff.jpg'}
-                  textColor='white'
+                  textColor="white"
                   overlay
                   height={'100%'}
                 />
@@ -231,28 +240,26 @@ function Overview (props) {
                 <Advert
                   title={['Latest Crypto News', 'Coming soon']}
                   featuredImage={'/static/images/home_banner.jpeg'}
-                  textColor='white'
+                  textColor="white"
                   overlay
                   buttonColor={'white'}
-                  buttonText=''
-                  buttonVariant='contained'
+                  buttonText=""
+                  buttonVariant="contained"
                   height={'100%'}
                 />
               </Box>
             </Grid>
           </Grid>
-         {
-          matches ?  <Toolbar /> : <br/>
-         }
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={8}>
+          {matches ? <Toolbar /> : <br />}
+          <Grid container spacing={2} display={matches ? 'flex' : 'none'}>
+            <Grid item xs={12} sm={6} md={8} >
               <Box
                 p={2}
                 component={Card}
                 elevation={2}
                 sx={{ border: 'none', boxShadow: 'initial' }}
-                display='flex'
-                flexDirection='column'
+                display="flex"
+                flexDirection="column"
                 justifyContent={'start'}
               >
                 <Line options={optionsZee} data={dataZee} />
@@ -264,22 +271,22 @@ function Overview (props) {
                 component={Card}
                 elevation={2}
                 sx={{ border: 'none', boxShadow: 'initial', borderRadius: 2 }}
-                display='flex'
-                flexDirection='column'
+                display="flex"
+                flexDirection="column"
                 justifyContent={'start'}
               >
                 <Doughnut data={data} options={options2} />
               </Box>
             </Grid>
           </Grid>
-          <Toolbar />
+          {matches ? <Toolbar /> : <br />}
         </Box>
       )}
     </Box>
-  )
+  );
 }
-export default Overview
+export default Overview;
 
 Overview.propTypes = {
   profile: PropType.object,
-}
+};
