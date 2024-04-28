@@ -5,6 +5,7 @@ export const investmentSlice = createSlice({
   initialState: {
     investments: [],
     plans: [],
+    activeInvestment: [],
   },
   reducers: {
     setInvestment: (state, action) => {
@@ -13,9 +14,12 @@ export const investmentSlice = createSlice({
     setPlans: (state, action) => {
       state.plans = action.payload;
     },
+    setActiveInvestment: (state, action) => {
+      state.activeInvestment = action.payload;
+    },
   },
 });
 
-export const { setInvestment, setPlans } = investmentSlice.actions;
+export const { setInvestment, setPlans, setActiveInvestment } = investmentSlice.actions;
 
 export default investmentSlice.reducer;

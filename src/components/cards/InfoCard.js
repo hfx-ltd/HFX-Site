@@ -20,7 +20,9 @@ const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
   padding: theme.spacing(1),
   borderRadius: 10,
-  backgroundColor: alpha(theme.palette.primary.main, 1),
+  backgroundColor: theme.palette.background.paper,
+  border: 'none',
+  color: 'black'
 }));
 
 const ColoredTypography = styled(Typography)(({ theme }) => ({
@@ -49,25 +51,27 @@ const statusVariant = (status) => {
 
 const Item = ({ keyName, value, alignLeft = false }) => (
   <Box>
-    <Typography variant="body2" color="white" sx={{ textAlign: alignLeft ? 'end' : 'start', color: 'white' }}>
+    <Typography variant="body2" color="black" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
       {keyName}
     </Typography>
-    <Typography variant="subtitle1" color="white" sx={{ textAlign: alignLeft ? 'end' : 'start', color: 'white' }}>
+    <Typography variant="subtitle1" color="black" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
       {value}
     </Typography>
   </Box>
 );
 
 const InfoCard = (props) => {
-  const { matches, profile, request, depositCount, withdrawCount, deviceType } = props;
+  const { matches, profile, request, depositCount, withdrawCount, deviceType, activeInvestment } = props;
   const [viewBalance, setViewBalance] = useState(true);
 
   const handleViewBalance = () => setViewBalance(!viewBalance);
 
+  console.log("ACTIVE INVES ::: ", activeInvestment);
+
   return (
     <StyledCard variant="outlined">
       <CardContent>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" color={'white'}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" color={'black'}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Iconify icon="bi:cash-coin" />
             {/* <Typography variant="overline" color={'white'} style={{ marginLeft: 5 }}>
@@ -75,26 +79,26 @@ const InfoCard = (props) => {
             </Typography> */}
           </div>
           <IconButton aria-label="ViewBalance" onClick={handleViewBalance}>
-            <Iconify sx={{ color: 'white' }} icon={viewBalance ? 'eva:eye-outline' : 'eva:eye-off-outline'} />
+            <Iconify sx={{ color: 'black' }} icon={viewBalance ? 'eva:eye-outline' : 'eva:eye-off-outline'} />
           </IconButton>
         </Stack>
         <Stack
           direction={deviceType === 'pc' ? 'row' : 'column'}
-          sx={{ color: 'white' }}
+          sx={{ color: 'black' }}
           justifyContent="space-between"
           alignItems={deviceType === 'pc' ? 'center' : 'center'}
         >
           {profile?.balance > 0 ? (
             <div>
-              <Typography>Total Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} color={'white'} variant="h3" gutterBottom>
+              <Typography textAlign={matches ? 'left' : 'center'} >Total Balance</Typography>
+              <ColoredTypography sx={{ color: 'black' }} color={'black'} variant="h3" gutterBottom>
                 {viewBalance ? formatCurrency(profile?.balance) : '******'}
               </ColoredTypography>
             </div>
           ) : (
             <div>
-              <Typography>Total Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} color={'white'} variant="h3" gutterBottom>
+              <Typography textAlign={matches ? 'left' : 'center'}>Total Balance</Typography>
+              <ColoredTypography  color={'black'} variant="h3" gutterBottom>
                 {formatCurrency(0)}
               </ColoredTypography>
             </div>
@@ -102,34 +106,33 @@ const InfoCard = (props) => {
 
           {profile?.investmentBalance > 0 ? (
             <div>
-              <Typography>Investment Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} textAlign={'center'} color={'white'} variant="h3" gutterBottom>
+              <Typography textAlign={matches ? 'left' : 'center'}>Investment</Typography>
+              <ColoredTypography  textAlign={'center'} color={'black'} variant="h3" gutterBottom>
                 {viewBalance ? formatCurrency(profile?.investmentBalance) : '******'}
               </ColoredTypography>
             </div>
           ) : (
             <div>
-              <Typography>Investment Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} textAlign={'center'} color={'white'} variant="h3" gutterBottom>
+              <Typography textAlign={matches ? 'left' : 'center'}>Investment</Typography>
+              <ColoredTypography textAlign={'center'} color={'black'} variant="h3" gutterBottom>
                 {' '}
                 {formatCurrency(0)}{' '}
               </ColoredTypography>
             </div>
           )}
 
-          {profile?.roi > 0 ? (
+          {parseInt(`${profile?.roi}`, 10) > 0 ? (
             <div>
-              <Typography>ROI Balance</Typography>
-              <ColoredTypography sx={{ color: 'white', textAlign: 'center' }} color={'white'} variant="h3" gutterBottom>
-                {viewBalance ? formatCurrency(profile?.roi) : '******'}
+              <Typography textAlign={matches ? 'left' : 'center'}>ROI</Typography>
+              <ColoredTypography sx={{ textAlign: 'center' }} color={'black'} variant="h3" gutterBottom>
+                {viewBalance ? `${profile?.roi}%` : '******'}
               </ColoredTypography>
             </div>
           ) : (
             <div>
-              <Typography>ROI Balance</Typography>
-              <ColoredTypography sx={{ color: 'white', textAlign: 'center' }} color={'white'} variant="h3" gutterBottom>
-                {' '}
-                {formatCurrency(0)}{' '}
+              <Typography textAlign={matches ? 'left' : 'center'}>ROI</Typography>
+              <ColoredTypography sx={{  textAlign: 'center' }} color={'black'} variant="h3" gutterBottom>
+                {'0%'}
               </ColoredTypography>
             </div>
           )}
@@ -165,7 +168,7 @@ const InfoCard = (props) => {
         <Divider sx={{ bgcolor: 'red', height: 1 }} />
         <br />
         {
-          <Stack direction="row" justifyContent="space-between" color="white" alignItems="center">
+          <Stack direction="row" justifyContent="space-between" color="black" alignItems="center">
             <Item keyName="Joined on" value={`${new Date(profile?.createdAt).toLocaleDateString('en-GB')} `} />
             <Item
               keyName={deviceType === 'pc' ? 'Deposit Requests' : 'Deposits'}

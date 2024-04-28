@@ -11,8 +11,8 @@ import Typography from '@mui/material/Typography'
 // import useSWR from 'swr'
 import { Box, Card, Toolbar, useTheme } from '@mui/material'
 import { useSelector } from 'react-redux'
-import { Chart, Doughnut, Line } from 'react-chartjs-2'
-import {
+import { Chart, Line, Doughnut } from 'react-chartjs-2'
+import  {  
   Chart as ChartJS,
   ArcElement,
   Tooltip,
@@ -23,7 +23,8 @@ import {
   LineElement,
   Title,
   Filler,
-} from 'chart.js'
+  
+} from "chart.js"
 // import faker from "faker"
 // import faker from 'faker';
 import InfoCard from '../../components/cards/InfoCard'
@@ -41,6 +42,7 @@ function Overview (props) {
   const theme = useTheme()
   const [deviceType, setDeviceType] = useState('mobile')
   const { myRequest, myDeposits, myWithdraws } = useSelector(state => state.request)
+  const { activeInvestment  } = useSelector(state => state.investment)
   const [latestRequest, setLatestRequest] = useState()
   const [chartData, setChartData] = useState({})
 
@@ -63,7 +65,10 @@ function Overview (props) {
     if (myRequest) {
       setLatestRequest(myRequest?.docs[0])
     }
-  }, [myRequest])
+    // if (activeInvestment) {
+
+    // }
+  }, [myRequest, activeInvestment])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,18 +123,6 @@ function Overview (props) {
     ],
   }
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Investment Growth',
-      },
-    },
-  }
 
   const options2 = {
     responsive: true,
@@ -141,20 +134,56 @@ function Overview (props) {
     },
   }
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-  const data2 = {
-    labels,
+  const dataZee = {
+    labels: [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ],
+    // Information about the dataset
     datasets: [
       {
-        fill: true,
-        label: 'Activity overview',
-        data:  [0, 100, 200, 300, 400, 500, 600,],
+        label: "Investment Growth",
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
         borderColor: theme.palette.secondary.main,
-        backgroundColor: theme.palette.secondary.light,
+        borderWidth: 1,
+        data: [26.4, 39.8, 66.8, 66.4, 45.6, 55.2, 70.4, 69.8, 57.8, 76, 110.8, 142.6],
+        fill: {
+          target: 'origin',
+          above: theme.palette.secondary.light, // Adjust the opacity as needed
+        },
       },
     ],
+  };
+
+  // Configuration options
+  const optionsZee = {
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+          },
+        },
+      ],
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: "Month of the Year",
+          },
+        },
+      ],
+    },
   }
+
+  
 
   return (
     <Box>
@@ -174,6 +203,7 @@ function Overview (props) {
             <Grid item sm={6} md={8} xs={12} height={'100%'} p={2}>
               <InfoCard
                 profile={profile}
+                activeInvestment={activeInvestment}
                 request={myRequest}
                 deviceType={deviceType}
                 depositCount={myDeposits?.docs?.length}
@@ -181,7 +211,7 @@ function Overview (props) {
               />
             </Grid>
 
-            <Grid item sm={6} md={4} xs={12} sx={{ height: '100%' }}>
+            <Grid item sm={6} md={4} xs={12} sx={{ height: '100%', display: !matches ? 'none' : 'flex' }}>
               <Box
                 height={'100%'}
                 flex={1}
@@ -204,14 +234,16 @@ function Overview (props) {
                   textColor='white'
                   overlay
                   buttonColor={'white'}
-                  buttonText='Learn more'
+                  buttonText=''
                   buttonVariant='contained'
                   height={'100%'}
                 />
               </Box>
             </Grid>
           </Grid>
-          <Toolbar />
+         {
+          matches ?  <Toolbar /> : <br/>
+         }
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={8}>
               <Box
@@ -223,7 +255,7 @@ function Overview (props) {
                 flexDirection='column'
                 justifyContent={'start'}
               >
-                <Line options={options} data={data2} />
+                <Line options={optionsZee} data={dataZee} />
               </Box>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
