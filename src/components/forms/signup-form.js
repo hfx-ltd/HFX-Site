@@ -16,7 +16,7 @@ import {
   OutlinedInput,
 } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import APIService from '../../service'
 
@@ -39,12 +39,21 @@ const SignupForm = ({ theme, deviceType }) => {
 
   const validationSchema = Yup.object().shape({
     emailAddress: Yup.string().email('Please enter a valid email address').required('Email address is required'),
-    password: Yup.string().required('Password is required'),
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string().required('Surname is required'),
     middleName: Yup.string().nullable(),
     phoneNumber: Yup.string().required('Phone number is required'),
     gender: Yup.string().required('Gender is required'),
+    password: Yup.string()
+      .min(6, 'Minimum of 6 chars required!')
+      .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+      .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .matches(/[0-9]/, 'Password must contain at least one number')
+      .matches(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        'Password must contain at least one special character',
+      )
+      .required('Password is required'),
   })
 
   const formik = useFormik({

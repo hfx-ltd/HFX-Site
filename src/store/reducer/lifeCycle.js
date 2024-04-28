@@ -9,6 +9,7 @@ const initialState = {
     title: '',
     message: '',
   },
+  showTelegram: false,
 };
 
 export const counterSlice = createSlice({
@@ -27,9 +28,12 @@ export const counterSlice = createSlice({
     toggleReceiveNotification: (state) => {
       state.notifyEmail = !state.notifyEmail;
     },
+    setShowTelegram: (state, action) => {
+      state.showTelegram = action.payload;
+    },
   },
 });
 // Action creators are generated for each case reducer function
-export const { setLoading, setThemeMode, setStatus, toggleReceiveNotification } = counterSlice.actions;
+export const { setLoading, setThemeMode, setStatus, toggleReceiveNotification, setShowTelegram } = counterSlice.actions;
 
 export default counterSlice.reducer;

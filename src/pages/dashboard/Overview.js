@@ -153,6 +153,7 @@ function Overview(props) {
           target: 'origin',
           above: theme.palette.secondary.light, // Adjust the opacity as needed
         },
+        pointRadius: 0,
       },
     ],
   };
@@ -160,22 +161,21 @@ function Overview(props) {
   // Configuration options
   const optionsZee = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
-      yAxes: [
-        {
-          scaleLabel: {
-            display: true,
-          },
+      x: {
+        grid: {
+          display: false // Remove the x-axis grid lines
+        }
+      },
+      y: {
+        grid: {
+          display: false // Remove the y-axis grid lines
         },
-      ],
-      xAxes: [
-        {
-          scaleLabel: {
-            display: true,
-            labelString: 'Month of the Year',
-          },
-        },
-      ],
+        ticks: {
+          stepSize: 10 // Set the step size to 10
+        }
+      },
     },
   };
 

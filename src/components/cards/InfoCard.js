@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import PropType from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { usePaystackPayment } from 'react-paystack'
 import { styled, alpha } from '@mui/material/styles';
 import { Toaster } from 'react-hot-toast';
@@ -190,16 +190,63 @@ const InfoCard = (props) => {
 };
 
 export const MobileInfoCard = (props) => {
-  const { matches, profile,  deviceType, chartComponent, barComponent } =
-    props;
+  const { matches, profile, deviceType, chartComponent, barComponent } = props;
   const [viewBalance, setViewBalance] = useState(true);
-  const theme = useTheme();
+  const [time, setTime] = useState(); // seconds
+  const [timerOn, setTimerOn] = useState(false);
 
+  
+  const theme = useTheme();
+  
+
+  useEffect(() => {
+    let timer;
+    if (profile?.roi > 0) {
+      // Now check if time has elapsed or not
+      
+      const currentTime = new Date()
+      const investedOn = new Date(profile?.lastInvestmentAt);
+
+      const timeDifference = currentTime.getTime() - investedOn.getTime()
+      const hoursDifference = timeDifference / (1000 * 60 * 60)
+
+      if (hoursDifference < profile?.holdDuration) {
+        setTimerOn(true);
+        const timeLeft = profile?.holdDuration - hoursDifference;
+        const timeLeftInSeconds = timeLeft * (1000 * 60 * 60)
+        setTime(timeLeftInSeconds)
+
+        timer = setInterval(() => {
+          if (timeLeftInSeconds > 0 && timerOn) {
+            setTime(prevTime => prevTime - 1);
+          } else {
+            setTimerOn(false);
+          }
+        }, 1000);
+      }
+    }
+
+    return () => clearInterval(timer);
+  }, [profile?.holdDuration, profile?.lastInvestmentAt, profile?.roi, time, timerOn]);
+
+  const formatTime = (t) => {
+    const hours = Math.floor(t / (1000 * 60 * 60));
+    const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((t % (1000 * 60)) / 1000);
+    return `${hours} : ${minutes < 10 ? `0${  minutes}` : minutes}:${
+      seconds < 10 ? `0${  seconds}` : seconds
+    }`;
+  };
+
+ 
+
+  // function formatTime(time) {
+  //   return String(time).padStart(2, '0');
+  // }
 
   return (
     <StyledCard variant="outlined">
-      <Box px={0.75} py={1} >
-        
+      <Box px={0.75} py={1}>
         <Stack
           direction={'row'}
           sx={{ color: 'black' }}
@@ -257,7 +304,7 @@ export const MobileInfoCard = (props) => {
           {profile?.investmentBalance > 0 ? (
             <div>
               <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
-                Your Investment
+                Investment
               </Typography>
               <ColoredTypography textAlign={'center'} color={'black'} variant="h5" gutterBottom>
                 {viewBalance ? formatCurrency(profile?.investmentBalance) : '******'}
@@ -266,7 +313,7 @@ export const MobileInfoCard = (props) => {
           ) : (
             <div>
               <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
-                Your Investment
+                Investment
               </Typography>
               <ColoredTypography textAlign={'left'} color={'black'} variant="h5" gutterBottom>
                 {' '}
@@ -275,16 +322,31 @@ export const MobileInfoCard = (props) => {
             </div>
           )}
 
+          { profile?.roi > 0 && 
+            <div>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                Ends In
+              </Typography>
+              <Typography sx={{ textAlign: 'center', color: theme.palette.secondary.main }} variant="h5" gutterBottom>
+              {formatTime(time)}
+              </Typography>
+            </div>
+          }
+
           {parseInt(`${profile?.roi}`, 10) > 0 ? (
             <div>
-              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>ROI</Typography>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                ROI
+              </Typography>
               <Typography sx={{ textAlign: 'center', color: theme.palette.secondary.main }} variant="h5" gutterBottom>
                 {viewBalance ? `${profile?.roi}%` : '******'}
               </Typography>
             </div>
           ) : (
             <div>
-              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>ROI</Typography>
+              <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
+                ROI
+              </Typography>
               <Typography sx={{ textAlign: 'center' }} color={theme.palette.secondary.main} variant="h5" gutterBottom>
                 {'0%'}
               </Typography>
@@ -292,10 +354,12 @@ export const MobileInfoCard = (props) => {
           )}
         </Stack>
       </Box>
+      <Box height={320} >
       {chartComponent}
-      <br/>
-      {barComponent}
-      <br/>
+      </Box>
+      <br />
+      <Box px={5} py={1} >{barComponent}</Box>
+      <br />
       <Toaster />
     </StyledCard>
   );

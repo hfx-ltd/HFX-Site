@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { capitalCase } from 'change-case';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink , useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -11,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
+import { setShowTelegram } from '../../store/reducer/lifeCycle';
 import { logOut } from '../../store/reducer/auth';
 // components
 import MenuPopover from '../../components/MenuPopover';
@@ -36,6 +37,7 @@ const MENU_OPTIONS = [
 export default function ProfilePopover({ profile }) {
   const anchorRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(null);
 
@@ -48,7 +50,11 @@ export default function ProfilePopover({ profile }) {
   };
 
   const handleLogout = () => {
-    dispatch(logOut());
+    dispatch(logOut()); 
+    dispatch(setShowTelegram(false))
+    setTimeout(() => {
+      navigate('/')
+    }, 20);
   };
 
   return (

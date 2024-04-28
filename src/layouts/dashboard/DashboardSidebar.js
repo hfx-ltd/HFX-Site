@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate } from 'react-router-dom';
 // material
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -20,6 +20,7 @@ import NavSection from '../../components/NavSection';
 import navConfig from './NavConfig';
 import Iconify from '../../components/Iconify';
 import { logOut } from '../../store/reducer/auth';
+import { setShowTelegram } from '../../store/reducer/lifeCycle';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +44,7 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const themer = useTheme();
   const { themeMode } = useSelector((state) => state.lifeCycle);
@@ -58,6 +60,10 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
 
   const handleLogout = () => {
     dispatch(logOut());
+    dispatch(setShowTelegram(false))
+    setTimeout(() => {
+      navigate('/')
+    }, 20);
   };
 
   const renderContent = (

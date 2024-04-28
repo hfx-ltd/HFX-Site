@@ -24,7 +24,7 @@ import VerifyOtp from './pages/auth/VerifyOtp';
 import socket from './utils/socket';
 import { useProfile } from './hooks';
 import { setAuth, setProfile, updateProfile, logOut } from './store/reducer/auth';
-import { setLoading } from './store/reducer/lifeCycle';
+import { setLoading, setShowTelegram } from './store/reducer/lifeCycle';
 import Support from './pages/dashboard/Support';
 import Deposit from './pages/dashboard/Deposit';
 import Withdraw from './pages/dashboard/Withdraw';
@@ -47,7 +47,7 @@ import CompleteSignup from './pages/auth/completeSignup';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
-  const { loading } = useSelector((state) => state.lifeCycle);
+  const { loading, showTelegram } = useSelector((state) => state.lifeCycle);
   const [deviceType, setDeviceType] = React.useState('mobile');
   const [show, setShow] = React.useState(true);
   const [initializing, setInitializing] = React.useState(true);
@@ -155,10 +155,18 @@ function App() {
     } else {
       setShow(true);
     }
+
+    if (location.pathname.includes('support')) {
+      dispatch(setShowTelegram(true))
+    }
+    else {
+      dispatch(setShowTelegram(false))
+    }
+
     if (!location.pathname.startsWith('/service')) {
       window.scrollTo(0, 0);
     }
-  }, [location]);
+  }, [dispatch, location]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -225,7 +233,7 @@ function App() {
         </Routes>
         {show && <Footer />}
         {
-          !show && <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy />  
+          showTelegram ? <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy /> : <div/>
         }
       </ThemeProvider>
       }

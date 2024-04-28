@@ -25,11 +25,13 @@ export const counterSlice = createSlice({
           console.log('loggedOut');
         })
         .catch((err) => console.log('LogOut Error >> ', err?.message));
+        
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('loggedIn')
       state.isAuth = false;
       state.profile = null;
+      
     },
   },
 });

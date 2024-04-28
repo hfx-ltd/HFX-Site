@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
+import Typography from "@mui/material/Typography"
 import LoadingButton from '@mui/lab/LoadingButton'
 import APIService from '../../service'
 
@@ -55,6 +56,14 @@ function WithdrawForm (props) {
   const { errors, touched, handleSubmit, getFieldProps } = formik
   return (
     <FormikProvider value={formik}>
+      <Typography>Click <a href='https://t.me/HFX_AGENT' target="_blank" rel="noreferrer" >here</a> to contact admin to initiate and process your withdrawal.</Typography>
+      <br/>
+      <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'} >
+        <Box flex={1} height={1.2} bgcolor={'red'} />
+        <Typography px={1} > OR </Typography>
+        <Box flex={1} height={1.2} bgcolor={'red'} />
+      </Box>
+      <br />
       <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
         <Box p={1}>
 
