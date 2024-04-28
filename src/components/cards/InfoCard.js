@@ -238,11 +238,6 @@ export const MobileInfoCard = (props) => {
     }`;
   };
 
- 
-
-  // function formatTime(time) {
-  //   return String(time).padStart(2, '0');
-  // }
 
   return (
     <StyledCard variant="outlined">
@@ -358,7 +353,7 @@ export const MobileInfoCard = (props) => {
       {chartComponent}
       </Box>
       <br />
-      <Box px={5} py={1} >{barComponent}</Box>
+      <Box px={3} >{barComponent}</Box>
       <br />
       <Toaster />
     </StyledCard>

@@ -3,7 +3,7 @@ import useSWR from 'swr';
 export default function useNews(page) {
   const { data, mutate, error } = useSWR(`/admin/news/all`);
 
-  console.log('BLOG response', data);
+  // console.log('BLOG response', data);
   const loading = !data && !error;
   const loggedOut =
     (error && error?.message === 'No token provided.') ||

@@ -59,11 +59,11 @@ export default function DashboardSidebar({ profile, isOpenSidebar, onCloseSideba
   }, [pathname]);
 
   const handleLogout = () => {
-    dispatch(logOut());
     dispatch(setShowTelegram(false))
     setTimeout(() => {
       navigate('/')
     }, 20);
+    dispatch(logOut());
   };
 
   const renderContent = (

@@ -64,9 +64,6 @@ function Overview(props) {
     if (myRequest) {
       setLatestRequest(myRequest?.docs[0]);
     }
-    // if (activeInvestment) {
-
-    // }
   }, [myRequest, activeInvestment]);
 
   useEffect(() => {
@@ -94,12 +91,11 @@ function Overview(props) {
     }
   }, [myRequest?.docs]);
 
-  // const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
   const data = {
     labels: ['Investments', 'Withdrawals'],
     datasets: [
       {
-        label: '# of Votes',
+        label: '# of transactions',
         data: [myDeposits?.totalDocs ?? 0, myWithdraws?.totalDocs ?? 0],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',

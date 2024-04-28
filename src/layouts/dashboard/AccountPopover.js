@@ -50,11 +50,12 @@ export default function ProfilePopover({ profile }) {
   };
 
   const handleLogout = () => {
-    dispatch(logOut()); 
     dispatch(setShowTelegram(false))
     setTimeout(() => {
       navigate('/')
     }, 20);
+    dispatch(logOut()); 
+    
   };
 
   return (
