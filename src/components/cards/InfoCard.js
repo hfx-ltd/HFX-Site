@@ -51,24 +51,51 @@ const statusVariant = (status) => {
   }
 };
 
-const Item = ({ keyName, value, alignLeft = false }) => (
-  <Box>
-    <Typography variant="body2" color="black" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
-      {keyName}
-    </Typography>
-    <Typography variant="subtitle1" color="black" sx={{ textAlign: alignLeft ? 'end' : 'start' }}>
-      {value}
-    </Typography>
-  </Box>
-);
-
 const InfoCard = (props) => {
-  const { matches, profile, request, depositCount, withdrawCount, deviceType, activeInvestment } = props;
+  const { matches, profile, deviceType, chartComponent } = props;
   const [viewBalance, setViewBalance] = useState(true);
-
   const handleViewBalance = () => setViewBalance(!viewBalance);
+  const [time, setTime] = useState(); // seconds
+  const [timerOn, setTimerOn] = useState(false);
 
-  console.log('ACTIVE INVES ::: ', activeInvestment);
+  const theme = useTheme();
+
+  useEffect(() => {
+    let timer;
+    if (profile?.roi > 0) {
+      // Now check if time has elapsed or not
+
+      const currentTime = new Date();
+      const investedOn = new Date(profile?.lastInvestmentAt);
+
+      const timeDifference = currentTime.getTime() - investedOn.getTime();
+      const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+      if (hoursDifference < profile?.holdDuration) {
+        setTimerOn(true);
+        const timeLeft = profile?.holdDuration - hoursDifference;
+        const timeLeftInSeconds = timeLeft * (1000 * 60 * 60);
+        setTime(timeLeftInSeconds);
+
+        timer = setInterval(() => {
+          if (timeLeftInSeconds > 0 && timerOn) {
+            setTime((prevTime) => prevTime - 1);
+          } else {
+            setTimerOn(false);
+          }
+        }, 1000);
+      }
+    }
+
+    return () => clearInterval(timer);
+  }, [profile?.holdDuration, profile?.lastInvestmentAt, profile?.roi, time, timerOn]);
+
+  const formatTime = (t) => {
+    const hours = Math.floor(t / (1000 * 60 * 60));
+    const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((t % (1000 * 60)) / 1000);
+    return `${hours} : ${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  };
 
   return (
     <StyledCard variant="outlined">
@@ -76,9 +103,6 @@ const InfoCard = (props) => {
         <Stack direction="row" justifyContent="space-between" alignItems="center" color={'black'}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Iconify icon="bi:cash-coin" />
-            {/* <Typography variant="overline" color={'white'} style={{ marginLeft: 5 }}>
-              Account Balance
-            </Typography> */}
           </div>
           <IconButton aria-label="ViewBalance" onClick={handleViewBalance}>
             <Iconify sx={{ color: 'black' }} icon={viewBalance ? 'eva:eye-outline' : 'eva:eye-off-outline'} />
@@ -138,51 +162,21 @@ const InfoCard = (props) => {
               </ColoredTypography>
             </div>
           )}
-
-          {/* <Alert severity={statusVariant(request?.docs[0]?.status)}>
-            {request?.docs[0]?.status === 'pending' ? 'In Review' : request?.docs[0]?.status}
-          </Alert> */}
         </Stack>
-        {/* <Stack
-          direction={deviceType === 'pc' ? 'row' : 'column'}
-          sx={{ color: 'white' }}
-          justifyContent="space-between"
-          alignItems={deviceType === 'pc' ? 'center' : 'center'}
-        >
-          {profile?.balance > 0 ? (
-            <div>
-              <Typography>Total Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} color={'white'} variant="h3" gutterBottom>
-                {viewBalance ? formatCurrency(profile?.balance) : '******'}
-              </ColoredTypography>
-            </div>
-          ) : (
-            <>
-              <Typography>Total Balance</Typography>
-              <ColoredTypography sx={{ color: 'white' }} color={'white'} variant="h3" gutterBottom>
-                {' '}
-                {formatCurrency(0)}{' '}
-              </ColoredTypography>
-            </>
-          )}
-        </Stack> */}
+
         <br />
-        <Divider sx={{ bgcolor: 'red', height: 1 }} />
+        { profile?.roi > 0 && (
+          <div>
+            <Typography fontWeight={600} textAlign={'center'} color={'#808080'}>
+              Ends In
+            </Typography>
+            <Typography sx={{ textAlign: 'center', color: theme.palette.secondary.main }} variant="h5" gutterBottom>
+              {formatTime(time)}
+            </Typography>
+          </div>
+        )}
         <br />
-        {
-          <Stack direction="row" justifyContent="space-between" color="black" alignItems="center">
-            <Item keyName="Joined on" value={`${new Date(profile?.createdAt).toLocaleDateString('en-GB')} `} />
-            <Item
-              keyName={deviceType === 'pc' ? 'Deposit Requests' : 'Deposits'}
-              value={`${depositCount} ${depositCount > 1 ? 'Requests' : 'Request'}`}
-            />
-            <Item
-              keyName={deviceType === 'pc' ? 'Withdraw Requests' : 'Withdraws'}
-              value={`${withdrawCount} ${withdrawCount > 1 ? 'Requests' : 'Request'}`}
-              alignLeft
-            />
-          </Stack>
-        }
+        <Box height={320}>{chartComponent}</Box>
       </CardContent>
       <Toaster />
     </StyledCard>
@@ -195,30 +189,28 @@ export const MobileInfoCard = (props) => {
   const [time, setTime] = useState(); // seconds
   const [timerOn, setTimerOn] = useState(false);
 
-  
   const theme = useTheme();
-  
 
   useEffect(() => {
     let timer;
     if (profile?.roi > 0) {
       // Now check if time has elapsed or not
-      
-      const currentTime = new Date()
+
+      const currentTime = new Date();
       const investedOn = new Date(profile?.lastInvestmentAt);
 
-      const timeDifference = currentTime.getTime() - investedOn.getTime()
-      const hoursDifference = timeDifference / (1000 * 60 * 60)
+      const timeDifference = currentTime.getTime() - investedOn.getTime();
+      const hoursDifference = timeDifference / (1000 * 60 * 60);
 
       if (hoursDifference < profile?.holdDuration) {
         setTimerOn(true);
         const timeLeft = profile?.holdDuration - hoursDifference;
-        const timeLeftInSeconds = timeLeft * (1000 * 60 * 60)
-        setTime(timeLeftInSeconds)
+        const timeLeftInSeconds = timeLeft * (1000 * 60 * 60);
+        setTime(timeLeftInSeconds);
 
         timer = setInterval(() => {
           if (timeLeftInSeconds > 0 && timerOn) {
-            setTime(prevTime => prevTime - 1);
+            setTime((prevTime) => prevTime - 1);
           } else {
             setTimerOn(false);
           }
@@ -233,11 +225,8 @@ export const MobileInfoCard = (props) => {
     const hours = Math.floor(t / (1000 * 60 * 60));
     const minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((t % (1000 * 60)) / 1000);
-    return `${hours} : ${minutes < 10 ? `0${  minutes}` : minutes}:${
-      seconds < 10 ? `0${  seconds}` : seconds
-    }`;
+    return `${hours} : ${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
   };
-
 
   return (
     <StyledCard variant="outlined">
@@ -317,16 +306,16 @@ export const MobileInfoCard = (props) => {
             </div>
           )}
 
-          { profile?.roi > 0 && 
+          {profile?.roi > 0 && (
             <div>
               <Typography fontWeight={600} textAlign={'left'} color={'#808080'}>
                 Ends In
               </Typography>
               <Typography sx={{ textAlign: 'center', color: theme.palette.secondary.main }} variant="h5" gutterBottom>
-              {formatTime(time)}
+                {formatTime(time)}
               </Typography>
             </div>
-          }
+          )}
 
           {parseInt(`${profile?.roi}`, 10) > 0 ? (
             <div>
@@ -349,11 +338,9 @@ export const MobileInfoCard = (props) => {
           )}
         </Stack>
       </Box>
-      <Box height={320} >
-      {chartComponent}
-      </Box>
+      <Box height={320}>{chartComponent}</Box>
       <br />
-      <Box px={3} >{barComponent}</Box>
+      <Box px={3}>{barComponent}</Box>
       <br />
       <Toaster />
     </StyledCard>

@@ -197,10 +197,8 @@ function Overview(props) {
                 <InfoCard
                   profile={profile}
                   activeInvestment={activeInvestment}
-                  request={myRequest}
                   deviceType={deviceType}
-                  depositCount={myDeposits?.docs?.length}
-                  withdrawCount={myWithdraws?.docs?.length}
+                  chartComponent={<Line options={optionsZee} data={dataZee} />}
                 />
               ) : (
                 <MobileInfoCard
@@ -233,45 +231,9 @@ function Overview(props) {
                   height={'100%'}
                 />
                 <br />
-                <Advert
-                  title={['Latest Crypto News', 'Coming soon']}
-                  featuredImage={'/static/images/home_banner.jpeg'}
-                  textColor="white"
-                  overlay
-                  buttonColor={'white'}
-                  buttonText=""
-                  buttonVariant="contained"
-                  height={'100%'}
-                />
-              </Box>
-            </Grid>
-          </Grid>
-          {matches ? <Toolbar /> : <br />}
-          <Grid container spacing={2} display={matches ? 'flex' : 'none'}>
-            <Grid item xs={12} sm={6} md={8} >
-              <Box
-                p={2}
-                component={Card}
-                elevation={2}
-                sx={{ border: 'none', boxShadow: 'initial' }}
-                display="flex"
-                flexDirection="column"
-                justifyContent={'start'}
-              >
-                <Line options={optionsZee} data={dataZee} />
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Box
-                p={4}
-                component={Card}
-                elevation={2}
-                sx={{ border: 'none', boxShadow: 'initial', borderRadius: 2 }}
-                display="flex"
-                flexDirection="column"
-                justifyContent={'start'}
-              >
+               
                 <Doughnut data={data} options={options2} />
+               
               </Box>
             </Grid>
           </Grid>
