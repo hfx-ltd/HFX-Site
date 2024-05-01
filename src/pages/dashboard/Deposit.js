@@ -98,9 +98,6 @@ const Deposit = (props) => {
     setValue(newValue);
   };
 
-  React.useEffect(() => {
-    setOpenResponse(true)
-  }, [])
   
   return (
     <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
