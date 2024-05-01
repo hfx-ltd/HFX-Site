@@ -2,16 +2,14 @@
 import PropType from 'prop-types';
 import { useState, useEffect } from 'react';
 // import { usePaystackPayment } from 'react-paystack'
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import { Toaster } from 'react-hot-toast';
 import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material';
 import Iconify from '../Iconify';
 import formatCurrency from '../../utils/formatCurrency';
@@ -32,24 +30,24 @@ const ColoredTypography = styled(Typography)(({ theme }) => ({
   fontWeight: 'bolder',
 }));
 
-const statusVariant = (status) => {
-  switch (status) {
-    case 'pending':
-      return 'warning';
+// const statusVariant = (status) => {
+//   switch (status) {
+//     case 'pending':
+//       return 'warning';
 
-    case 'approved':
-      return 'success';
+//     case 'approved':
+//       return 'success';
 
-    case 'credited':
-      return 'info';
+//     case 'credited':
+//       return 'info';
 
-    case 'denied':
-      return 'error';
+//     case 'denied':
+//       return 'error';
 
-    default:
-      return 'info';
-  }
-};
+//     default:
+//       return 'info';
+//   }
+// };
 
 const InfoCard = (props) => {
   const { matches, profile, deviceType, chartComponent } = props;

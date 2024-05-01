@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
+import Box from '@mui/material/Box';
 import CustomDialogTitle from './CustomDialogTitle';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -35,7 +36,7 @@ function CustomModal(props) {
       <CustomDialogTitle id="customized-dialog-title" onClose={handleClose}>
         {title}
       </CustomDialogTitle>
-      <DialogContent>{children}</DialogContent>
+      <Box px={2} >{children}</Box>
     </BootstrapDialog>
   );
 }

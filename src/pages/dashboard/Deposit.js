@@ -97,10 +97,15 @@ const Deposit = (props) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  React.useEffect(() => {
+    setOpenResponse(true)
+  }, [])
+  
   return (
     <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
       <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
-        <Box sx={{ textAlign: 'start' }}>
+        <Box sx={{ textAlign: 'start' }} >
           <Stack direction="row" alignItems="center">
             <Avatar src="/static/images/logo.png" />
             <div>

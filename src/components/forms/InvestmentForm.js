@@ -42,6 +42,10 @@ function InvestmentForm(props) {
     onSubmit: async (values) => {
       setLoading(true);
 
+      if (profile?.balance === 0 || profile?.balance < parseInt(values.amount, 10)) {
+        toast.error('Insufficient account balance!')
+      }
+
       const payload = {
         investmentPlan: data?.id,
         amountInvested: values.amount,

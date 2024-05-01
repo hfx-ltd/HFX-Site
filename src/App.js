@@ -233,7 +233,7 @@ function App() {
         </Routes>
         {show && <Footer />}
         {
-          showTelegram ? <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy /> : <div/>
+          <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy />
         }
       </ThemeProvider>
       }
