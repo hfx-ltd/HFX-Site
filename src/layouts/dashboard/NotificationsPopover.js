@@ -20,7 +20,7 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 
 // utils
-import { fToNow } from '../../utils/formatTime';
+import { fDateTime, fToNow } from '../../utils/formatTime';
 // components
 import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
@@ -205,7 +205,7 @@ function NotificationItem({ notification }) {
             }}
           >
             <Iconify icon="eva:clock-outline" sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {fToNow(set(new Date(notification?.createdAt), { hours: 10, minutes: 30 }))}
+            {fDateTime(new Date(notification?.createdAt))}
           </Typography>
         }
       />

@@ -124,7 +124,7 @@ const Deposit = (props) => {
             <span style={{ textTransform: 'uppercase' }}>
               <b> (Investment Deposit)</b>
             </span>
-            <br /> Kindly expect a response via your email and within 24 hours.{' '}
+            <br /> Click <a href='https://t.me/HFX_AGENT' target="_blank" rel="noreferrer" >here</a> to process your deposit with customer service.
           </Typography>
           <Spacer size={3} />
           <Typography variant="body1" color="text.secondary">

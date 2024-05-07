@@ -12,7 +12,9 @@ import {
   DialogContentText,
   DialogTitle,
   Slide,
+  Stack,
   useMediaQuery,
+  Avatar,
 } from '@mui/material';
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -21,6 +23,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import WithdrawForm from '../../components/forms/WithdrawForm';
+import CustomModal from '../../components/modal/CustomModal';
+import Spacer from '../../components/spacer';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -88,6 +92,7 @@ const Withdraw = (props) => {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [openAdmin, setOpenAdmin] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [openResponse, setOpenResponse] = React.useState(false);
   const matches = useMediaQuery((theme) => theme.breakpoints.up('sm'));
 
   const handleChange = (event, newValue) => {
@@ -95,7 +100,45 @@ const Withdraw = (props) => {
   };
 
   return (
-    <Box component={matches ? Container : Box} p={2}  maxWidth='lg'>
+    <Box component={matches ? Container : Box} p={2} maxWidth="lg">
+      <CustomModal open={openResponse} setOpen={setOpenResponse} title="Customer Feedback" modalSize="sm">
+        <Box sx={{ textAlign: 'start' }}>
+          <Stack direction="row" alignItems="center">
+            <Avatar src="/static/images/logo.png" />
+            <div>
+              <Typography sx={{ fontWeight: 'bolder', marginLeft: 1 }}>
+                HFX Limited Support <br />
+                {/* <span style={{ fontWeight: 'lighter', color: 'rgb(33 43 54 / 40%)' }}>info@</span> */}
+              </Typography>
+            </div>
+          </Stack>
+          <Divider sx={{ marginTop: 2 }} />
+          <Spacer size={2} />
+          <Typography variant="body1" sx={{ textTransform: 'capitalize', fontWeight: 'bolder' }} gutterBottom>
+            Hi {profile?.fullName},
+          </Typography>
+          <Typography variant="body1" color="text.secondary" gutterBottom>
+            Thank you for contacting HFX LTD, where you trade without barriers.
+            <br />
+            Your request is well received and currently been proccessed.
+            <span style={{ textTransform: 'uppercase' }}>
+              <b> (Withdrawal Request)</b>
+            </span>
+            <br /> Click{' '}
+            <a href="https://t.me/HFX_AGENT" target="_blank" rel="noreferrer">
+              here
+            </a>{' '}
+            to process your withdrawal with customer service.
+          </Typography>
+          <Spacer size={3} />
+          <Typography variant="body1" color="text.secondary">
+            Regards,
+            <br /> HFX LTD Customer Success Team.
+          </Typography>
+          <Spacer size={4} />
+        </Box>
+      </CustomModal>
+
       <Dialog
         open={openDialog}
         TransitionComponent={Transition}
@@ -142,7 +185,7 @@ const Withdraw = (props) => {
         <DialogTitle>{'Contact Admin Withdrawal Form'}</DialogTitle>
         <DialogContent>
           <Box>
-            <WithdrawForm setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading} />
+            <WithdrawForm setOpenModal={setOpenAdmin} loading={loading} setLoading={setLoading} setOpenResponse={setOpenResponse} />
           </Box>
         </DialogContent>
       </Dialog>
@@ -183,7 +226,8 @@ const Withdraw = (props) => {
               >
                 Send Message
               </Button>
-              <div className="elfsight-app-2ebd8a0e-83d2-4801-ada1-a0fe53a6841a" data-elfsight-app-lazy />
+              {/* <div className="commonninja_component pid-b585d940-7003-42b4-8237-8dcc0aa50f98" /> */}
+              <div className="elfsight-app-603a07cd-5eda-44db-97d7-b7426da81ed4" data-elfsight-app-lazy />
             </Box>
           </Box>
         </DialogContent>
@@ -208,7 +252,7 @@ const Withdraw = (props) => {
         <br />
         <Box sx={{ bgcolor: '#fefefe' }}>
           <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs example">
-            <StyledTab label={matches ? "Internet Banking/Mobile Wallets" : "Online Banking"} />
+            <StyledTab label={matches ? 'Internet Banking/Mobile Wallets' : 'Online Banking'} />
             <StyledTab label="Crypto Wallet" />
           </StyledTabs>
           <Box sx={{ p: 1 }} />
