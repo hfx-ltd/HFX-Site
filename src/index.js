@@ -18,7 +18,7 @@ ReactDOM.render(
       <Provider store={store}>
         <SWRConfig
           value={{
-            // refreshInterval: 3000,
+            refreshInterval: 15000,
             fetcher: (url) => APIService.fetcher(url),
           }}
         >
