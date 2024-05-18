@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import toast, { Toaster } from 'react-hot-toast';
@@ -8,14 +9,14 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import APIService from '../../service';
 // import { useSWRFetch } from '../../hooks';
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+const StyledTextField = styled(TextField)(() => ({
   marginBottom: 10,
   marginTop: 10,
 }));
 
 const depositSchema = Yup.object().shape({
   amount: Yup.number().required('Enter deposit amount in USD'),
-  comment: Yup.string().required('Your wallet address is required')
+  // comment: Yup.string().required('Your wallet address is required')
 });
 
 function DepositForm(props) {
@@ -24,7 +25,7 @@ function DepositForm(props) {
   const formik = useFormik({
     initialValues: {
       amount: 0,
-      comment: '',
+      comment: 'customer deposit',
       investmentPlan: '',
     },
     validationSchema: depositSchema,
@@ -95,7 +96,7 @@ function DepositForm(props) {
             </NativeSelect>
           </FormControl> */}
 
-          <StyledTextField
+          {/* <StyledTextField
             fullWidth
             multiline
             minRows={3}
@@ -104,7 +105,7 @@ function DepositForm(props) {
             {...getFieldProps('comment')}
             error={Boolean(touched.comment && errors.comment)}
             helperText={touched.comment && errors.comment}
-          />
+          /> */}
 
           <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={loading}>
             Submit Request
