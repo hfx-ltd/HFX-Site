@@ -28,7 +28,6 @@ import CustomModal from '../../components/modal/CustomModal';
 import Spacer from '../../components/spacer';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

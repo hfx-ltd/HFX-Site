@@ -68,35 +68,33 @@ const SignupForm = ({ theme, deviceType }) => {
     },
     validationSchema,
     onSubmit: async values => {
+     try {
       setLoading(true)
       const payload = {
         ...values,
       }
 
-      console.log('PAYLOADS :::: ', payload)
+      const response = await APIService.post('/auth/create', payload)
+      console.log("RSPONS ::: ", response.data);
+      setLoading(false)
 
-      const response = APIService.post('/auth/create', payload)
-      toast.promise(response, {
-        loading: 'Loading',
-        success: res => {
-          setLoading(false)
-          // send to verify otp
+      if (response.status === 200) {
+        toast.success(`${response?.data?.message}! We sent an OTP to your email address (${values?.emailAddress}). open your mail and enter the OTP sent to your mail.`)
+        // send to verify otp
           navigate('/verify-otp', {
             state: {
               emailAddress: values?.emailAddress,
-              accessToken: res?.data?.accessToken,
-              refreshToken: res?.data?.refreshToken,
+              accessToken: response?.data?.accessToken,
+              refreshToken: response?.data?.refreshToken,
             },
             replace: true,
           })
-          return `${res?.data?.message}! We sent an OTP to your email address (${values?.emailAddress}). open your mail and enter the OTP sent to your mail.`
-        },
-        error: err => {
-          console.log('ERROR HERE >>> ', `${err}`)
+      }
+     } catch (err) {
+      console.log('ERROR HERE >>> ', `${err}`)
           setLoading(false)
-          return err?.response?.data?.message || err?.message || 'Something went wrong, try again.'
-        },
-      })
+          toast.error(`${err?.response?.data?.message || err?.message || 'Something went wrong, try again.'}`)
+     }
     },
   })
 
