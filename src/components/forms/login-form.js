@@ -52,7 +52,7 @@ const LoginForm = ({ theme, deviceType }) => {
               return 'Sorry. your account is frozen';
             }
 
-            if (res.data?.user?.isEmailVerified) {
+            // if (res.data?.user?.isEmailVerified) {
               localStorage.setItem('accessToken', res.data?.accessToken);
               localStorage.setItem('refreshToken', res.data?.refreshToken);
               localStorage.setItem('loggedIn', 'yes')
@@ -60,10 +60,10 @@ const LoginForm = ({ theme, deviceType }) => {
               dispatch(setAuth(true))
 
               navigate('/dashboard/overview')
-            }
-            else {
-              navigate('/verify-otp')
-            }
+            // }
+            // else {
+            //   navigate('/verify-otp')
+            // }
 
             return 'Login successful!';
           },
