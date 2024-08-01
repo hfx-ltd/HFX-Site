@@ -4,13 +4,11 @@ import { useFormik } from 'formik';
 import { Box, Button, Card, Container, IconButton, TextField, Toolbar, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import io from 'socket.io-client'
 import { useDispatch } from 'react-redux';
-import { mutate } from 'swr';
 import APIService from '../../service';
 import { baseURL } from '../../utils/axios';
-import { useProfile } from '../../hooks';
 import { setAuth, setProfile } from '../../store/reducer/auth';
 
 const LoginForm = ({ theme, deviceType }) => {
@@ -60,10 +58,6 @@ const LoginForm = ({ theme, deviceType }) => {
               dispatch(setAuth(true))
 
               navigate('/dashboard/overview')
-            // }
-            // else {
-            //   navigate('/verify-otp')
-            // }
 
             return 'Login successful!';
           },

@@ -44,6 +44,7 @@ import Loader from './pages/Loader';
 import usePlans, { useActiveInvestment } from './hooks/usePlans';
 import { setActiveInvestment, setPlans } from './store/reducer/investments';
 import CompleteSignup from './pages/auth/completeSignup';
+import ForgotPassword from './pages/auth/ForgottenPassword';
 
 function App() {
   const { isAuth, profile } = useSelector((state) => state.auth);
@@ -205,6 +206,7 @@ function App() {
           <Route path="/advantages" element={<Advantages />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-otp" element={<VerifyOtp deviceType={deviceType} />} />
           <Route path="/contact-us" element={<ContactUs />} />
           <Route path="/faqs" element={<FAQPage />} />

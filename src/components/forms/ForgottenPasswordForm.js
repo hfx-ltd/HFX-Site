@@ -36,7 +36,7 @@ function ForgottenPasswordForm() {
             state: values,
             replace: true,
           });
-          return `We sent an OTP to your email address (${values.emailAddress}). open your mail and enter the OTP sent to your mail.`;
+          return `We sent an OTP to your email address (${values.emailAddress}). Open your mail and enter the OTP sent to your mail.`;
         },
         error: (err) => {
           setLoading(false);
@@ -51,7 +51,7 @@ function ForgottenPasswordForm() {
 
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
         <TextField
           fullWidth
           autoComplete="email-address"

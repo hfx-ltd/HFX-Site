@@ -7,9 +7,8 @@ import Stack from '@mui/material/Stack';
 import Link from '@mui/material/Link';
 import React from "react"
 // sections
-import { Grid, Toolbar, useMediaQuery } from '@mui/material';
+import { Toolbar, useMediaQuery } from '@mui/material';
 import LoginForm from '../../components/forms/login-form';
-// import { LoginForm } from '../../components/forms';
 
 
 export default function Login(props) {
@@ -53,7 +52,7 @@ export default function Login(props) {
             SignUp
           </Link>
         </Box>
-        <Link component={RouterLink} variant="subtitle2" color="black" to="/forgotten-password" underline="hover">
+        <Link component={RouterLink} variant="subtitle2" color="black" to="/forgot-password" underline="hover">
           Forgot password?
         </Link>
       </Stack>
